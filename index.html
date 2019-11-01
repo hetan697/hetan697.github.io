@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<style type="text/css">
+html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%
+}
+.container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.87);
+    text-align: center;
+    font-size: 0;
+    white-space: nowrap;
+    overflow: auto;
+}
+.container:after {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.cn {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    font-size: 100px;
+    color: #FFFFFF;
+    white-space: normal;
+}
+</style>
+<script type="text/javascript">
+		function whichElement(e)
+{
+var targ
+if (!e) var e = window.event
+if (e.target) targ = e.target
+else if (e.srcElement) targ = e.srcElement
+if (targ.nodeType == 3) // defeat Safari bug
+   targ = targ.parentNode
+var tname
+tname = 1.7533
+var cn = document.getElementsByClassName('cn');
+	cn[0].innerHTML = "1.75333";
+	setTimeout(function(){cn[0].innerHTML = "/"},300)
+			
+}
+	</script>
+<head>
+<meta charset="utf-8">
+<title>0</title>
+</head>
+
+<body onmouseup="whichElement(event)">
+<div class="container">
+  <div class="cn">/</div>
+</div>
+</body>
+</html>
