@@ -866,11 +866,6 @@ pre code {
 .post-body .note.danger h6 {
   color: #d9534f;
 }
-.pdfobject-container iframe,
-.pdfobject-container embed {
-  height: 500px;
-  width: 100%;
-}
 .post-body .tabs {
   margin-bottom: 20px;
 }
@@ -1671,9 +1666,6 @@ header.header {
   margin: 8px -10px -20px;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
-}
-.back-to-top span {
-  display: none;
 }
 .back-to-top.back-to-top-on {
   cursor: pointer;

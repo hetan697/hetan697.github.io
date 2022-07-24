@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="停更提示：该文章尚未完成，但需停更几天，谢谢！ 本文使用 NoneBot2 搭建了一个 QQ 机器人，并为其加入 QA 功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QA机器人搭建">
+<meta property="og:url" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="停更提示：该文章尚未完成，但需停更几天，谢谢！ 本文使用 NoneBot2 搭建了一个 QQ 机器人，并为其加入 QA 功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_163808_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_161616_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_163857_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_164125_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_164613_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_165445_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_165847_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_165919_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170034_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170148_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170157_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220723_082516_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_171426_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_171439_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_171722_image.png">
+<meta property="og:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170034_image.png">
+<meta property="article:published_time" content="2022-07-22T09:23:25.000Z">
+<meta property="article:modified_time" content="2022-07-24T01:37:26.699Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_163808_image.png">
+
+
+<link rel="canonical" href="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/","path":"2022/07/22/QA机器人搭建/","title":"QA机器人搭建"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>QA机器人搭建 | Hetan的博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85NoneBot%E6%9C%BA%E5%99%A8%E4%BA%BA"><span class="nav-number">2.</span> <span class="nav-text">安装NoneBot机器人</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-go-cqhttp-%E4%BB%A5%E7%99%BB%E5%BD%95-QQ"><span class="nav-number">2.1.</span> <span class="nav-text">配置 go-cqhttp 以登录 QQ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA-NoneBot2-%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.2.</span> <span class="nav-text">新建 NoneBot2 项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-NoneBot2-%E9%A1%B9%E7%9B%AE%E4%BB%A5%E5%90%AF%E5%8A%A8-Bot"><span class="nav-number">2.3.</span> <span class="nav-text">配置 NoneBot2 项目以启动 Bot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-QA-%E5%8A%9F%E8%83%BD"><span class="nav-number">2.4.</span> <span class="nav-text">添加 QA 功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97"><span class="nav-number">3.</span> <span class="nav-text">避坑指南</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E7%94%A8%E7%9A%84%E8%B5%84%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">有用的资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通准研究生</div>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通准研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="QA机器人搭建 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          QA机器人搭建
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-22 17:23:25" itemprop="dateCreated datePublished" datetime="2022-07-22T17:23:25+08:00">2022-07-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-24 09:37:26" itemprop="dateModified" datetime="2022-07-24T09:37:26+08:00">2022-07-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em><strong>停更提示：该文章尚未完成，但需停更几天，谢谢！</strong></em></p>
+<p>本文使用 NoneBot2 搭建了一个 QQ 机器人，并为其加入 QA 功能。</p>
+<span id="more"></span>
+
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li><p>下载<a target="_blank" rel="noopener" href="https://github.com/Mrs4s/go-cqhttp/releases">go-cqhttp</a></p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_163808_image.png" alt="go-cqhttp releases"></p>
+</li>
+<li><p>创建新 Python 环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create --name nb python=3.8</span><br></pre></td></tr></table></figure>
+
+<p>之后输入<code>y</code>确认创建新环境。执行完毕后如下：</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_161616_image.png" alt="conda create"></p>
+<p>之后切换至创建好的环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate nb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装<code>nb脚手架</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install nb-cli</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_163857_image.png" alt="安装nb脚手架"></p>
+</li>
+</ol>
+<h2 id="安装NoneBot机器人"><a href="#安装NoneBot机器人" class="headerlink" title="安装NoneBot机器人"></a>安装NoneBot机器人</h2><h3 id="配置-go-cqhttp-以登录-QQ"><a href="#配置-go-cqhttp-以登录-QQ" class="headerlink" title="配置 go-cqhttp 以登录 QQ"></a>配置 go-cqhttp 以登录 QQ</h3><p>直接打开下载好的<code>go-cqhttp_windows_amd64.exe</code>，和之前一样直接打开会有提示；若通过命令行则没有。</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_164125_image.png" alt="直接打开提示"></p>
+<p>直接打开也挺好，点击几次<code>确定</code>（截图没截到）后会自动生成<code>go-cqhttp.bat</code>，通过命令行打开的话还没有，内容如下：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%Created by go-cqhttp. <span class="keyword">DO</span> <span class="keyword">NOT</span> EDIT ME!%</span><br><span class="line"><span class="built_in">start</span> <span class="built_in">cmd</span> /K &quot;go-cqhttp.exe&quot;</span><br></pre></td></tr></table></figure>
+
+<p>点击生成的<code>go-cqhttp.bat</code>后会打开<code>go-cqhttp.exe</code>，非常方便。第一次打开选择<code>反向WebSocket</code>（输入<code>3</code>）后回车。</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_164613_image.png" alt="首次打开go-cqhttp"></p>
+<p>关闭当前命令行窗口。修改<code>config.yml</code>中<code>account</code>内的<code>uin</code>和<code>password</code>（约第 4、5 行）；修改<code>servers.ws-reverse.universal</code>（约第 98 行）为<code>ws://127.0.0.1:8765/onebot/v11/ws</code>，端口号不得冲突。点击<code>go-cqhttp.bat</code>打开<code>go-cqhttp</code>，之后按提示登录。</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_165445_image.png" alt="登录成功"></p>
+<p>出现上图即视为登录成功，黄字警告暂时不管，将该命令行窗口最小化。</p>
+<h3 id="新建-NoneBot2-项目"><a href="#新建-NoneBot2-项目" class="headerlink" title="新建 NoneBot2 项目"></a>新建 NoneBot2 项目</h3><p>在准备工作(2)(3)的基础上，使用<code>nb-cli</code>新建<code>NoneBot</code>项目。在准备工作(3)的命令行窗口中输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nb create</span><br></pre></td></tr></table></figure>
+
+<p>脚手架<code>nb-cli</code>中自带适配器<code>nonebot-adapter-onebot</code><br>之后让你填写项目名。此处以“chatbot”为例。之后会要求选择存储 Bot 的路径，此处我选择第一项，所以直接敲击<kbd><code>enter</code></kbd>键。若要选择第二项，使用<kbd><code>↑</code></kbd><kbd><code>↓</code></kbd>选中选项后敲击<kbd><code>enter</code></kbd>键。</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_165847_image.png" alt="nbc2"></p>
+<p>之后选择添加<code>echo</code>方便后续调试。注意这里英文提示发生了改变：使用<kbd><code>↑</code></kbd><kbd><code>↓</code></kbd>移动，使用<kbd><code>space</code></kbd>选中选项，使用<kbd><code>enter</code></kbd>键确认选项。相比上一步，你需要额外使用<kbd><code>空格键</code></kbd>来选中选项；不过，这里也可以使用鼠标左键选中。</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_165919_image.png" alt="nbc3"></p>
+<p>选平台（适配器<code>adapter</code>）没想到 V12 已经出了但我还是选择了 V11 怕文档不全社区不活跃不利于后续添加聊天功能。</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170034_image.png" alt="nb5"></p>
+<p>之后会自动安装，等待安装结束即可：</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170148_image.png" alt="nb6"></p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170157_image.png" alt="nb7"></p>
+<h3 id="配置-NoneBot2-项目以启动-Bot"><a href="#配置-NoneBot2-项目以启动-Bot" class="headerlink" title="配置 NoneBot2 项目以启动 Bot"></a>配置 NoneBot2 项目以启动 Bot</h3><p>正如上一步所配置的，NoneBot2 在<code>chatbot</code>目录中。所以我们进入<code>chatbot</code>目录对 NoneBot2 项目进行进一步配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ./chatbot</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220723_082516_image.png"></p>
+<p>修改其中的<code>env.dev</code>中的<code>PORT</code>，使之与go-cqhttp<code>config.yml</code>中<code>servers.ws-reverse.universal</code>（约第 98 行）<code>ws://127.0.0.1:&#123;&#123;PORT&#125;&#125;/onebot/v11/ws</code>处的内容对应：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">HOST=127.0.0.1</span></span><br><span class="line"><span class="string">PORT=8654</span>            <span class="comment"># 修改这一项</span></span><br><span class="line"><span class="string">LOG_LEVEL=DEBUG</span></span><br><span class="line"><span class="string">FASTAPI_RELOAD=true</span></span><br></pre></td></tr></table></figure>
+
+<p>执行以下命令运行 nonebot2：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nb run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_171426_image.png" alt="8"></p>
+<p>运行成功后<code>go-cqhttp.exe</code>的警告也会消失：</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_171439_image.png" alt="9"></p>
+<p>此时，你若向机器人输入<code>/echo 123</code>就能收到机器人的 echo：</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_171722_image.png" alt="QQ聊天测试"></p>
+<p>则机器人成功搭建。</p>
+<h3 id="添加-QA-功能"><a href="#添加-QA-功能" class="headerlink" title="添加 QA 功能"></a>添加 QA 功能</h3><p><em><strong>停更提示：该文章尚未完成，但需停更几天，谢谢！</strong></em></p>
+<p>通过如下步骤添加 QA 功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> nonebot <span class="keyword">import</span> on_message                        <span class="comment"># 导入必要的包</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_answer</span>(<span class="params">msg</span>):</span><br><span class="line">   <span class="keyword">return</span> QA_model.predict(msg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">should_answer</span>(<span class="params">msg</span>):</span><br><span class="line">   <span class="keyword">return</span> should_answer_model.predict(msg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">message_checker</span>(<span class="params">event: Event</span>) -&gt; <span class="built_in">bool</span>:      <span class="comment"># 创建匹配规则</span></span><br><span class="line">   <span class="keyword">return</span> event.is_tome() <span class="keyword">or</span> should_answer(event.get_plaintext())</span><br><span class="line"></span><br><span class="line">matcher = on_message(rule=message_checker)            <span class="comment"># 1.1 定义事件响应器并注册匹配规则</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># @matcher.handle()</span></span><br><span class="line"><span class="comment"># async def _(bot: Bot, event: GroupMessageEvent):</span></span><br><span class="line"><span class="comment">#    await matcher.send(&quot;群聊消息事件响应成功！&quot;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># @matcher.handle()</span></span><br><span class="line"><span class="comment"># async def _(bot: Bot, event: PrivateMessageEvent):</span></span><br><span class="line"><span class="comment">#    answer_text = get_answer(event.get_plaintext())</span></span><br><span class="line"><span class="comment">#    await matcher.send(answer_text)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@matcher.handle()                                     </span><span class="comment"># 使用`matcher`响应器的`handle`装饰器装饰函数</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">handle_func</span>(<span class="params">msg: <span class="built_in">str</span> = EventPlainText(<span class="params"></span>)</span>):   <span class="comment"># `EventPlainText`用于获取当前事件的消息纯文本部分</span></span><br><span class="line">   answer_text = get_answer(msg)                      <span class="comment"># 在`handle_func`中编写逻辑</span></span><br><span class="line">   <span class="keyword">await</span> matcher.finish(answer_text)</span><br></pre></td></tr></table></figure>
+
+<h2 id="避坑指南"><a href="#避坑指南" class="headerlink" title="避坑指南"></a>避坑指南</h2><ul>
+<li><p>新建 NoneBot2 项目时无法选中适配器</p>
+<p><img src="/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/20220722_170034_image.png" alt="nb5"></p>
+<p>请严格按照<a href="#%E6%96%B0%E5%BB%BA-NoneBot2-%E9%A1%B9%E7%9B%AE">提示</a>操作，<strong>不要忘记按空格键选中</strong>。</p>
+</li>
+<li><p>端口号被占用</p>
+<ul>
+<li>更换端口。<br>go-cqhttp<code>config.yml</code>中<code>servers.ws-reverse.universal</code>（约第 98 行）<code>ws://127.0.0.1:&#123;&#123;PORT&#125;&#125;/onebot/v11/ws</code>和 NoneBot<code>env.dev</code> 内的两处端口号，换成一个不被占用的。更换后记得重启 NoneBot。</li>
+<li>终结占用端口的程序。可以使用任务管理器与资源监视器来实现，也可以按如下步骤实现。<ol>
+<li><p>查看系统当前所有的端口使用情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano |findstr <span class="string">&quot;端口号&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\admin&gt;netstat -ano | findstr &quot;8080&quot;</span><br><span class="line">TCP    0.0.0.0:8080           0.0.0.0:0              LISTENING       10180</span><br><span class="line">TCP    192.168.1.104:1887     1**.1**.2**.2**:8080   ESTABLISHED     9696</span><br></pre></td></tr></table></figure>
+
+<p>这里，输出的内容即为：</p>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>本地地址</th>
+<th>外部地址</th>
+<th>状态</th>
+<th>PID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TCP</td>
+<td>0.0.0.0:8080</td>
+<td>0.0.0.0:0</td>
+<td>LISTENING</td>
+<td>10180</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>192.168.1.104:1887</td>
+<td>1**.1**.2**.2**:8080</td>
+<td>ESTABLISHED</td>
+<td>9696</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>根据<code>PID</code>查找占用的进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasklist |findstr <span class="string">&quot;进程id号&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\admin&gt;tasklist |findstr &quot;10180&quot;</span><br><span class="line">ApplicationWebServer.exe     10180 Services                   0     15,284 K</span><br></pre></td></tr></table></figure>
+
+<p>同理，输出的意思是：</p>
+<table>
+<thead>
+<tr>
+<th align="left">映像名称</th>
+<th>PID</th>
+<th>会话名</th>
+<th>会话#</th>
+<th>内存使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">ApplicationWebServer.exe</td>
+<td>10180</td>
+<td>Services</td>
+<td>0</td>
+<td>15,284 K</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>最后，根据进程的名称杀掉进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskkill /f /t /im <span class="string">&quot;进程id或者进程名称&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行完毕后仍可通过<code>netstat -ano |findstr &quot;端口号&quot;</code>查看端口号是否被占用。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="有用的资源"><a href="#有用的资源" class="headerlink" title="有用的资源"></a>有用的资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://v2.nonebot.dev/">nb文档: https://v2.nonebot.dev</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.go-cqhttp.org/">gocq文档: https://docs.go-cqhttp.org/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nonebot/nonebot2">nb：https://github.com/nonebot/nonebot2</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Mrs4s/go-cqhttp">gocq：https://github.com/Mrs4s/go-cqhttp</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42369292/article/details/119817274">https://blog.csdn.net/weixin_42369292/article/details/119817274</a></li>
+</ul>
+<p><em><strong>停更提示：该文章尚未完成，但需停更几天，谢谢！</strong></em></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/2022/07/22/QA%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/" title="QA机器人搭建">http://hetan697.github.io/2022/07/22/QA机器人搭建/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/21/ZeroBot-Plugin%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%90%AD%E5%BB%BA/" rel="prev" title="ZeroBot-Plugin 机器人搭建">
+                  <i class="fa fa-chevron-left"></i> ZeroBot-Plugin 机器人搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
