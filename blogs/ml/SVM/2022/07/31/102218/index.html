@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文为浙江大学胡浩基老师《机器学习》课程中 SVM 部分的笔记。先前久闻 SVM 大名而不知其原理，特学此内容，整理笔记成此博客。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVM简明教程">
+<meta property="og:url" content="http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="本文为浙江大学胡浩基老师《机器学习》课程中 SVM 部分的笔记。先前久闻 SVM 大名而不知其原理，特学此内容，整理笔记成此博客。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-31T02:22:18.000Z">
+<meta property="article:modified_time" content="2022-08-14T08:27:38.981Z">
+<meta property="article:author" content="Hetan">
+<meta property="article:tag" content="未完成">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/","path":"blogs/ml/SVM/2022/07/31/102218/","title":"SVM简明教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SVM简明教程 | Hetan的博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM-%E5%A4%84%E7%90%86%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">SVM 处理线性可分问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">线性可分问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SVM"><span class="nav-number">1.2.</span> <span class="nav-text">SVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">处理线性模型小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM-%E5%A4%84%E7%90%86%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">SVM 处理非线性模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">处理非线性模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E9%97%AE%E9%A2%98%E4%B8%8E%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">原问题与对偶问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">支持向量机转化为对偶问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVM-%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">SVM 算法流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">训练流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">测试流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E7%94%A8%E7%9A%84%E8%B5%84%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">有用的资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">5.</span> <span class="nav-text">后记</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SVM简明教程 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SVM简明教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-31 10:22:18" itemprop="dateCreated datePublished" datetime="2022-07-31T10:22:18+08:00">2022-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-14 16:27:38" itemprop="dateModified" datetime="2022-08-14T16:27:38+08:00">2022-08-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ml/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ml/SVM/" itemprop="url" rel="index"><span itemprop="name">SVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文为浙江大学胡浩基老师《机器学习》课程中 SVM 部分的笔记。先前久闻 SVM 大名而不知其原理，特学此内容，整理笔记成此博客。</p>
+<span id="more"></span>
+
+<h2 id="SVM-处理线性可分问题"><a href="#SVM-处理线性可分问题" class="headerlink" title="SVM 处理线性可分问题"></a>SVM 处理线性可分问题</h2><h3 id="线性可分问题"><a href="#线性可分问题" class="headerlink" title="线性可分问题"></a>线性可分问题</h3><p>一个训练样本集${(X_i,y_i)}]$，在$i&#x3D;1 \sim N$线性可分，是指存在$(w,b)$使得使得对$i&#x3D;1 \sim N$有：</p>
+<ol>
+<li>若$y_i &#x3D; +1$，则$w^TX_i+b&gt;0$</li>
+<li>若$y_i &#x3D; -1$，则$w^TX_i+b&lt;0$</li>
+</ol>
+<p>上述定义即：</p>
+<p>如果$y_i&#x3D;+1$或$-1$，一个训练样本集${(X_i,y_i)}]$，在$i&#x3D;1 \sim N$线性可分（Linear Separable），是指存在$(w,b)$使得使得对$i&#x3D;1 \sim N$有$y_i(w^Tx_i + b)&gt;0$</p>
+<p>支持向量机寻找的最优分类超平面应满足 3 个条件：</p>
+<ol>
+<li>该超平面分开了两类；</li>
+<li>该超平面最大化<strong>间隔（margin）</strong></li>
+<li>该超平面处于间隔的中间，到所有的支持向量距离相等。</li>
+</ol>
+<h3 id="SVM"><a href="#SVM" class="headerlink" title="SVM"></a>SVM</h3><p>假定训练样本集是线性可分的，支持向量机（Support Vector Machine）需要满足限制条件$y_i(w^Tx_i + b)&gt;0,i&#x3D;1 \sim N$寻找的是最大化间隔（margin）的超平面：</p>
+<p>点$X_0$到超平面$w^T+b&#x3D;0$的距离为：<br>$$d&#x3D; \frac{w^Tx_0+b}{||w||} $$</p>
+<blockquote>
+<p>点到直线距离公式：<br>$$d&#x3D; \frac {\vert Ax_0 + By_0 + C \vert} {\sqrt{A^2 + B^2}}$$<br>点到平面距离公式：<br>$$d&#x3D; \frac {\vert Ax_0 + By_0 + Cz_0 + D \vert} {\sqrt{A^2 + B^2 + C^2}}$$</p>
+</blockquote>
+<p>完成上述问题的目标函数为：</p>
+<p>$$\max d &#x3D; \max \frac{w^Tx_0+b}{||w||} &#x3D; \max \frac{1}{||w||}$$</p>
+<p>最大化支持向量到超平面的距离等价于最小化$\frac{1}{2} || w || ^2$，即最小化$||w||$.</p>
+<p>限制条件为</p>
+<p>$$y_i(w^Tx_i + b) \ge 1,i&#x3D;1 \sim N$$</p>
+<p>因为这是一个凸优化问题，要么有唯一解要么无解，所以可以用梯度下降法求得其值。</p>
+<h3 id="处理线性模型小结"><a href="#处理线性模型小结" class="headerlink" title="处理线性模型小结"></a>处理线性模型小结</h3><ol>
+<li>SVM 是最大化间隔(Margin)的分类算法</li>
+<li>最小化$0.5 \vert \vert w\vert \vert ^2$</li>
+<li>限制条件：$y_i(w^Tx_i + b)\ge 1,i&#x3D;1 \sim N$</li>
+</ol>
+<h2 id="SVM-处理非线性模型"><a href="#SVM-处理非线性模型" class="headerlink" title="SVM 处理非线性模型"></a>SVM 处理非线性模型</h2><h3 id="处理非线性模型"><a href="#处理非线性模型" class="headerlink" title="处理非线性模型"></a>处理非线性模型</h3><ol>
+<li><p>最小化<br>$$\frac{1}{2} \vert \vert w\vert \vert ^2 + C \sum_{i&#x3D;1}^{N}\delta_i$$<br>或<br>$$\frac{1}{2} \vert \vert w\vert \vert ^2 + C \sum_{i&#x3D;1}^{N}\delta_i^2$$<br>其中，$\delta_i$ 为松弛变量（slack variable），提供非线性项；$C$ 为比例因子，用于平衡两项，是一个超参数。</p>
+</li>
+<li><p>限制条件：</p>
+<ol>
+<li>$\delta_i \ge 0 (i&#x3D;1 \sim N)$</li>
+<li>$y_i[w^T \varphi (X_i) + b] \ge 1,i&#x3D;1 \sim N$</li>
+</ol>
+</li>
+</ol>
+<p>$\varphi(X_i)$ 为核函数（kernel function），$w$与 $\varphi(X_i)$ 维度相同</p>
+<h3 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h3><p>$$K(X_1, X_2)&#x3D;\varphi(X_1)^T\varphi(X_2)$$</p>
+<p>$K(X_1, X_2)$为核函数，$\varphi(X)$是低维向量至高维向量的映射关系。</p>
+<blockquote>
+<p>如：<br>$$X_1&#x3D;[x_{11}, x_{12}]^T, X_2&#x3D;[x_{21}, x_{22}]^T$$<br>则<br>$$\varphi(X_1)&#x3D;[x_{11}^2, x_{11}x_{12}, x_{12}^2] \quad \varphi(X_2)&#x3D;[x_{21}^2, x_{21}x_{22}, x_{22}^2]$$ $$\begin{split}K(X_1, X_2) &amp; &#x3D; \varphi(X_1)^T\varphi(X_2) \\ &amp; &#x3D; [x_{11}^2, x_{11}x_{12}, x_{12}^2][x_{21}^2, x_{21}x_{22}, x_{22}^2]^T \\ &amp; &#x3D; x_{11}^2 x_{21}^2 + x_{11}x_{12}x_{21}x_{22} + x_{12}^2x_{22}^2 \end{split}$$</p>
+</blockquote>
+<p>$K(X_1, X_2)$能写成$\varphi(X_1)^T\varphi(X_2)$的充要条件：</p>
+<ol>
+<li>交换性：$K(X_1, X_2)&#x3D;K(X_2, X_1)$</li>
+<li>半正定性：$\forall C_i(i&#x3D;1 \sim N), \forall N$ 有 $\sum_{i&#x3D;1}^{N}\sum_{j&#x3D;1}^{N}C_iC_jK(X_iX_j)$</li>
+</ol>
+<p>常用的核函数有高斯核函数：<br>$$K(X_1, X_2)&#x3D;e^{-\frac{||x_1-x_2||^2}{2 \sigma ^2}}$$</p>
+<p>核函数还有：</p>
+<ul>
+<li><p>Linear(线性内核): $K(x, y)&#x3D; x^Ty$</p>
+</li>
+<li><p>Ploy(多项式核): $K(x, y)&#x3D; (x^Ty + 1)^d$</p>
+</li>
+<li><p>Rbf (高斯径向基函数核): $K(x,y) &#x3D;e^{- \frac{||x-y||^2}{\sigma^2}}$</p>
+</li>
+<li><p>Tanh(Tanh 核): $K(x, y) &#x3D; \tanh{(\beta x^Ty +b)}$</p>
+</li>
+<li><p>$(X_1X_2+1)^N$</p>
+</li>
+</ul>
+<h3 id="原问题与对偶问题"><a href="#原问题与对偶问题" class="headerlink" title="原问题与对偶问题"></a>原问题与对偶问题</h3><ul>
+<li>原问题（prime question）：<ul>
+<li>最小化：$f(\omega )$</li>
+<li>限制条件：<ul>
+<li>$g_{i}(\omega )\leq 0,i&#x3D;1 \sim K$</li>
+<li>$h_{i}(\omega )&#x3D;0,i&#x3D;1 \sim m$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>定义函数</p>
+<p>$$<br>\begin{split}<br>L(\omega, \alpha, \beta)&#x3D; &amp; f(\omega)+\sum_{i&#x3D;1}^K\alpha_ig_i(\omega)+\sum_{i&#x3D;1}^K\beta _ig_i(\omega) \\<br>&#x3D; &amp; f(\omega)+ \alpha^Tg(\omega) + \beta^Th(\omega) \\<br>\end{split}<br>$$</p>
+<p>$$<br>\begin{split}<br>\text{其中，}\alpha &#x3D; &amp; [\alpha_1, \alpha_2, \dots , \alpha_k] \\<br>\beta &#x3D; &amp; [\beta_1, \beta_2, \dots , \beta_M] \\<br>g(\omega) &#x3D; &amp; [g_1(\omega), g_2(\omega), \dots , g_k(\omega), ]^T \\<br>h(\omega) &#x3D; &amp; [h_1(\omega), h_2(\omega), \dots , h_M(\omega), ]^T \\<br>\end{split}<br>$$</p>
+<p>定义该原问题的对偶问题如下：</p>
+<ul>
+<li><p>对偶问题（prime question）：</p>
+<ul>
+<li>最大化：$\theta (\alpha, \beta)&#x3D;\inf L(\omega, \alpha, \beta)$，$\omega$在所有定义域内</li>
+<li>限制条件：$\alpha_i \ge 0, i&#x3D;1 \sim K$</li>
+</ul>
+</li>
+<li><p>强对偶定理：如果$g(\omega )&#x3D;A\omega +b,h(\omega )&#x3D;C\omega +d$，$f(\omega )$是凸函数，则有$f(\omega ^*)&#x3D;\theta (\alpha ^*,\beta ^*)$，则对偶差距为零。</p>
+</li>
+<li><p>KKT 条件：若$f(\omega^*) &#x3D;\theta(\alpha^* ,\beta^*)$，对于所有$i&#x3D;0…K$，要么$\alpha_{i}&#x3D;0$，要么$g_{i}(\omega^* )&#x3D;0$。）</p>
+</li>
+</ul>
+<h3 id="支持向量机转化为对偶问题"><a href="#支持向量机转化为对偶问题" class="headerlink" title="支持向量机转化为对偶问题"></a>支持向量机转化为对偶问题</h3><p>支持向量机的原问题满足强对偶定理，写成原问题的形式为：</p>
+<ul>
+<li>最小化：$\frac{1}{2} \vert \vert w\vert \vert ^2-C\sum\nolimits_{i&#x3D;1}^N \delta_{i} 或 \frac{1}{2} \vert \vert w\vert \vert ^2-C\sum\nolimits_{i&#x3D;1}^N \delta_{i} ^2$</li>
+<li>限制条件：<ol>
+<li>$\delta _{i}\leq  0, (i&#x3D;1 \sim N)$</li>
+<li>$1+\delta_{i}- y_{i} w^T\varphi (X_{i}) -y_{i}b\leq 0 ,(i&#x3D;1 \sim N)$</li>
+</ol>
+</li>
+</ul>
+<p>化为对偶问题形式：</p>
+<ul>
+<li><p>最大化：<br>$$\theta (\alpha ,\beta )&#x3D;\inf_{\omega,b,\delta_{i}} { \frac{1}{2}\vert \vert w\vert \vert ^2-\sum_{i&#x3D;1}^N(C-\beta_{i})\delta_{i}+\sum_{i&#x3D;1}^{N} \alpha_{i}[1+\delta_{i}- y_{i} w^T\varphi (X_{i})-y_{i}b]}$$</p>
+</li>
+<li><p>限制条件：</p>
+<ol>
+<li>$\alpha  _{i}\geq  0, (i&#x3D;1 \sim N)$</li>
+<li>$\beta   _{i}\geq  0, (i&#x3D;1 \sim N)$</li>
+</ol>
+</li>
+</ul>
+<p>遍历所有 $(\omega ,b,\delta_{i})$ 求最小值，对 $(\omega,b,\delta_{i})$求导并令导数为 0:</p>
+<ol>
+<li><p>$\begin{split}\frac{\partial \theta }{\partial \omega } &#x3D;\omega -\sum\nolimits_{i}^N\alpha_{i}y_{i}\varphi (X_{i})&#x3D;0 \\ \implies  \omega &#x3D;\sum\nolimits_{i}^N\alpha_{i}y_{i}\varphi (X_{i})\end{split}$</p>
+</li>
+<li><p>$\begin{split} \frac{\partial \theta }{\partial b} &#x3D;-\sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}&#x3D;0 \\ \implies \sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}&#x3D;0\end{split}$</p>
+</li>
+<li><p>$\begin{split} \frac{\partial \theta }{\partial \delta_{i}} &#x3D;-C+\alpha_{i}+\beta_{i}&#x3D;0 \\ \implies \alpha_{i}+\beta_{i}&#x3D;C\end{split}$</p>
+</li>
+</ol>
+<p>代入，可转化为以下形式：</p>
+<ul>
+<li>最大化：$\theta (\alpha )&#x3D;\sum\nolimits_{i&#x3D;1}^n \alpha_{i}-\frac{1}{2} \sum\nolimits_{i&#x3D;1}^N\sum\nolimits_{j&#x3D;1}^N\alpha_{i}y_{i}\alpha_{j}y_{j}\varphi (X_{i})^T\varphi (X_{j})$</li>
+<li>限制条件：<ol>
+<li>$0\leq \alpha_{i}\leq C,i&#x3D;1 \sim N$</li>
+<li>$\sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}&#x3D;0,i&#x3D;1 \sim N$</li>
+</ol>
+</li>
+</ul>
+<p>这样，使用 SMO 算法即可求出 $\varphi (X_{i})^T \varphi (X_{j})$。不过，我们需要求得的是$w$和$b$</p>
+<p>考虑到 SVM 测试流程为测试样本$X$：</p>
+<ul>
+<li>若 $w^T \varphi (X)+b \ge 0$，则 $y&#x3D;+1$</li>
+<li>若 $w^T \varphi (X)+b &lt; 0$，则 $y&#x3D;-1$</li>
+</ul>
+<p>所以有</p>
+<p>$$<br>\begin{split}<br>w^T &#x3D; &amp; \sum\nolimits_{i&#x3D;1}^N[\alpha_{i}y_{i}\varphi (X_{i})]^T\varphi (X) \\<br>    &#x3D; &amp; \sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}\varphi (X_{i})^T\varphi (X) \\<br>    &#x3D; &amp; \sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}K(X_i, X) \\<br>\end{split}<br>$$</p>
+<p>而 $\sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}K(X_i, X)$ 在优化问题中已经求出，故 $w$不需要具体解出。</p>
+<p>$b$ 的求解，根据 KKT 条件，</p>
+<p>$\alpha_{i}[ 1+\delta_{i}- y_{i} w^T\varphi (X_{i}) -y_{i}b]&#x3D;0$<br>$\beta_{i}\delta_{i}&#x3D;0\implies (C-\alpha_{i})\delta_{i}&#x3D;0$</p>
+<p>如果对某个$i$（仅仅一个就行），$\alpha_{i}\neq 0且\alpha_{i}\neq C$，根据 KKT 条件，必有 $\delta_{i}&#x3D;0,1+\delta_{i}- y_{i} w^T\varphi (X_{i}) -y_{i}b&#x3D;0$，可得<br>$$b&#x3D;\frac{1-y_{i}\sum\nolimits_{j&#x3D;1}^N\alpha_{j}y_{j}K(X_{j},X_{i}) }{y_{i}} ,0&lt;\alpha_{i}&lt;C$$</p>
+<h2 id="SVM-算法流程"><a href="#SVM-算法流程" class="headerlink" title="SVM 算法流程"></a>SVM 算法流程</h2><h3 id="训练流程"><a href="#训练流程" class="headerlink" title="训练流程"></a>训练流程</h3><p>输入 ${(x_i, y_i)}_{i&#x3D;1 \sim N}$ ，使用 SMO 算法解优化问题：</p>
+<ul>
+<li>最大化：$\theta (\alpha )&#x3D;\sum\nolimits_{i&#x3D;1}^n \alpha_{i}-\frac{1}{2} \sum\nolimits_{i&#x3D;1}^N\sum\nolimits_{j&#x3D;1}^N\alpha_{i}y_{i}\alpha_{j}y_{j}\varphi (X_{i})^T\varphi (X_{j})$</li>
+<li>限制条件：<ol>
+<li>$0\leq \alpha_{i}\leq C,i&#x3D;1 \sim N$</li>
+<li>$\sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}&#x3D;0,i&#x3D;1 \sim N$</li>
+</ol>
+</li>
+</ul>
+<p>算 $b$，找一个 $0&lt;\alpha_i&lt;C$，$b&#x3D;\frac{1-y_{i}\sum\nolimits_{j&#x3D;1}^N\alpha_{j}y_{j}K(X_{j},X_{i}) }{y_{i}}$</p>
+<h3 id="测试流程"><a href="#测试流程" class="headerlink" title="测试流程"></a>测试流程</h3><p>输入测试样本 $X$：</p>
+<p>考察测试数据 X，预测它的类别 y：</p>
+<ul>
+<li>如果 $\sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}K(X_{i},X)+b\geq 0$,则 $y&#x3D;+1$</li>
+<li>如果 $\sum\nolimits_{i&#x3D;1}^N\alpha_{i}y_{i}K(X_{i},X)+b&lt; 0$,则 $y&#x3D;-1$</li>
+</ul>
+<h2 id="有用的资源"><a href="#有用的资源" class="headerlink" title="有用的资源"></a>有用的资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1VS4y1J7FX">浙大机器学习板书版课程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qf4y1x7kB">浙大 ML 慕课</a></li>
+</ul>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>这文章零零散散写了两三个星期，战线拖得很长，非常难受。另一边还有<code>ZeroBot</code>的东西还在写，<code>SICP</code>也还在看，因为近两个星期家里事情比较多，真正的主业计算机视觉都还没推进，不过终于把<code>SVM</code>给写完了。写得确实一般般，后面再修吧。</p>
+<p>在<code>markdown</code>里用 $\LaTeX$ 写这么多东西真累，下次再也不这样干了。这种<code>markdown</code>格式的东西拿来记记代码就顶破天了，真的很难有时间去看完以后再记下来。会的仍然会，不会的仍然不会，希望后面有用吧。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/" title="SVM简明教程">http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%AA%E5%AE%8C%E6%88%90/" rel="tag"># 未完成</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/daily/2022/07/22/172325/" rel="prev" title="QA机器人搭建">
+                  <i class="fa fa-chevron-left"></i> QA机器人搭建
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/daily/2022/08/14/162312/" rel="next" title="When we disco 三渲二">
+                  When we disco 三渲二 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
