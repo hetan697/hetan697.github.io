@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文摘自《动手学深度学习》的5.1. 层和块和5.4. 自定义层，有删改。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型构造">
+<meta property="og:url" content="http://hetan697.github.io/blogs/dl/2022/09/11/184007/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="本文摘自《动手学深度学习》的5.1. 层和块和5.4. 自定义层，有删改。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hetan697.github.io/img/blocks.svg">
+<meta property="article:published_time" content="2022-09-11T10:40:07.000Z">
+<meta property="article:modified_time" content="2022-09-11T12:33:29.868Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hetan697.github.io/img/blocks.svg">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/dl/2022/09/11/184007/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/dl/2022/09/11/184007/","path":"blogs/dl/2022/09/11/184007/","title":"模型构造"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>模型构造 | Hetan的博客</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">自定义块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E5%9D%97-Sequential"><span class="nav-number">2.</span> <span class="nav-text">顺序块 Sequential</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E5%87%BD%E6%95%B0%E4%B8%AD%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">在前向传播函数中执行代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%82"><span class="nav-number">5.</span> <span class="nav-text">自定义层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%B1%82"><span class="nav-number">5.1.</span> <span class="nav-text">不带参数的层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%B1%82"><span class="nav-number">5.2.</span> <span class="nav-text">带参数的层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93-1"><span class="nav-number">5.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2022/09/11/184007/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="模型构造 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          模型构造
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-11 18:40:07 / 修改时间：20:33:29" itemprop="dateCreated datePublished" datetime="2022-09-11T18:40:07+08:00">2022-09-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文摘自《动手学深度学习》的<a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_deep-learning-computation/model-construction.html">5.1. 层和块</a>和<a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_deep-learning-computation/custom-layer.html">5.4. 自定义层</a>，有删改。</p>
+<span id="more"></span>
+
+<p>:label:<code>sec_model_construction</code></p>
+<p>为了实现复杂的网络，我们引入了神经网络<em>块</em>的概念。<em>块</em>（block）可以描述单个层、由多个层组成的组件或整个模型本身。使用块进行抽象的一个好处是可以将一些块组合成更大的组件，这一过程通常是递归的，如 :numref:<code>fig_blocks</code>所示。<br>通过定义代码来按需生成任意复杂度的块，我们可以通过简洁的代码实现复杂的神经网络。</p>
+<p><img src="/../img/blocks.svg" alt="多个层被组合成块，形成更大的模型"><br>:label:<code>fig_blocks</code></p>
+<p>从编程的角度来看，块由<em>类</em>（class）表示。它的任何子类都必须定义一个将其输入转换为输出的前向传播函数，并且必须存储任何必需的参数。注意，有些块不需要任何参数。最后，为了计算梯度，块必须具有反向传播函数。在定义我们自己的块时，由于自动微分（在 :numref:<code>sec_autograd</code> 中引入）提供了一些后端实现，我们只需要考虑前向传播函数和必需的参数。</p>
+<p>在构造自定义块之前，(<strong>我们先回顾一下多层感知机</strong>)（ :numref:<code>sec_mlp_concise</code> ）的代码。下面的代码生成一个网络，其中包含一个具有256个单元和ReLU激活函数的全连接隐藏层，然后是一个具有10个隐藏单元且不带激活函数的全连接输出层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> torch.nn <span class="keyword">import</span> functional <span class="keyword">as</span> F</span><br><span class="line"></span><br><span class="line">net = nn.Sequential(nn.Linear(<span class="number">20</span>, <span class="number">256</span>), nn.ReLU(), nn.Linear(<span class="number">256</span>, <span class="number">10</span>))</span><br><span class="line"></span><br><span class="line">X = torch.rand(<span class="number">2</span>, <span class="number">20</span>)</span><br><span class="line">net(X)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[ 0.1184,  0.0549, -0.1391,  0.0446,  0.1277, -0.0012, -0.0868,  0.0678,
+         -0.0511, -0.2983],
+        [ 0.1153,  0.0603, -0.0833,  0.0442, -0.0084,  0.1009,  0.0206,  0.0673,
+         -0.1569, -0.3673]], grad_fn=&lt;AddmmBackward&gt;)
+</code></pre>
+<h2 id="自定义块"><a href="#自定义块" class="headerlink" title="自定义块"></a>自定义块</h2><p>我们简要总结一下每个块必须提供的基本功能：</p>
+<ol>
+<li>将输入数据作为其前向传播函数的参数。</li>
+<li>通过前向传播函数来生成输出。请注意，输出的形状可能与输入的形状不同。例如，我们上面模型中的第一个全连接的层接收一个20维的输入，但是返回一个维度为256的输出。</li>
+<li>计算其输出关于输入的梯度，可通过其反向传播函数进行访问。通常这是自动发生的。</li>
+<li>存储和访问前向传播计算所需的参数。</li>
+<li>根据需要初始化模型参数。</li>
+</ol>
+<p>在下面的代码片段中，我们从零开始编写一个块。<br>它包含一个多层感知机，其具有256个隐藏单元的隐藏层和一个10维输出层。<br>注意，下面的<code>MLP</code>类继承了表示块的类。<br>我们的实现只需要提供我们自己的构造函数（Python中的<code>__init__</code>函数）和前向传播函数。</p>
+<p><strong>注意：</strong><div style='color: red;'><code>F.relu</code>中的<code>relu</code>是全小写，而<code>nn.ReLU()</code>不是</div></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MLP</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.hidden = nn.Linear(<span class="number">20</span>, <span class="number">256</span>)</span><br><span class="line">        self.out = nn.Linear(<span class="number">256</span>, <span class="number">10</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="keyword">return</span> self.out(F.relu(self.hidden(X)))</span><br></pre></td></tr></table></figure>
+
+<p>我们首先看一下前向传播函数，它以<code>X</code>作为输入，计算带有激活函数的隐藏表示，并输出其未规范化的输出值。在这个<code>MLP</code>实现中，两个层都是实例变量。要了解这为什么是合理的，可以想象实例化两个多层感知机（<code>net1</code>和<code>net2</code>），并根据不同的数据对它们进行训练。当然，我们希望它们学到两种不同的模型。</p>
+<p>接着我们[<strong>实例化多层感知机的层，然后在每次调用前向传播函数时调用这些层</strong>]。<br>注意一些关键细节：<br>首先，我们定制的<code>__init__</code>函数通过<code>super().__init__()</code><br>调用父类的<code>__init__</code>函数，<br>省去了重复编写模版代码的痛苦。<br>然后，我们实例化两个全连接层，<br>分别为<code>self.hidden</code>和<code>self.out</code>。<br>注意，除非我们实现一个新的运算符，<br>否则我们不必担心反向传播函数或参数初始化，<br>系统将自动生成这些。</p>
+<p>我们来试一下这个函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net = MLP()</span><br><span class="line">net(X)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[-0.0374, -0.1348,  0.1143, -0.1380, -0.1610,  0.2476, -0.3607,  0.0434,
+         -0.1514, -0.0221],
+        [-0.1779, -0.0906, -0.0557, -0.2344, -0.1131,  0.2255, -0.3811, -0.0232,
+          0.0816,  0.0018]], grad_fn=&lt;AddmmBackward&gt;)
+</code></pre>
+<p>块的一个主要优点是它的多功能性。<br>我们可以子类化块以创建层（如全连接层的类）、<br>整个模型（如上面的<code>MLP</code>类）或具有中等复杂度的各种组件。</p>
+<h2 id="顺序块-Sequential"><a href="#顺序块-Sequential" class="headerlink" title="顺序块 Sequential"></a>顺序块 <code>Sequential</code></h2><p>现在我们可以更仔细地看看<code>Sequential</code>类是如何工作的，<br>回想一下<code>Sequential</code>的设计是为了把其他模块串起来。<br>为了构建我们自己的简化的<code>MySequential</code>，<br>我们只需要定义两个关键函数：</p>
+<ol>
+<li>一种将块逐个追加到列表中的函数。</li>
+<li>一种前向传播函数，用于将输入按追加块的顺序传递给块组成的“链条”。</li>
+</ol>
+<div style='color: red;'>下面的实现中，`MySequential`的`__init__(self, *args)`里面的`*args`一定要写</div>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MySequential</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, *args</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="keyword">for</span> idx, module <span class="keyword">in</span> <span class="built_in">enumerate</span>(args):</span><br><span class="line">            <span class="comment"># module是Module子类的一个实例, 类型是OrderedDict。我们把它保存在&#x27;Module&#x27;类的成员变量_modules中</span></span><br><span class="line">            self._modules[<span class="built_in">str</span>(idx)] = module</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="comment"># OrderedDict保证了按照成员添加的顺序遍历它们</span></span><br><span class="line">        <span class="keyword">for</span> block <span class="keyword">in</span> self._modules.values():</span><br><span class="line">            X = block(X)</span><br><span class="line">        <span class="keyword">return</span> X</span><br></pre></td></tr></table></figure>
+
+<p><code>__init__</code>函数将每个模块逐个添加到有序字典<code>_modules</code>中。</p>
+<p><code>_modules</code>的主要优点是：<br>在模块的参数初始化过程中，<br>系统知道在<code>_modules</code>字典中查找需要初始化参数的子块。</p>
+<p>当<code>MySequential</code>的前向传播函数被调用时，<br>每个添加的块都按照它们被添加的顺序执行。<br>现在可以使用我们的<code>MySequential</code>类重新实现多层感知机。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">net = MySequential(</span><br><span class="line">    nn.Linear(<span class="number">20</span>,<span class="number">256</span>), </span><br><span class="line">    nn.ReLU(), </span><br><span class="line">    nn.Linear(<span class="number">256</span>, <span class="number">10</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">net(X)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[-0.0546, -0.0641,  0.0585,  0.0154, -0.1542, -0.1347,  0.1327, -0.0395,
+          0.1299, -0.0339],
+        [-0.0457, -0.1848,  0.0886,  0.0661, -0.1853, -0.2785,  0.0065,  0.0019,
+          0.1279, -0.0434]], grad_fn=&lt;AddmmBackward&gt;)
+</code></pre>
+<p><code>MySequential</code>的用法与之前为<code>Sequential</code>类编写的代码相同</p>
+<h2 id="在前向传播函数中执行代码"><a href="#在前向传播函数中执行代码" class="headerlink" title="在前向传播函数中执行代码"></a>在前向传播函数中执行代码</h2><p><code>Sequential</code>类使模型构造变得简单，<br>允许我们组合新的架构，而不必定义自己的类。<br>然而，并不是所有的架构都是简单的顺序架构。<br>当需要更强的灵活性时，我们需要定义自己的块。<br>例如，我们可能希望在前向传播函数中执行Python的控制流。<br>此外，我们可能希望执行任意的数学运算，<br>而不是简单地依赖预定义的神经网络层。</p>
+<p>有时我们可能希望合并既不是上一层的结果也不是可更新参数的项，<br>我们称之为<em>常数参数</em>（constant parameter）。<br>例如，我们需要一个计算函数<br>$f(\mathbf{x},\mathbf{w}) &#x3D; c \cdot \mathbf{w}^\top \mathbf{x}$的层，<br>其中$\mathbf{x}$是输入，<br>$\mathbf{w}$是参数，<br>$c$是某个在优化过程中没有更新的指定常量。<br>因此我们实现了一个<code>FixedHiddenMLP</code>类，如下所示：</p>
+<div style='color: red;'>下面的实现中，两个`self.linear(X)`共享参数；`self.rand_w`权重不更新；还设置了一个while循环，在$L_1$范数大于$1$的条件下，将输出向量除以$2$，直到它满足条件为止；最后模型返回了`X`中所有项的和。</div>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">FixedHiddenMLP</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.rand_w = torch.rand((<span class="number">20</span>,<span class="number">20</span>), requires_grad=<span class="literal">False</span>)</span><br><span class="line">        self.linear = nn.Linear(<span class="number">20</span>, <span class="number">20</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        X = self.linear(X)</span><br><span class="line">        X = F.relu(torch.mm(X, self.rand_w) + <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 下面这个层和上面那个层共享参数</span></span><br><span class="line">        X = self.linear(X)</span><br><span class="line">        <span class="comment"># 特殊控制</span></span><br><span class="line">        <span class="keyword">while</span> X.<span class="built_in">abs</span>().<span class="built_in">sum</span>() &gt; <span class="number">1</span>:</span><br><span class="line">            X /= <span class="number">2</span></span><br><span class="line">        <span class="keyword">return</span> X.<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net = FixedHiddenMLP()</span><br><span class="line">net(X)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor(0.1314, grad_fn=&lt;SumBackward0&gt;)
+</code></pre>
+<p>我们可以<strong>混合搭配各种组合块</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NestMLP</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.net = nn.Sequential(nn.Linear(<span class="number">20</span>, <span class="number">64</span>), nn.ReLU(),</span><br><span class="line">                                 nn.Linear(<span class="number">64</span>, <span class="number">32</span>), nn.ReLU())</span><br><span class="line">        self.linear = nn.Linear(<span class="number">32</span>, <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="keyword">return</span> self.linear(self.net(X))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">chimera = nn.Sequential(</span><br><span class="line">    NestMLP(),</span><br><span class="line">    nn.Linear(<span class="number">16</span>,<span class="number">20</span>),</span><br><span class="line">    FixedHiddenMLP()</span><br><span class="line">)</span><br><span class="line">chimera(X)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor(-0.3970, grad_fn=&lt;SumBackward0&gt;)
+</code></pre>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>一个块可以由许多层组成；一个块可以由许多块组成。</li>
+<li>块可以包含代码。</li>
+<li>块负责大量的内部处理，包括参数初始化和反向传播。</li>
+<li>层和块的顺序连接由<code>Sequential</code>块处理。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://discuss.d2l.ai/t/1827">Discussions</a></p>
+<h2 id="自定义层"><a href="#自定义层" class="headerlink" title="自定义层"></a>自定义层</h2><h3 id="不带参数的层"><a href="#不带参数的层" class="headerlink" title="不带参数的层"></a>不带参数的层</h3><p>下面的<code>CenteredLayer</code>类要从其输入中减去均值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CenteredLayer</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="keyword">return</span> X - X.mean()</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">layer = CenteredLayer()</span><br><span class="line">layer(torch.FloatTensor([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([-2., -1.,  0.,  1.,  2.])
+</code></pre>
+<p>我们可以<strong>将层作为组件合并到更复杂的模型中</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">net = nn.Sequential(</span><br><span class="line">    nn.Linear(<span class="number">8</span>, <span class="number">128</span>),</span><br><span class="line">    CenteredLayer()</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>作为额外的健全性检查，我们可以在向该网络发送随机数据后，检查均值是否为0。<br>由于我们处理的是浮点数，因为存储精度的原因，我们仍然可能会看到一个非常小的非零数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Y = net(torch.rand(<span class="number">4</span>, <span class="number">8</span>))</span><br><span class="line">Y.mean()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor(-5.1223e-09, grad_fn=&lt;MeanBackward0&gt;)
+</code></pre>
+<h3 id="带参数的层"><a href="#带参数的层" class="headerlink" title="带参数的层"></a>带参数的层</h3><p>以上我们知道了如何定义简单的层，下面我们继续定义具有参数的层，<br>这些参数可以通过训练进行调整。<br>我们可以使用内置函数来创建参数，这些函数提供一些基本的管理功能。<br>比如管理访问、初始化、共享、保存和加载模型参数。<br>这样做的好处之一是：我们不需要为每个自定义层编写自定义的序列化程序。</p>
+<p>现在，让我们实现自定义版本的全连接层。<br>回想一下，该层需要两个参数，一个用于表示权重，另一个用于表示偏置项。<br>在此实现中，我们使用修正线性单元作为激活函数。<br>该层需要输入参数：<code>in_units</code>和<code>units</code>，分别表示输入数和输出数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyLinear</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_units, units</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.weight = nn.Parameter(torch.randn(in_units, units))</span><br><span class="line">        self.bias = nn.Parameter(torch.randn(units,))</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, X</span>):</span><br><span class="line">        linear = torch.matmul(X, self.weight.data) + self.bias.data</span><br><span class="line">        <span class="keyword">return</span> F.relu(linear)</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们实例化<code>MyLinear</code>类并访问其模型参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">linear = MyLinear(<span class="number">5</span>, <span class="number">3</span>)</span><br><span class="line">linear.weight</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Parameter containing:
+tensor([[ 0.0286,  0.5223, -0.2193],
+        [ 1.1593,  0.8450,  0.4585],
+        [-0.4302, -1.4687,  1.3797],
+        [ 0.9193, -0.1859, -0.2528],
+        [-0.5486, -0.1355, -1.9567]], requires_grad=True)
+</code></pre>
+<p>我们可以使用自定义层直接执行前向传播计算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linear(torch.rand(<span class="number">2</span>, <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[3.2462, 0.0000, 0.7353],
+        [2.5801, 0.0287, 0.2547]])
+</code></pre>
+<p>我们还可以<strong>使用自定义层构建模型</strong>，就像使用内置的全连接层一样使用自定义层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">net = nn.Sequential(</span><br><span class="line">    MyLinear(<span class="number">64</span>, <span class="number">8</span>),</span><br><span class="line">    MyLinear(<span class="number">8</span>, <span class="number">1</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">net(torch.rand(<span class="number">2</span>, <span class="number">64</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>tensor([[7.9681],
+        [0.0000]])
+</code></pre>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>我们可以通过基本层类设计自定义层。这允许我们定义灵活的新层，其行为与深度学习框架中的任何现有层不同。</li>
+<li>在自定义层定义完成后，我们就可以在任意环境和网络架构中调用该自定义层。</li>
+<li>层可以有局部参数，这些参数可以通过内置函数创建。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://discuss.d2l.ai/t/1835">Discussions</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/dl/2022/09/11/184007/" title="模型构造">http://hetan697.github.io/blogs/dl/2022/09/11/184007/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/dl/2022/09/09/151753/" rel="prev" title="Pytorch入门1">
+                  <i class="fa fa-chevron-left"></i> Pytorch入门1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/dl/2022/09/12/095219/" rel="next" title="模型权重的读取、设定、初始化与保存">
+                  模型权重的读取、设定、初始化与保存 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
