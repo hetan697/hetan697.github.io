@@ -20,25 +20,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="普普通通研究生">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hetan的博客">
-<meta property="og:url" content="http://hetan697.github.io/blogs/index.html">
+    <meta name="description" content="提供LeNet、Alexnet、VGG、NiN、GoogLeNet、ResNet的Pytorch实现 LeNet123456789101112import torchfrom torch import nnnet &#x3D; nn.Sequential(    nn.Conv2d(1, 6, kernel_size&#x3D;5, padding&#x3D;2), nn.Sigmoid(),    nn.AvgPool2d(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用模型">
+<meta property="og:url" content="http://hetan697.github.io/blogs/dl/2022/09/14/152509/index.html">
 <meta property="og:site_name" content="Hetan的博客">
-<meta property="og:description" content="普普通通研究生">
+<meta property="og:description" content="提供LeNet、Alexnet、VGG、NiN、GoogLeNet、ResNet的Pytorch实现 LeNet123456789101112import torchfrom torch import nnnet &#x3D; nn.Sequential(    nn.Conv2d(1, 6, kernel_size&#x3D;5, padding&#x3D;2), nn.Sigmoid(),    nn.AvgPool2d(">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-14T07:25:09.000Z">
+<meta property="article:modified_time" content="2022-09-14T07:27:18.513Z">
 <meta property="article:author" content="Hetan">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://hetan697.github.io/blogs/">
+<link rel="canonical" href="http://hetan697.github.io/blogs/dl/2022/09/14/152509/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"blogs/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/dl/2022/09/14/152509/","path":"blogs/dl/2022/09/14/152509/","title":"常用模型"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hetan的博客</title>
+<title>常用模型 | Hetan的博客</title>
   
 
 
@@ -68,7 +70,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Hetan的博客</h1>
+      <p class="site-title">Hetan的博客</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -100,7 +102,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -113,6 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LeNet"><span class="nav-number">1.</span> <span class="nav-text">LeNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-Norm"><span class="nav-number">2.</span> <span class="nav-text">Batch Norm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AlexNet"><span class="nav-number">3.</span> <span class="nav-text">AlexNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VGG"><span class="nav-number">4.</span> <span class="nav-text">VGG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NiN"><span class="nav-number">5.</span> <span class="nav-text">NiN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GoogLeNet"><span class="nav-number">6.</span> <span class="nav-text">GoogLeNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inception%E5%9D%97"><span class="nav-number">6.1.</span> <span class="nav-text">Inception块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Inception-%E7%BD%91%E7%BB%9C"><span class="nav-number">6.2.</span> <span class="nav-text">Inception 网络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResNet"><span class="nav-number">7.</span> <span class="nav-text">ResNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AE%8B%E5%B7%AE%E5%9D%97"><span class="nav-number">7.1.</span> <span class="nav-text">残差块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ResNet%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.2.</span> <span class="nav-text">ResNet模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%B9%B1%E4%B8%83%E5%85%AB%E7%B3%9F%E7%9A%84%E4%B8%9C%E8%A5%BF"><span class="nav-number">8.</span> <span class="nav-text">其他乱七八糟的东西</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -149,16 +152,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2022/09/14/152509/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -172,13 +176,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
+      <meta itemprop="name" content="常用模型 | Hetan的博客">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/dl/2022/09/14/152509/" class="post-title-link" itemprop="url">常用模型</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          常用模型
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -211,7 +215,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>提供LeNet、Alexnet、VGG、NiN、GoogLeNet、ResNet的Pytorch实现</p>
+        <p>提供LeNet、Alexnet、VGG、NiN、GoogLeNet、ResNet的Pytorch实现</p>
 <h2 id="LeNet"><a href="#LeNet" class="headerlink" title="LeNet"></a>LeNet</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"></span><br><span class="line">net = nn.Sequential(</span><br><span class="line">    nn.Conv2d(<span class="number">1</span>, <span class="number">6</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>), nn.Sigmoid(),</span><br><span class="line">    nn.AvgPool2d(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>),</span><br><span class="line">    nn.Conv2d(<span class="number">6</span>, <span class="number">16</span>, kernel_size=<span class="number">5</span>), nn.Sigmoid(),</span><br><span class="line">    nn.AvgPool2d(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>),</span><br><span class="line">    nn.Flatten(),</span><br><span class="line">    nn.Linear(<span class="number">16</span> * <span class="number">5</span> * <span class="number">5</span>, <span class="number">120</span>), nn.Sigmoid(),</span><br><span class="line">    nn.Linear(<span class="number">120</span>, <span class="number">84</span>), nn.Sigmoid(),</span><br><span class="line">    nn.Linear(<span class="number">84</span>, <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
 
 
@@ -398,7 +402,6 @@ Linear output shape:	 torch.Size([1, 10])
 </code></pre>
 <h2 id="其他乱七八糟的东西"><a href="#其他乱七八糟的东西" class="headerlink" title="其他乱七八糟的东西"></a>其他乱七八糟的东西</h2><p>为了进行评估，我们需要[<strong>对</strong>] :numref:<code>sec_softmax_scratch</code>中描述的(<strong><code>evaluate_accuracy</code>函数进行轻微的修改</strong>)。<br>由于完整的数据集位于内存中，因此在模型使用GPU计算数据集之前，我们需要将其复制到显存中。</p>
 
-      
     </div>
 
     
@@ -406,826 +409,53 @@ Linear output shape:	 torch.Size([1, 10])
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2022/09/12/095219/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/dl/2022/09/12/095219/" class="post-title-link" itemprop="url">模型权重的读取、设定、初始化与保存</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-12 09:52:19 / 修改时间：10:00:08" itemprop="dateCreated datePublished" datetime="2022-09-12T09:52:19+08:00">2022-09-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文摘自《动手学深度学习》的<a target="_blank" rel="noopener" href="https://zh.d2l.ai/chapter_deep-learning-computation/parameters.html">5.2. 参数管理</a>、<a target="_blank" rel="noopener" href="https://zh.d2l.ai/chapter_deep-learning-computation/deferred-init.html">5.3. 延后初始化</a>和<a target="_blank" rel="noopener" href="https://zh.d2l.ai/chapter_deep-learning-computation/read-write.html">5.5. 读写文件</a>，有删改。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/dl/2022/09/12/095219/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2022/09/11/184007/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/dl/2022/09/11/184007/" class="post-title-link" itemprop="url">模型构造</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-11 18:40:07 / 修改时间：20:33:29" itemprop="dateCreated datePublished" datetime="2022-09-11T18:40:07+08:00">2022-09-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文摘自《动手学深度学习》的<a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_deep-learning-computation/model-construction.html">5.1. 层和块</a>和<a target="_blank" rel="noopener" href="https://zh-v2.d2l.ai/chapter_deep-learning-computation/custom-layer.html">5.4. 自定义层</a>，有删改。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/dl/2022/09/11/184007/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2022/09/09/151753/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/dl/2022/09/09/151753/" class="post-title-link" itemprop="url">Pytorch入门1</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-09-09 15:17:53 / 修改时间：15:23:53" itemprop="dateCreated datePublished" datetime="2022-09-09T15:17:53+08:00">2022-09-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文原文见 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/training/modules/intro-computer-vision-pytorch/2-image-data">Microsoft Learn</a> 和 <a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html#loading-models">pytorch官网</a>，有删改。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/dl/2022/09/09/151753/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/daily/2022/08/14/162312/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/daily/2022/08/14/162312/" class="post-title-link" itemprop="url">When we disco 三渲二</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-14 16:23:12" itemprop="dateCreated datePublished" datetime="2022-08-14T16:23:12+08:00">2022-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-23 15:16:36" itemprop="dateModified" datetime="2022-08-23T15:16:36+08:00">2022-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/daily/" itemprop="url" rel="index"><span itemprop="name">日常</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>介绍了将 When we disco 三渲二的历程主要步骤与相关问题，成功的有 <a href="#%E4%BD%BF%E7%94%A8-animeganv3">AnimeGANv3</a> 和 <a href="#kaggle">DCT-Net</a>。文章全文偏长，没用的失败经历居多；如时间紧迫，只看上述成功的两节即可。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/daily/2022/08/14/162312/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/ml/SVM/2022/07/31/102218/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/ml/SVM/2022/07/31/102218/" class="post-title-link" itemprop="url">SVM简明教程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-31 10:22:18" itemprop="dateCreated datePublished" datetime="2022-07-31T10:22:18+08:00">2022-07-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-14 16:27:38" itemprop="dateModified" datetime="2022-08-14T16:27:38+08:00">2022-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ml/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ml/SVM/" itemprop="url" rel="index"><span itemprop="name">SVM</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文为浙江大学胡浩基老师《机器学习》课程中 SVM 部分的笔记。先前久闻 SVM 大名而不知其原理，特学此内容，整理笔记成此博客。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/ml/SVM/2022/07/31/102218/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/daily/2022/07/22/172325/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/daily/2022/07/22/172325/" class="post-title-link" itemprop="url">QA机器人搭建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-22 17:23:25" itemprop="dateCreated datePublished" datetime="2022-07-22T17:23:25+08:00">2022-07-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-14 16:25:49" itemprop="dateModified" datetime="2022-08-14T16:25:49+08:00">2022-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/daily/" itemprop="url" rel="index"><span itemprop="name">日常</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><em><strong>停更提示：该文章尚未完成，项目因故搁置，择期重启，谢谢！</strong></em></p>
-<p>本文使用 NoneBot2 搭建了一个 QQ 机器人，并为其加入 QA 功能。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/daily/2022/07/22/172325/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/daily/2022/07/21/153708/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/daily/2022/07/21/153708/" class="post-title-link" itemprop="url">ZeroBot-Plugin 机器人搭建</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-21 15:37:08" itemprop="dateCreated datePublished" datetime="2022-07-21T15:37:08+08:00">2022-07-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-14 16:25:37" itemprop="dateModified" datetime="2022-08-14T16:25:37+08:00">2022-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/daily/" itemprop="url" rel="index"><span itemprop="name">日常</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>记录了7月20日下午基于<a target="_blank" rel="noopener" href="https://github.com/FloatTech/gocqzbp">gocqzbp项目</a>搭建的 ZeroBot QQ 机器人的过程。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/daily/2022/07/21/153708/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/SICP/2022/07/17/230949/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/SICP/2022/07/17/230949/" class="post-title-link" itemprop="url">构造数据抽象</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-17 23:09:49" itemprop="dateCreated datePublished" datetime="2022-07-17T23:09:49+08:00">2022-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-14 16:26:12" itemprop="dateModified" datetime="2022-08-14T16:26:12+08:00">2022-08-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/SICP/" itemprop="url" rel="index"><span itemprop="name">SICP</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>SICP 第二章</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/SICP/2022/07/17/230949/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/SICP/2022/07/15/151634/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Hetan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hetan的博客">
-      <meta itemprop="description" content="普普通通研究生">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hetan的博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/blogs/SICP/2022/07/15/151634/" class="post-title-link" itemprop="url">构造过程抽象</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-15 15:16:34" itemprop="dateCreated datePublished" datetime="2022-07-15T15:16:34+08:00">2022-07-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-19 19:31:05" itemprop="dateModified" datetime="2022-07-19T19:31:05+08:00">2022-07-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/SICP/" itemprop="url" rel="index"><span itemprop="name">SICP</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>SICP 第一章</p>
-<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><ul>
-<li>线性递归、树形递归与迭代</li>
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/dl/2022/09/14/152509/" title="常用模型">http://hetan697.github.io/blogs/dl/2022/09/14/152509/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/blogs/SICP/2022/07/15/151634/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+</div>
+
+
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/dl/2022/09/12/095219/" rel="prev" title="模型权重的读取、设定、初始化与保存">
+                  <i class="fa fa-chevron-left"></i> 模型权重的读取、设定、初始化与保存
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
@@ -1233,10 +463,9 @@ Linear output shape:	 torch.Size([1, 10])
 
 
 
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/blogs/page/2/">2</a><a class="extend next" rel="next" href="/blogs/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
+
+    <div class="comments utterances-container"></div>
 </div>
   </main>
 
@@ -1273,7 +502,7 @@ Linear output shape:	 torch.Size([1, 10])
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
