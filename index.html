@@ -1,11 +1,74 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-  <meta http-equiv="refresh" content="0;url=./blogs/" />
-  <body>
-    <style>
-      html {
-        background: #0700d8;
-      }
-    </style>
-  </body>
+<html lang="en" >
+<head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomePage</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<form id="windows">
+    <input type="checkbox" name="start-button-input" id="start-button-input" />
+    <div id="background"></div>
+    <!-- Minimize Windows -->
+    <input type="checkbox" id="windows-trash-input-min" name="windows-trash-input-min" />
+    <!-- Maximize Windows -->
+    <input type="checkbox" id="windows-trash-input-max" name="windows-trash-input-max" />
+    <!-- Window Order -->
+    <input type="radio" id="windows-trash-input-on-top" name="windows-order" />
+    <!-- Window Visibility -->
+    <input type="checkbox" id="windows-trash-input" name="windows-trash-input" />
+
+    <div id="desktop">
+        <label for="windows-trash-input" class="desktop-item">
+            <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAElBMVEUAAACAgIAAAADAwMD///8AgABI7wriAAAAAXRSTlMAQObYZgAAAAFiS0dEBI9o2VEAAAAHdElNRQfiBhoAMQTmjJHZAAABTElEQVQ4y3XU4Y2DMAwF4PQmqEn432MDyzAAlyxQiey/yvkZQkNCUZGq98WxCVWds4uInuS660HTQCTPNqdhUpgTP7Xusnz6Jc0Tk96nPHQ5UdA8sd6RC4S/XwrrCvAJWsDPyc8nUIqljRdJUYI3WGOI/mijIFrEaD6viaMXpgIo0hKWoDshwHY7aJHMgCSEdR9AEe/z6ld6VYBOmE18IsBDPpeOp6B5C+hkeQcaW34C51zE8sHtMIss7zt4R5Hsl9jCkiNKDLi0wIPkHKBjC0vOm0Y5dxWMjCsYXIFx0wIDuoKt/QbNY2DeAr7AqwGO9VB4wgOW0ML4DXizfQoMrgBK8An1UPbWedMBMEMLEsZMOLEO9HDtSKre5QdkR8wXoH1WvMYr/OzSg5tMlh4OkWaoWjoo0sMhTYtTrPfU/j+o8F0O4dsccp+rVPk/RsOIrdrb4ToAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDYtMjZUMDA6NDk6MDQtMDQ6MDA484PuAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA2LTI2VDAwOjQ5OjA0LTA0OjAwSa47UgAAAABJRU5ErkJggg==" alt="" /> </div>
+            <div class="text">Recycle Bin</div>
+        </label>
+        <a target="_blank" href="https://hetan697.github.io/" class="desktop-item"><span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAHlBMVEUAAACAgID//7QAAADAwMD///8AgIAAAIAAgAAAAP+MXRRYAAAAAXRSTlMAQObYZgAAAAFiS0dEBfhv6ccAAAAHdElNRQfiBhoANyCM1dKOAAAAkUlEQVQoz2NgYBCEAQYoEFKCAEUDdAFhdAFHAzSBEGE0gVCoErBAWpKSorGxMVwgzT0jCUg5wwTU3Do62lAEIirTmpEFUl0yy8qMkAVcJdJmIgukhUh0TkcWSJzZkY4ioDYzo7wcxZaZM6YVIwsolVcWG6EIKBmD+MgCEIBTYCYETBpoFYQERFzgACJgjAQYGADW/1JJ50I4UgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wNi0yNlQwMDo1NTozMi0wNDowMA4ejnkAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDYtMjZUMDA6NTU6MzItMDQ6MDB/QzbFAAAAAElFTkSuQmCC" alt="" /></span><span class="text">Read Blogs</span></a>
+    </div>
+    <div id="all-windows">
+        <div class="window trash windows-box-shadow">
+            <div class="header"><label for="windows-trash-input-on-top">Recycle Bin</label>
+                <div class="header-buttons">
+                    <label for="windows-trash-input-min" class="minimize windows-box-shadow"></label>
+                    <label for="windows-trash-input-max" class="maximize windows-box-shadow"></label>
+                    <label for="windows-trash-input" class="close windows-box-shadow">X</label>
+                </div>
+            </div>
+            <div class="options line">
+                <div class="item">File</div>
+                <div class="item">Edit</div>
+                <div class="item">Views</div>
+                <div class="item">Go</div>
+                <div class="item">Favourites</div>
+                <div class="item">Help</div>
+            </div>
+            <div class="content white">
+                <input type="radio" name="trash-radio" id="windows-11" />
+                <input type="radio" name="trash-radio" id="macos" />
+                <input type="radio" name="trash-radio" id="itunes" />
+                <label class="file macos" for="macos">
+                    <span class="image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAGFBMVEUAAACAgAAAAADAwMD//wD///+AgIAA//95HUQQAAAAAXRSTlMAQObYZgAAAAFiS0dEBfhv6ccAAAAHdElNRQfiBhoANRSfV0S5AAAA50lEQVQ4y7XSsQ7CIBAGYFy618HZYKp7MezGR2hsV0MDb6B9fQsc1/YOHEz8lyb9ctxxQQghapa98NldWQDuNDeAB01dqqhNocfBFCpchIr1+B+4FEvAwrdvKKgYzaCVPucMTD7vFWhsO2xhaUsB21JIbS8TBWjL4TX8CGc/c67HiawEIQwnM9CEe5rCUWoFsCwPUq4hrYRWGAkJ4zqEHl+BgZ0l6OAoZeL2Cfi2ATSApRUjAr6oDcxvIQ0lw827BbbplfsKlS3AqGjGOK5jARAVKylCGjdzVrw576+PBWjjfz7Yc/75AfUZE8mcao/xAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTA2LTI2VDAwOjUzOjIwLTA0OjAwWDXviQAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wNi0yNlQwMDo1MzoyMC0wNDowMCloVzUAAAAASUVORK5CYII=" alt="" /></span>
+                    <span class="text">Mac_OS.exe</span>
+                </label>
+                <label class="file itunes" for="itunes">
+                    <span class="image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAM1BMVEUAAAAzMzPd3d1fX1/AwMDX19f/zJnMmcyGhoZ/f3//zMyZ/8x3d3dmZmaysrKWlpb////dU6LHAAAAAXRSTlMAQObYZgAAAAFiS0dEEJWyDSwAAAAHdElNRQfiBBMBIhiVaPrZAAABaUlEQVRIx73V7a6DIAyAYSkIgpPd/92urXwNqo7k5PQne584wGXLkkepZW6UmiRKTRKlJolSkwTDOcHdNJg5rNL9D4A0V7HGaQCAoVmtBbeJvdl02Su0wDq3bUIPOh8Oth0QiPY6Hz+VBCAB6l0IndDlgrkTQCd06cHj9CCEQdT+3L1pAff7LpwWGJ92X0B+wI6jJZB2b06x2qYfASZ59w3IuSAqoLiClOOnQ08nqviMwPB51Z4vUo8gDR0vUe9Dze+A8fnH6mveAblH0a7rO/Dy/vgVcP/CxV7cAU+L8U9BqEPgwLX3+yeQHnHEyH2kuQa0vO/Nsb5jne+LSDXm+IrWizMNkG6acxLp1cClO5Bz5yy/fOc3vwAL1NwFC2WnRfS/B++a/gsYGVQRemDEvgGWQSdGkAX1aweM1CcR+AFrB8SeBff8jeJzT6IB8blH4Uegb/qF/o3SnhN4yE+iIb+fP+TZ8IyffABZtRpvqw6ULQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wNC0xOVQwMTozNDoyNC0wNDowMNJB+WoAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDQtMTlUMDE6MzQ6MjQtMDQ6MDCjHEHWAAAAAElFTkSuQmCC" alt="" /></span>
+                    <span class="text">itunes.exe</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="start-bar">
+        <div id="start-button-items">
+            <label id="start-button" class="windows-box-shadow" for="start-button-input"></label>
+            <div id="items">
+                <label for="windows-trash-input-min" class="trash-tab tab windows-box-shadow"><span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAElBMVEUAAACAgIAAAADAwMD///8AgABI7wriAAAAAXRSTlMAQObYZgAAAAFiS0dEBI9o2VEAAAAHdElNRQfiBhoAMQTmjJHZAAABTElEQVQ4y3XU4Y2DMAwF4PQmqEn432MDyzAAlyxQiey/yvkZQkNCUZGq98WxCVWds4uInuS660HTQCTPNqdhUpgTP7Xusnz6Jc0Tk96nPHQ5UdA8sd6RC4S/XwrrCvAJWsDPyc8nUIqljRdJUYI3WGOI/mijIFrEaD6viaMXpgIo0hKWoDshwHY7aJHMgCSEdR9AEe/z6ld6VYBOmE18IsBDPpeOp6B5C+hkeQcaW34C51zE8sHtMIss7zt4R5Hsl9jCkiNKDLi0wIPkHKBjC0vOm0Y5dxWMjCsYXIFx0wIDuoKt/QbNY2DeAr7AqwGO9VB4wgOW0ML4DXizfQoMrgBK8An1UPbWedMBMEMLEsZMOLEO9HDtSKre5QdkR8wXoH1WvMYr/OzSg5tMlh4OkWaoWjoo0sMhTYtTrPfU/j+o8F0O4dsccp+rVPk/RsOIrdrb4ToAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDYtMjZUMDA6NDk6MDQtMDQ6MDA484PuAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA2LTI2VDAwOjQ5OjA0LTA0OjAwSa47UgAAAABJRU5ErkJggg==" alt="" /></span><span>Recycle Bin</span></label>
+            </div>
+        </div>
+        <div id="time-options"></div>
+    </div>
+</form>  
+</body>
 </html>
