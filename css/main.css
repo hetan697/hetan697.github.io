@@ -2732,3 +2732,6 @@ mjx-container[display='true'] + br {
     padding: 10px 12px;
   }
 }
+.headband {
+  display: none;
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Longhorn 是 Microsoft 研发的用于接替 Windows XP 的操作系统代号，也就是 Windows Vista 的内部测试版。其中，Build 4074 可能是整个测试过程中唯一完全拥有完整、可用的 Aero 特效的系统，国庆期间在寝室试了试装了装这款系统的虚拟机玩，当然，没装成功。中间的一些步骤用这篇博客记录下来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows Longhorn Build 4074">
+<meta property="og:url" content="http://hetan697.github.io/blogs/un/2022/10/04/191230/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="Longhorn 是 Microsoft 研发的用于接替 Windows XP 的操作系统代号，也就是 Windows Vista 的内部测试版。其中，Build 4074 可能是整个测试过程中唯一完全拥有完整、可用的 Aero 特效的系统，国庆期间在寝室试了试装了装这款系统的虚拟机玩，当然，没装成功。中间的一些步骤用这篇博客记录下来。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hetan697.github.io/blogs/un/2022/10/04/191230/x64-error2.png">
+<meta property="article:published_time" content="2022-10-04T11:12:30.000Z">
+<meta property="article:modified_time" content="2022-10-05T09:21:24.648Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hetan697.github.io/blogs/un/2022/10/04/191230/x64-error2.png">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/un/2022/10/04/191230/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/un/2022/10/04/191230/","path":"blogs/un/2022/10/04/191230/","title":"Windows Longhorn Build 4074"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Windows Longhorn Build 4074 | Hetan的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9d3d45b6aa0aa3c74a095aba4384c50e"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-个人页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>个人页</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Longhorn-%E7%9A%84%E6%94%B9%E8%BF%9B%E4%B8%8E%E4%BA%AE%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">Longhorn 的改进与亮点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WinFS"><span class="nav-number">1.1.</span> <span class="nav-text">WinFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%8D%8E%E4%B8%BD%E7%9A%84-Aero-%E7%89%B9%E6%95%88"><span class="nav-number">1.2.</span> <span class="nav-text">最华丽的 Aero 特效</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%85%89%E5%A3%81%E7%BA%B8"><span class="nav-number">1.3.</span> <span class="nav-text">极光壁纸</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B1%E8%B4%A5%E7%9A%84%E5%AE%89%E8%A3%85%E7%BB%8F%E5%8E%86"><span class="nav-number">2.</span> <span class="nav-text">失败的安装经历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Longhorn-%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">Longhorn 的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%83%B3%E4%B8%80%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">多想一点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%95%85%E6%83%B3"><span class="nav-number">5.</span> <span class="nav-text">畅想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Useful-Resources"><span class="nav-number">6.</span> <span class="nav-text">Useful Resources</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/un/2022/10/04/191230/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Windows Longhorn Build 4074 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows Longhorn Build 4074
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-04 19:12:30" itemprop="dateCreated datePublished" datetime="2022-10-04T19:12:30+08:00">2022-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-05 17:21:24" itemprop="dateModified" datetime="2022-10-05T17:21:24+08:00">2022-10-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Longhorn 是 Microsoft 研发的用于接替 Windows XP 的操作系统代号，也就是 Windows Vista 的内部测试版。其中，Build 4074 可能是整个测试过程中唯一完全拥有完整、可用的 Aero 特效的系统，国庆期间在寝室试了试装了装这款系统的虚拟机玩，当然，没装成功。中间的一些步骤用这篇博客记录下来。</p>
+<span id="more"></span>
+
+<h2 id="Longhorn-的改进与亮点"><a href="#Longhorn-的改进与亮点" class="headerlink" title="Longhorn 的改进与亮点"></a>Longhorn 的改进与亮点</h2><h3 id="WinFS"><a href="#WinFS" class="headerlink" title="WinFS"></a>WinFS</h3><p>借用百度百科的介绍：</p>
+<blockquote>
+<p>WinFS 是一种新的文件系统格式。事实上，WinFS服务可以看作是在NTFS的基础上增加了一个数据库层，这个数据库层以即将出现的SQL Server的“Yukon”版为基础。对于WinFS来说，文件除了我们熟悉的属性，诸如文件名称、大小、日期外，还将通过诸如作者名、图像大小之类的元数据建立索引。系统底层的目录结构仍将存在，但用户使用的将是一个相似文件构成的库（Library）。每个库由一组通过查询WinFS数据库获得的文件构成。如果WinFS确实能将查找文件的依据改变为它是什么，而不是它在哪里的话，无疑这将是基于<a target="_blank" href="https://baike.baidu.com/item/NTFS%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/2152677?fromModule=lemma_inlink">NTFS文件系统</a>的一个突破。</p>
+</blockquote>
+<p>这个概念是相当超前的。我们直至现在每次保存文件都要想清楚文件的文件名和存储路径。但是，首先，它真的有那么重要吗？如果我们只需要知道我们文件的内容就能索引并打开文件不是更好？再者，众所周知就像编程一样，最难做的事情其实是写注释和起变量名函数名，这种痛苦在一个普通的计算机使用者每次需要和文件打交道的时候居然也要承担，。</p>
+<p>WinFS 在 NTFS 上添加了一个数据库作为耦合，用于查找单个文件的元数据，比如文档里面的具体内容等信息，其底层仍然是 NTFS 的树型文件结构。</p>
+<p>所以这个想法可以说是相当超前了。</p>
+<h3 id="最华丽的-Aero-特效"><a href="#最华丽的-Aero-特效" class="headerlink" title="最华丽的 Aero 特效"></a>最华丽的 Aero 特效</h3><p>不得不说，这是迄今为止我见过最好看的桌面操作系统</p>
+<p>image.png</p>
+<p>Vista 的 login 真心好看，那个动画啥的都做得特别棒</p>
+<h3 id="极光壁纸"><a href="#极光壁纸" class="headerlink" title="极光壁纸"></a>极光壁纸</h3><h2 id="失败的安装经历"><a href="#失败的安装经历" class="headerlink" title="失败的安装经历"></a>失败的安装经历</h2><p>首先教程只有 <a target="_blank" rel="noopener" href="https://blog.csdn.net/mgsky1/article/details/75453521/">CSDN 上的这一篇</a>，全网估计都只有这一篇，剩下的都是在洗稿。</p>
+<p>那么我先在<a target="_blank" rel="noopener" href="https://winworldpc.com/product/windows-longhorn-vis/pre-reset">WinWorldPC 的 longhorn 页面</a>上下了一个 4074 的 x64 版本，毕竟总是看不起 x86版本的，有 64 就用 64 嘛。结果 VMWare 直接进了一个类似于 Windows XP 安装程序的界面说系统硬盘不支持 64 位，调了很久都没用。没办法，只好再下过一个 32 位的了</p>
+<p><img src="/blogs/un/2022/10/04/191230/x64-error2.png" alt="x64-error2"></p>
+<h2 id="Longhorn-的缺点"><a href="#Longhorn-的缺点" class="headerlink" title="Longhorn 的缺点"></a>Longhorn 的缺点</h2><p>当然，这玩意我没玩多久就发现了很多缺点：</p>
+<ol>
+<li>装好以后，我看到那个文件资源管理器的<code>C:\Documents and Settings</code>文件夹血压就开始飙升</li>
+</ol>
+<h2 id="多想一点"><a href="#多想一点" class="headerlink" title="多想一点"></a>多想一点</h2><p>我一贯是一个想得比较多的人。</p>
+<p>也许在某一条时间线上，Longhorn 的负责人和微软上级并没有不合，也许这款系统最终带着华丽的界面成功发布，也许 WinFS 和最新最前沿的 web 技术已经带领我们改变了一切……<br>Longhorn 要真在 2004 年发布了，那就属于是外星科技了</p>
+<p>想做的事情太多了，AI、Lisp、华丽的下一代系统（元宇宙？）……算了算了。<br>本来如果没有这一波疫情，我还能</p>
+<p>说起来 Vista 各方面也都很好看，如果任务栏能做成和 Windows 7 一样就更好了</p>
+<p>曾经的微软从来没有画过大饼<br>至少测试版系统还是搞出来了的</p>
+<p>微软的审美和眼光都是在线且长远的：Win8 的卡牌式磁贴至今有人怀念，WP 的大标题栏正是现在 iOS 具有的，两者都以能将用户的注意力集中在核心内容上著名。</p>
+<p>也正是 Longhorn 的暴死，微软才从 Vista 之后就一直只在系统上做一些小修小补的工作。Windows 7 就是个阉割版的 Vista；Windows 8 只是在 7 的基础上添加了一些适合平板的东西；Windows 8.1 还把改得最大的开始菜单改了回去；win 10 只是在 8.1 上换了套皮；win 11 又在 Win 10 上换了套皮。</p>
+<p>现在 Win 11 的 C4D 做的是有那种感觉了（虽然只是 C4D但是好歹上道了），那么，微软什么时候把 NT 7 做出来呢？</p>
+<h2 id="畅想"><a href="#畅想" class="headerlink" title="畅想"></a>畅想</h2><p>我曾经想过，淘宝是否能做成真实商场那样：用户访问网页相当于出门。</p>
+<h2 id="Useful-Resources"><a href="#Useful-Resources" class="headerlink" title="Useful Resources"></a>Useful Resources</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://winworldpc.com/product/windows-longhorn-vis/pre-reset">WinWorldPC 下载地址</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/mgsky1/article/details/75453521/">安装教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.betaworld.cn/380">betaworld 上有关于修复 Longhorn Aero 的博客</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/un/2022/10/04/191230/" title="Windows Longhorn Build 4074">http://hetan697.github.io/blogs/un/2022/10/04/191230/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/un/2022/10/03/162917/" rel="prev" title="MBGA">
+                  <i class="fa fa-chevron-left"></i> MBGA
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/un/2022/10/17/184241/" rel="next" title="git使用小结">
+                  git使用小结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
