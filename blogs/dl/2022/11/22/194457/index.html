@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文综述了用于医学图像分割中的loss函数，可大致分为基于分布 (Distribution-based) 的损失函数、基于区域 (Region-based) 、基于边界 (Boundary-based)的损失函数、复合损失函数4种。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="医学图像分割中的loss函数">
+<meta property="og:url" content="http://hetan697.github.io/blogs/dl/2022/11/22/194457/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="本文综述了用于医学图像分割中的loss函数，可大致分为基于分布 (Distribution-based) 的损失函数、基于区域 (Region-based) 、基于边界 (Boundary-based)的损失函数、复合损失函数4种。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hetan697.github.io/assets/20221123_150507_image.png">
+<meta property="article:published_time" content="2022-11-22T11:44:57.000Z">
+<meta property="article:modified_time" content="2022-11-29T14:09:11.223Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hetan697.github.io/assets/20221123_150507_image.png">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/dl/2022/11/22/194457/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/dl/2022/11/22/194457/","path":"blogs/dl/2022/11/22/194457/","title":"医学图像分割中的loss函数"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>医学图像分割中的loss函数 | Hetan的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9d3d45b6aa0aa3c74a095aba4384c50e"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-个人页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>个人页</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Distribution-based-Loss"><span class="nav-number">1.</span> <span class="nav-text">Distribution-based Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cross-Entropy"><span class="nav-number">1.1.</span> <span class="nav-text">Cross Entropy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%90%86%E6%80%A7%E8%AE%A4%E8%AF%86%EF%BC%88%E4%BF%A1%E6%81%AF%E8%AE%BA%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">理性认识（信息论）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%84%9F%E6%80%A7%E8%AE%A4%E8%AF%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">感性认识</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Weighted-cross-entropy-WCE"><span class="nav-number">1.2.</span> <span class="nav-text">Weighted cross entropy (WCE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TopK-loss"><span class="nav-number">1.3.</span> <span class="nav-text">TopK loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Focal-loss"><span class="nav-number">1.4.</span> <span class="nav-text">Focal loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Distance-map-penalized-cross-entropy-loss-DPCE"><span class="nav-number">1.5.</span> <span class="nav-text">Distance map penalized cross entropy loss (DPCE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Distribution-based-%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">Distribution-based 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Region-based-Loss"><span class="nav-number">2.</span> <span class="nav-text">Region-based Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dice-Loss"><span class="nav-number">2.1.</span> <span class="nav-text">Dice Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sensitivity-specificity-loss"><span class="nav-number">2.2.</span> <span class="nav-text">Sensitivity-specificity loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IoU-Jaccard-loss"><span class="nav-number">2.3.</span> <span class="nav-text">IoU (Jaccard) loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lovasz-loss"><span class="nav-number">2.4.</span> <span class="nav-text">Lovász loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tversky-loss"><span class="nav-number">2.5.</span> <span class="nav-text">Tversky loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asymmetric-similarity-loss"><span class="nav-number">2.6.</span> <span class="nav-text">Asymmetric similarity loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Focal-Tversky-loss"><span class="nav-number">2.7.</span> <span class="nav-text">Focal Tversky loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generalized-Dice-loss"><span class="nav-number">2.8.</span> <span class="nav-text">Generalized Dice loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Penalty-loss"><span class="nav-number">2.9.</span> <span class="nav-text">Penalty loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Region-based-%E6%80%BB%E7%BB%93"><span class="nav-number">2.10.</span> <span class="nav-text">Region-based 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Boundary-based-Loss"><span class="nav-number">3.</span> <span class="nav-text">Boundary-based Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Boundary-BD-loss"><span class="nav-number">3.1.</span> <span class="nav-text">Boundary (BD) loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hausdorff-Distance-HD-loss"><span class="nav-number">3.2.</span> <span class="nav-text">Hausdorff Distance (HD) loss</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Compound-Loss"><span class="nav-number">4.</span> <span class="nav-text">Compound Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Combo-loss"><span class="nav-number">4.1.</span> <span class="nav-text">Combo loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exponential-Logarithmic-loss-ELL"><span class="nav-number">4.2.</span> <span class="nav-text">Exponential Logarithmic loss (ELL)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dice-loss-with-focal-loss"><span class="nav-number">4.3.</span> <span class="nav-text">Dice loss with focal loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dice-loss-with-TopK-loss"><span class="nav-number">4.4.</span> <span class="nav-text">Dice loss with TopK loss</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tailored-loss"><span class="nav-number">5.</span> <span class="nav-text">Tailored loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%EF%BC%9A%E5%B8%B8%E7%94%A8%E6%8C%87%E6%A0%87%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">附：常用指标的理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2022/11/22/194457/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="医学图像分割中的loss函数 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          医学图像分割中的loss函数
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-22 19:44:57" itemprop="dateCreated datePublished" datetime="2022-11-22T19:44:57+08:00">2022-11-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-29 22:09:11" itemprop="dateModified" datetime="2022-11-29T22:09:11+08:00">2022-11-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <!-- 
+IoU (Jaccard) loss
+Lovász loss
+-->
+
+<p>本文综述了用于医学图像分割中的loss函数，可大致分为基于分布 (Distribution-based) 的损失函数、基于区域 (Region-based) 、基于边界 (Boundary-based)的损失函数、复合损失函数4种。</p>
+<span id="more"></span>
+
+<h2 id="Distribution-based-Loss"><a href="#Distribution-based-Loss" class="headerlink" title="Distribution-based Loss"></a>Distribution-based Loss</h2><p>基于分布的损失函数旨在最小化两个分布之间的差异。这一类别中最基本的函数是交叉熵；其他所有的函数都是从交叉熵导出的。</p>
+<h3 id="Cross-Entropy"><a href="#Cross-Entropy" class="headerlink" title="Cross Entropy"></a>Cross Entropy</h3><h4 id="理性认识（信息论）"><a href="#理性认识（信息论）" class="headerlink" title="理性认识（信息论）"></a>理性认识（信息论）</h4><blockquote>
+<p>如果我们对于同一个随机变量 $x$ 有两个单独的概率分布 $P(x)$ 和 $Q(x)$，我们可以使用 KL 散度(Kullback-Leibler (KL) divergence) 来衡量这两个分布的差异：</p>
+<p>$$<br>D_{\mathrm{KL}}(P|Q) &#x3D; E_{x \sim P} [ \log P(x) - \log Q(x)]<br>$$</p>
+</blockquote>
+<p>如果对于数据 $x$ 有标签$g$服从真实分布$P(x)$，神经网络预测$s$服从估计分布$Q(x)$，则要使得网络预测越准即使分布 $P(x)$ 和分布 $Q(x)$ 之间的差距越小，即 $D_{\mathrm{KL}}(P|Q)$ 越小。从定义式中删去由数据标签决定的、无法优化的 $H(P)$ ，得到交叉熵函数</p>
+<p>$$<br>H(P, Q) &#x3D; -E_{x \sim P} \log Q(x)<br>$$</p>
+<p>最小化$H(P, Q)$等同于最小化$D_{\mathrm{KL}}(P|Q)$，规定$\lim_{x→0} x log x &#x3D; 0$</p>
+<h4 id="感性认识"><a href="#感性认识" class="headerlink" title="感性认识"></a>感性认识</h4><p>假设我们需要解决 $n$ 个数据 ${x_1, \ldots, x_n}$ 的二分类问题。假设我们分别将$1$和$0$编码为正类标签和负类标签，用$y_i$表示，神经网络的参数为 $\theta$ 。使用最大似然估计法找到最优的 $\theta$ 使得 $\hat{y_i}&#x3D;p_{\theta}(y_i \mid x_i)$ 。具体来说，对于真实标签 $y_i$ 和预测标签 $\hat{y_i}&#x3D; p_{\theta}(y_i \mid x_i)$，被分类为正的概率是 $\pi_i&#x3D; p_{\theta}(y_i &#x3D; 1 \mid x_i)$。因此有：</p>
+<p>$$<br>\begin{split}\begin{aligned}<br>l(\theta) &amp;&#x3D; \log L(\theta) \<br>  &amp;&#x3D; \log \prod_{i&#x3D;1}^n {s_i^c}^{g_i^c} (1 - s_i^c)^{1 - g_i^c} \<br>  &amp;&#x3D; \sum_{i&#x3D;1}^n g_i^c \log(s_i^c) + (1 - g_i^c) \log (1 - s_i^c). \<br>\end{aligned}\end{split}<br>$$</p>
+<p>将上述损失函数推广到任何分布，我们也称为交叉熵损失，其中$g$服从真实分布$P$，$s$服从估计分布$Q$</p>
+<p>$$<br>L_{C E}&#x3D;-\frac{1}{N} \sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c \log s_i^c,<br>$$</p>
+<p>所以，交叉熵损失函数是最基础的、起源于 Kullback-Leibler (KL) 散度的衡量分布间不相似度的指标。</p>
+<h3 id="Weighted-cross-entropy-WCE"><a href="#Weighted-cross-entropy-WCE" class="headerlink" title="Weighted cross entropy (WCE)"></a>Weighted cross entropy (WCE)</h3><p>为了解决样本不平衡的问题，提出加权交叉熵损失函数。$w_c$是加给每类的权重，可以设为与类出现的频率成反比的值以达到数据分布的平衡。</p>
+<p>$$<br>L_{W C E}&#x3D;-\frac{1}{N} \sum_{c&#x3D;1}^c \sum_{i&#x3D;1}^N w_c g_i^c \log s_i^c<br>$$</p>
+<p>对于二分类问题，值 <code>pos_weight</code>&gt;1会减少假阴性计数，从而增加召回率。相反，将<code>pos_weight</code>设置为&lt;1会减少假阳性计数并提高精度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">labels * -log(sigmoid(logits)) * pos_weight + (<span class="number">1</span> - labels) * -log(<span class="number">1</span> - sigmoid(logits))</span><br></pre></td></tr></table></figure>
+
+<h3 id="TopK-loss"><a href="#TopK-loss" class="headerlink" title="TopK loss"></a>TopK loss</h3><p>TopK loss 旨在迫使网络关注难分样本（hard samples）。通过设定一个 threshold 阈值 t，网络输出与 GT 的差值低于t时该样本不计入损失。它的一种表达式是：</p>
+<p>$$<br>L_{T o p K-t h r}&#x3D;-\frac{1}{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N 1 { g_i&#x3D;c \text { and } s_i^c&lt;t } } \sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N 1 { g_i&#x3D;c \text { and } s_i^c&lt;t } \log s_i^c<br>$$</p>
+<p>其中，$1{. . . }$ 是二元指示函数。</p>
+<p>它的另一种表达式是：</p>
+<p>$$<br>L_{T o p K}&#x3D;-\frac{1}{N} \sum_{c&#x3D;1}^C \sum_{i \in \mathbf{K}} g_i^c \log s_i^c<br>$$</p>
+<p>K 是集合中 k% 个最难分的像素点。</p>
+<h3 id="Focal-loss"><a href="#Focal-loss" class="headerlink" title="Focal loss"></a>Focal loss</h3><p>Focal loss 通过减少分配给分类良好的样本的损失，来实现对难分样本的关注，可用于处理 foreground-background class imbalance。</p>
+<p>$$<br>L_{\text {Focal }}&#x3D;-\frac{1}{N} \sum_c^C \sum_{i&#x3D;1}^N\left(1-s_i^c\right)^\gamma g_i^c \log s_i^c<br>$$</p>
+<p>$s_i$ 反映了与 ground truth 即类别 y 的接近程度， $s_i$ 越大说明越接近类别y，即分类越准确。对于分类准确的样本 $p_t→1$ ，modulating factor趋近于0。对于分类不准确的样本 $1−p_t→1$ ，modulating factor趋近于1。即相比交叉熵损失，focal loss对于分类不准确的样本，损失没有改变，对于分类准确的样本，损失会变小。 整体而言，相当于增加了分类不准确样本在损失函数中的权重。</p>
+<ul>
+<li>可调节因子 $\gamma &gt;0$ 。</li>
+<li>modulating factor $(1−s_i^c)^γ$</li>
+<li>当 $\gamma &#x3D; 0$ 时，focal loss就是交叉熵损失函数。</li>
+<li>原始论文中 $\gamma &#x3D; 2$ 效果最好。</li>
+</ul>
+<h3 id="Distance-map-penalized-cross-entropy-loss-DPCE"><a href="#Distance-map-penalized-cross-entropy-loss-DPCE" class="headerlink" title="Distance map penalized cross entropy loss (DPCE)"></a>Distance map penalized cross entropy loss (DPCE)</h3><p>$$<br>L_{D P C E}&#x3D;-\frac{1}{N} \sum_{c&#x3D;1}^c\left(1+D^c\right) \circ \sum_{i&#x3D;1}^N g_i^c \log s_i^c,<br>$$</p>
+<p>$D^c$为对GT做欧几里得距离变换（<code>scipy.ndimage.morphology.distance_transform_edt</code>）</p>
+<blockquote>
+<p>欧氏距离变换能将二值图转换为灰度图，是指对于一张二值图像（假定白色为前景色，黑色为背景色），将前景中的像素的值转化为该点到达最近的背景点的距离。多应用于图像的骨架提取。</p>
+</blockquote>
+<h3 id="Distribution-based-总结"><a href="#Distribution-based-总结" class="headerlink" title="Distribution-based 总结"></a>Distribution-based 总结</h3><p>基于分布 (Distribution-based) 的损失函数通过在</p>
+<h2 id="Region-based-Loss"><a href="#Region-based-Loss" class="headerlink" title="Region-based Loss"></a>Region-based Loss</h2><p>基于区域的损失函数旨在最小化G和S之间的 mismatch 或最大化重叠区域（overlap），如 Dice 损失函数。</p>
+<h3 id="Dice-Loss"><a href="#Dice-Loss" class="headerlink" title="Dice Loss"></a>Dice Loss</h3><p>先看三个医学上常见的评价指标。<br>一是精确度 Precision，是所有预测为真的样本中，真实值也为真类的概率（查准率）：</p>
+<p>$$<br>\text{ Precision }&#x3D;\frac{TP}{TP+FP}<br>$$</p>
+<p>二是召回率 Recall 或者叫敏感性 Sensitivity，代表所有真实值也为真样本中，预测为正的概率，即查全率。</p>
+<p>$$<br>\text{ Recall } &#x3D; \text{ Sensitivity }&#x3D;\frac{TP}{TP+FN}<br>$$</p>
+<p>三是特异性 specificity，</p>
+<p>$$<br>\text{ Specificity }&#x3D;\frac{TN}{TN+FP}<br>$$</p>
+<p>那Accuracy表征的是预测正确的样本比例。不过通常不用这个概念，主要是因为预测正确的负样本这个没有太大意义。</p>
+<p>样本总数</p>
+<p>举一个癌症的例子，<br>precision 高是说我只有有很大的把握得时候我才会说你得癌症，意思是，只要我说你得癌症，你基本上就是得了癌症。<br>recall 高是说我基本能找到所有得癌症的人，意思是，得癌症的人一定在我说得癌症的人当中。<br>这两个指标显然不能一高一低，需要同时兼顾。为了综合考虑这两个指标，我们有Dice系数，是 precision 和 recall 的调和平均值：</p>
+<p>$$<br>\text { Dice similarity coefficient}&#x3D;\text{ F1-score } &#x3D; \frac{1}{ \frac{1}{\text{ precision }}+\frac{1}{\text{ recall }}} &#x3D; \frac{2 T P}{2 T P+F P+F N}<br>$$</p>
+<p>Dice 系数在 0 到 1 之间，故 Dice loss $L_{\text { Dice }}$ 为：</p>
+<p>$$<br>L_{\text { Dice }}&#x3D;  1-\text{ Dice } \\ &#x3D;  1-\frac{2 \sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c s_i^c}{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c+\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N s_i^c}<br>$$</p>
+<h3 id="Sensitivity-specificity-loss"><a href="#Sensitivity-specificity-loss" class="headerlink" title="Sensitivity-specificity loss"></a>Sensitivity-specificity loss</h3><p>Sensitivity-specificity loss 强调特异性：</p>
+<p>$$<br>\begin{aligned}<br>L_{S S}&#x3D;&amp; w*sensitivity+(1-w)*specificity \ &#x3D;&amp; w \frac{\sum_{c&#x3D;1}^c \sum_{i&#x3D;1}^N\left(g_i^c-s_i^c\right)^2 g_i^c}{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c+\epsilon} \<br>&amp;+(1-w) \frac{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N\left(g_i^c-s_i^c\right)^2\left(1-g_i^c\right)}{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N\left(1-g_i^c\right)+\epsilon}<br>\end{aligned}<br>$$</p>
+<h3 id="IoU-Jaccard-loss"><a href="#IoU-Jaccard-loss" class="headerlink" title="IoU (Jaccard) loss"></a>IoU (Jaccard) loss</h3><p>$$<br>L_{I O U}&#x3D;1-IoU&#x3D;1-\frac{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c s_i^c}{\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N\left(g_i^c+s_i^c-g_i^c s_i^c\right)}<br>$$</p>
+<p>$$<br>IoU&#x3D;\frac{TP}{FP+TP+FN}<br>$$</p>
+<h3 id="Lovasz-loss"><a href="#Lovasz-loss" class="headerlink" title="Lovász loss"></a>Lovász loss</h3><p>使用 Lovasz extension 将离散的Jaccard loss变成光滑的形式，从而可以直接进行求导(不稳定，作者推荐先使用ce loss再使用这个finetune)</p>
+<p>$$<br>m_i(c)&#x3D; \begin{cases}1-s_i^c, &amp; \text { if } c&#x3D;g_i \ s_i^c, &amp; \text { otherwise }\end{cases}<br>$$</p>
+<p>$$<br>L_{\text {lovasz }}&#x3D;\overline{\Delta J_c}(m(c))<br>$$</p>
+<h3 id="Tversky-loss"><a href="#Tversky-loss" class="headerlink" title="Tversky loss"></a>Tversky loss</h3><p>对 Dice loss的每一项都加上一个系数，得到 Tversky loss：</p>
+<p>$$<br>\text { Tversky }&#x3D;\frac{T P}{T P+\alpha * F P+\beta * F N}<br>$$</p>
+<p>$$<br>\begin{aligned}<br>L_{\text {Tversky }}&#x3D;&amp; 1-T(\alpha, \beta) \<br>&#x3D;&amp; 1-\left(\sum_c^C \sum_{i&#x3D;1}^N g_i^c s_i^c\right) &#x2F;\left(\sum_c^C \sum_{i&#x3D;1}^N g_i^c s_{\dot{i}}^c\right.\<br>&amp;\left.+\alpha \sum_c^C \sum_{i&#x3D;1}^N\left(1-g_i^c\right) s_i^c+\beta \sum_c^C \sum_{i&#x3D;1}^N g_i^c\left(1-s_i^c\right)\right)<br>\end{aligned}<br>$$</p>
+<p>Tversky loss 能更好地权衡精确性和召回率（FPs与FNs）。通过调整超参数α和β，我们可以控制假阳性（False positives）和假阴性（False negatives）之间的权衡。值得注意的是，在α&#x3D;β&#x3D;0.5时 Tversky指数为与骰子系数相同，也等价于 F1-score。当α&#x3D;β&#x3D;1时，等式2产生Tanimoto系数，设置α+β&#x3D;1产生Fβ scores。βs越大，召回率越高（通过更加强调假阴性）。我们假设在我们的广义损失函数中使用更高的βs将导致对不平衡数据的更高的泛化和更好的性能，并有效地帮助我们将重点转移到降低FNs和提高召回率。</p>
+<h3 id="Asymmetric-similarity-loss"><a href="#Asymmetric-similarity-loss" class="headerlink" title="Asymmetric similarity loss"></a>Asymmetric similarity loss</h3><p>引入加权参数 $\beta$ 来更好地调整FP和FNs的权重</p>
+<p>$$<br>\begin{aligned}<br>L_{A s y m}&#x3D;&amp;\left(\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c s_i^c\right) &#x2F;\left(\sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c s_i^c\right.\<br>&amp;\left.+\frac{\beta^2}{1+\beta^2} \sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N g_i^c\left(1-s_i^c\right)+\frac{1}{1+\beta^2} \sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N\left(1-g_i^c\right) s_i^c\right)<br>\end{aligned}<br>$$</p>
+<p>$$<br>\begin{equation*} F(P,G;\beta) &#x3D; \frac {|PG|}{|PG|+\frac {\beta ^{2}}{(1+\beta ^{2})} |G\setminus P|+\frac {1}{(1+\beta ^{2})}|P\setminus G|}\quad \end{equation*}<br>$$</p>
+<p>原始论文中推荐的β为1.5；当α+β&#x3D;1时，不对称相似性损失也是Tversky损失的一个特例</p>
+<h3 id="Focal-Tversky-loss"><a href="#Focal-Tversky-loss" class="headerlink" title="Focal Tversky loss"></a>Focal Tversky loss</h3><p>借助系数$γ$关注低概率的 hard cases</p>
+<p>$$<br>L_{F T L}&#x3D;\left(L_{\text {Tversky }}\right)^{\frac{1}{y}},<br>$$</p>
+<p>$\gamma \in [1,3]$.</p>
+<h3 id="Generalized-Dice-loss"><a href="#Generalized-Dice-loss" class="headerlink" title="Generalized Dice loss"></a>Generalized Dice loss</h3><p>Generalized Dice loss 是 Dice loss 的多类别扩展。当病灶分割有多个类别时，一般针对每一类都会有一个 Dice，而 Generalized Dice index 将多个类别的 Dice 进行整合，使用一个指标对分割结果进行量化。它可以表示为：</p>
+<p>$$<br>L_{G D}&#x3D;1-2 \frac{\sum_{c&#x3D;1}^C w_c \sum_{i&#x3D;1}^N g_i^c s_i^c}{\sum_{c&#x3D;1}^C w_c \sum_{i&#x3D;1}^N\left(g_i^c+s_i^c\right)}<br>$$</p>
+<h3 id="Penalty-loss"><a href="#Penalty-loss" class="headerlink" title="Penalty loss"></a>Penalty loss</h3><p>就是在 Generalized Dice loss 的基础上额外给FN和FP加上了系数$k$。</p>
+<p>$L_{p G D}&#x3D;1-p G D$ where the $p G D$ is defined by<br>$$<br>\begin{aligned}<br>&amp;p G D&#x3D;2\left(\sum_{c&#x3D;1}^c w_c \sum_{i&#x3D;1}^N g_i^c S_i^c\right) &#x2F;\left(\sum_{c&#x3D;1}^c w_c \sum_{i&#x3D;1}^N\left(g_i^c+s_i^c\right)\right. \<br>&amp;\left.+k \sum_{c&#x3D;1}^c w_c \sum_{i&#x3D;1}^N\left(1-g_i^c\right) s_i^c+k \sum_{c&#x3D;1}^c w_c \sum_{i&#x3D;1}^N g_i^c\left(1-s_i^c\right)\right) \<br>&amp;<br>\end{aligned}<br>$$</p>
+<p>当 $K&#x3D;0$ 时 $pGD&#x3D;GD$；当 $K \gt 0$ 时 $pGD$ 给假阳性 FP 和假阴性 FN 额外的权重。</p>
+<p>证明：</p>
+<p>$$<br>FN &#x3D; \sum_n^p\left(1-G_{l n}\right) P_{l n}<br>$$</p>
+<p>$$<br>FP &#x3D; \sum_n^p G_{l n}\left(1-P_{l n}\right)<br>$$</p>
+<p>$$<br>\begin{aligned}<br>p G D&amp;&#x3D;2 \frac{\sum_{l&#x3D;1}^c w_l \sum_n^p G_{l n} P_{l n}}{\sum_{l&#x3D;1}^c w_l \sum_n^p\left(G_{l n}+P_{l n}\right)+k \sum_{l&#x3D;1}^c w_l \sum_n^p\left(1-G_{l n}\right) P_{l n}+k \sum_{l&#x3D;1}^c w_l \sum_n^p G_{l n}\left(1-P_{l n}\right)} \<br>&amp;&#x3D;2 \frac{\sum_{l&#x3D;1}^c w_l \sum_n^p G_{l n} P_{l n}}{\sum_{l&#x3D;1}^c w_l \sum_n^p\left(G_{l n}+P_{l n}\right)+k \sum_{l&#x3D;1}^c w_l \sum_n^p\left(\left(1-G_{l n}\right) P_{l n}+G_{l n}\left(1-P_{l n}\right)\right)} \<br>&amp;&#x3D;2 \frac{\sum_{l&#x3D;1}^c w_l \sum_n^p G_{l n} P_{l n}}{\sum_{l&#x3D;1}^c w_l \sum_n^p\left(G_{l n}+P_{l n}\right)+k \sum_{l&#x3D;1}^c w_l \sum_n^p\left(P_{l n}-2 P_{l n} G_{l n}+G_{l n}\right)} \<br>&amp;&#x3D;\frac{G D}{1+k(1-G D)} \<br>&amp;<br>\end{aligned}<br>$$</p>
+<h3 id="Region-based-总结"><a href="#Region-based-总结" class="headerlink" title="Region-based 总结"></a>Region-based 总结</h3><p>基于区域的损失函数以TP、TN、FP、FN为单位出发，Dice</p>
+<h2 id="Boundary-based-Loss"><a href="#Boundary-based-Loss" class="headerlink" title="Boundary-based Loss"></a>Boundary-based Loss</h2><p>最小化 GT 和预测之间的距离</p>
+<p>分割里常用的 Cross-entropy 和 Dice loss 对 class-imbalance 比较敏感，训练出来的网络会 bias 到背景。<br>将 cross-entropy 的积分区域拆开为前景和背景，可以发现在反向传播的时候，背景的 loss 要占主要部分。<br>regional loss 的梯度对背景像素一视同仁，忽略了空间的信息，比如离ground truth距离远的误分割应该给较大的惩罚权重。</p>
+<h3 id="Boundary-BD-loss"><a href="#Boundary-BD-loss" class="headerlink" title="Boundary (BD) loss"></a>Boundary (BD) loss</h3><p>如果prediction和label一致，loss为0。如果prediction比label小并被label包围，loss为负。</p>
+<p>$$L_{B D}&#x3D;\sum_{\Omega} \phi_G(p) s_\theta(p)$$</p>
+<p>如果 $q \in G $，则$\phi_G(q) &#x3D; −D_G(q)$，否则$\phi_G(q) &#x3D; D_G(q)$。<br>$S_\theta $代表网络的softmax输出。</p>
+<p><img src="/assets/20221123_150507_image.png" alt="区域表示"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.ndimage <span class="keyword">import</span> distance_transform_edt <span class="keyword">as</span> distance</span><br><span class="line"></span><br><span class="line"><span class="comment"># 二值化</span></span><br><span class="line">posmask = img_gt[b][c].astype(np.<span class="built_in">bool</span>)</span><br><span class="line">negmask = ~posmask</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求出 distance map</span></span><br><span class="line">posdis = distance_transform_edt(posmask)</span><br><span class="line">negdis = distance_transform_edt(negmask)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找出边界</span></span><br><span class="line">boundary = skimage_seg.find_boundaries(posmask, mode=<span class="string">&#x27;inner&#x27;</span>).astype(np.uint8)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 两个减一下就是 phi 了</span></span><br><span class="line">sdf = negdis - posdis</span><br><span class="line"></span><br><span class="line"><span class="comment"># 边界的distance为0</span></span><br><span class="line">sdf[boundary==<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">phi[b][c] = sdf</span><br><span class="line"></span><br><span class="line"><span class="comment"># Hadamard 积</span></span><br><span class="line">multipled = torch.einsum(<span class="string">&quot;bcxyz,bcxyz-&gt;bcxyz&quot;</span>, net_output[:, <span class="number">1</span>:, ...], phi[:, <span class="number">1</span>:, ...])</span><br><span class="line"></span><br><span class="line">bd_loss = multipled.mean()</span><br></pre></td></tr></table></figure>
+
+<p>如果将边界损失看成纯粹是基于距离的惩罚，目标内部的梯度将为负。 在梯度下降过程中提高目标类别的概率。 相反，背景像素具有正梯度，从而在SGD期间将预测的概率降低。如果距离图全为正，它将降低所有像素（前景或背景）的预测概率。</p>
+<h3 id="Hausdorff-Distance-HD-loss"><a href="#Hausdorff-Distance-HD-loss" class="headerlink" title="Hausdorff Distance (HD) loss"></a>Hausdorff Distance (HD) loss</h3><p>豪斯多夫距离量度度量空间中真子集之间的距离:</p>
+<p>$$hd(X,Y)&#x3D;max_{x \epsilon X}min_{y \epsilon Y} ||x-y||_2$$</p>
+<p>$$hd(Y,X)&#x3D;max_{y \epsilon Y}min_{x \epsilon X} ||x-y||_2$$</p>
+<p>$$HD(X,Y)&#x3D;max(hd(X,Y), hd(Y,X))$$</p>
+<p>优化下式即优化 distance：<br>$$<br>L_{H D}&#x3D;\frac{1}{N} \sum_{c&#x3D;1}^C \sum_{i&#x3D;1}^N\left[\left(s_i^c-g_i^c\right)^2 \circ\left(d_{G_i^c}^2+d_{S_i^c}^2\right)\right]<br>$$</p>
+<h2 id="Compound-Loss"><a href="#Compound-Loss" class="headerlink" title="Compound Loss"></a>Compound Loss</h2><h3 id="Combo-loss"><a href="#Combo-loss" class="headerlink" title="Combo loss"></a>Combo loss</h3><p>$$L_{DiceCE} &#x3D; \alpha L_{CE} + (1-\alpha)L_{Dice}$$</p>
+<p>组合损失[15]定义为Dice损失和修改的交叉熵的加权和。它试图利用Dice损失类不平衡的灵活性，同时使用交叉熵进行曲线平滑。</p>
+<h3 id="Exponential-Logarithmic-loss-ELL"><a href="#Exponential-Logarithmic-loss-ELL" class="headerlink" title="Exponential Logarithmic loss (ELL)"></a>Exponential Logarithmic loss (ELL)</h3><p>提出对Dice损失和交叉熵损失进行指数和对数操作从而将更多的注意力集中在预测精度较低的结构上，可用来预测不确定的结构。</p>
+<p>$$<br>\begin{aligned}<br>L_{E L L}&#x3D;w_{\text {Dice }} E\left[\left(-\log \left(\text { Dice }<em>c\right)\right)^{\gamma \text { Dice }}\right]<br>&amp;+w</em>{C E} E\left[w_c\left(-\log \left(s_i^c\right)\right)^{\gamma C E}\right]  \<br>\text { Where } \text { Dice }<em>c&#x3D;\frac{2 \sum</em>{i&#x3D;1}^N g_i^c s_i^c+\epsilon}{\sum_{i&#x3D;1}^N\left(g_i^c+s_i^c\right)+\epsilon} \text {. }<br>\end{aligned}<br>$$</p>
+<h3 id="Dice-loss-with-focal-loss"><a href="#Dice-loss-with-focal-loss" class="headerlink" title="Dice loss with focal loss"></a>Dice loss with focal loss</h3><p>$$L_{DiceFocal} &#x3D; L_{Dice} + L_{Focal}$$</p>
+<h3 id="Dice-loss-with-TopK-loss"><a href="#Dice-loss-with-TopK-loss" class="headerlink" title="Dice loss with TopK loss"></a>Dice loss with TopK loss</h3><p>$$L_{DiceTopK} &#x3D; L_{Dice} + L_{TopK}$$</p>
+<h2 id="Tailored-loss"><a href="#Tailored-loss" class="headerlink" title="Tailored loss"></a>Tailored loss</h2><ul>
+<li>针对特殊任务设计，用于通过探索标签关系改进多类分割</li>
+<li>形状先验和约束也被合并到损失函数中，以利用期望的拓扑结构来实现分割结果。</li>
+<li>为了提高网络的区域标记一致性，（Ganaye等人，2019）提出了一种基于邻接图的辅助训练损失，该损失可以惩罚包含具有解剖学上不正确邻接关系的区域的输出。</li>
+<li>设计了一个连续值损失函数，该函数可以强制分割，使其具有与GT相同的Betti数。</li>
+</ul>
+<h2 id="附：常用指标的理解"><a href="#附：常用指标的理解" class="headerlink" title="附：常用指标的理解"></a>附：常用指标的理解</h2><ul>
+<li>TP：True Positive，分类器预测结果为正样本，实际也为正样本，即正样本被正确识别的数量。  </li>
+<li>FP：False Positive，分类器预测结果为正样本，实际为负样本，即误报的负样本数量。  </li>
+<li>TN：True Negative，分类器预测结果为负样本，实际为负样本，即负样本被正确识别的数量。  </li>
+<li>FN：False Negative，分类器预测结果为负样本，实际为正样本，即漏报的正样本数量。</li>
+</ul>
+<p>组合起来就是：</p>
+<ul>
+<li>TP+FN：真实正样本的总和，正确分类的正样本数量+漏报的正样本数量。</li>
+<li>FP+TN：真实负样本的总和，负样本被误识别为正样本数量+正确分类的负样本数量。</li>
+<li>TP+TN：正确分类的样本总和，正确分类的正样本数量+正确分类的负样本数量。</li>
+</ul>
+<p>Accuracy：准确率</p>
+<p>Accuracy表征的是预测正确的样本比例。不过通常不用这个概念，主要是因为预测正确的负样本这个没有太大意义。</p>
+<p>样本总数</p>
+<p>Precision：查准率</p>
+<p>Precision表征的是预测正确的正样本的准确度，查准率等于预测正确的正样本数量&#x2F;所有预测为正样本数量。Precision越大说明误检的越少，Precision越小说明误检的越多。</p>
+<p>Recall：查全率<br>Recall表征的是预测正确的正样本的覆盖率，查全率等于预测正确的正样本数量&#x2F;所有正样本的总和，TP+TN实际就是Ground Truth的数量。Recall越大说明漏检的越少，Recall越小说明漏检的越多。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S1361841521000815">MA J, CHEN J, NG M, et al. Loss odyssey in medical image segmentation[J&#x2F;OL]. Medical Image Analysis, 2021, 71: 102035. DOI:10.1016&#x2F;j.media.2021.102035.</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/542632246">医学影像分割中常用的损失函数 - 知乎</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/dl/2022/11/22/194457/" title="医学图像分割中的loss函数">http://hetan697.github.io/blogs/dl/2022/11/22/194457/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/un/2022/11/11/170237/" rel="prev" title="CVAT 软件调研">
+                  <i class="fa fa-chevron-left"></i> CVAT 软件调研
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

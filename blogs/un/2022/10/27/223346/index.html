@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="动机一开始是为了写 Swin-Unset 的代码（还是想要一套自己维护的、使用特别舒服的跑模型的代码）就想到使用 GitHub Copilot。那这个东西很久都不免费了，自然要求 GitHub 整一个学生认证才 OK。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub学生认证经验记录">
+<meta property="og:url" content="http://hetan697.github.io/blogs/un/2022/10/27/223346/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="动机一开始是为了写 Swin-Unset 的代码（还是想要一套自己维护的、使用特别舒服的跑模型的代码）就想到使用 GitHub Copilot。那这个东西很久都不免费了，自然要求 GitHub 整一个学生认证才 OK。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://hetan697.github.io/blogs/un/2022/10/27/223346/20221027_224631_image.png">
+<meta property="og:image" content="http://hetan697.github.io/blogs/un/2022/10/27/223346/20221027_224902_image.png">
+<meta property="og:image" content="http://hetan697.github.io/blogs/un/2022/10/27/223346/20221027_225004_image.png">
+<meta property="og:image" content="http://hetan697.github.io/blogs/un/2022/10/27/223346/1.png">
+<meta property="og:image" content="https://pica.zhimg.com/80/v2-cded59ec7dc6feb57a77a8cb772d0cc0_1440w.webp?source=1940ef5c">
+<meta property="article:published_time" content="2022-10-27T14:33:46.000Z">
+<meta property="article:modified_time" content="2022-10-27T15:17:08.102Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hetan697.github.io/blogs/un/2022/10/27/223346/20221027_224631_image.png">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/un/2022/10/27/223346/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/un/2022/10/27/223346/","path":"blogs/un/2022/10/27/223346/","title":"GitHub学生认证经验记录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GitHub学生认证经验记录 | Hetan的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9d3d45b6aa0aa3c74a095aba4384c50e"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-个人页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>个人页</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%94%B3%E8%AF%B7%E8%AE%A4%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">第一次申请认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AC%A1%E7%94%B3%E8%AF%B7%E8%AE%A4%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">第二次申请认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%8A%9F%E7%9A%84%E5%B0%9D%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">成功的尝试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Takeaways"><span class="nav-number">5.</span> <span class="nav-text">Takeaways</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/un/2022/10/27/223346/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GitHub学生认证经验记录 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GitHub学生认证经验记录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-27 22:33:46 / 修改时间：23:17:08" itemprop="dateCreated datePublished" datetime="2022-10-27T22:33:46+08:00">2022-10-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>一开始是为了写 Swin-Unset 的代码（还是想要一套自己维护的、使用特别舒服的跑模型的代码）就想到使用 GitHub Copilot。那这个东西很久都不免费了，自然要求 GitHub 整一个学生认证才 OK。</p>
+<span id="more"></span>
+
+<h2 id="第一次申请认证"><a href="#第一次申请认证" class="headerlink" title="第一次申请认证"></a>第一次申请认证</h2><ol>
+<li><p>进入 <a target="_blank" rel="noopener" href="https://education.github.com/">GitHub Education</a>点击顶部的<code>student</code>，点击<code>Student Program</code> 进入<a target="_blank" rel="noopener" href="https://education.github.com/students"><code>Student</code>页面</a>。<br><img src="/blogs/un/2022/10/27/223346/20221027_224631_image.png" alt="GitHub Edu"></p>
+</li>
+<li><p>之后点击页面上方的<code>Get benefits for students</code>，弹出要填写的第一张表<br><img src="/blogs/un/2022/10/27/223346/20221027_224902_image.png" alt="GitHub Stu"></p>
+<p><img src="/blogs/un/2022/10/27/223346/20221027_225004_image.png" alt="GitHub Req"></p>
+<p>这里要注意的是，<strong>网页上方的获取位置信息的权限一定要开</strong>“How do you plan to use GitHub?”这个问题还得好好填。<img src="/blogs/un/2022/10/27/223346/1.png" alt="1"></p>
+</li>
+<li><p>填完以后就是要填第二张表了，主要是要你交张证明。我交了张一网通办页面的截图，好像不行，提示我图像里找不到日期。</p>
+</li>
+</ol>
+<h2 id="第二次申请认证"><a href="#第二次申请认证" class="headerlink" title="第二次申请认证"></a>第二次申请认证</h2><p>这一次我先注册了学校的邮箱。名字想了很久还是直接用了我名字的拼音。把学校的邮箱加入了我GitHub账号信息里去了证明也直接进了研究生管理系统的<code>自助打印</code>-&gt;<code>在读证明</code>，但是机器还是识别不了我的Date。所以我使用了翻译软件把中文的证明翻成了英文的才成功。不过，它一直提示这个东西：</p>
+<blockquote>
+<p>You are significantly more likely to be verified if you have completed your <a target="_blank" rel="noopener" href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/personalizing-your-profile">GitHub user profile</a> with your full name and a short bio.</p>
+</blockquote>
+<p>但是我各种改个人信息都没用，所以第二次尝试以失败告终。</p>
+<h2 id="成功的尝试"><a href="#成功的尝试" class="headerlink" title="成功的尝试"></a>成功的尝试</h2><p>在参考<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/506938469/answer/2478762207?utm_id=0">github学生认证一直被拒绝怎么办？ - 知乎 (zhihu.com)</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/kuizuo12/article/details/126720282">记github学生认证_愧怍12的博客-CSDN博客_github学生认证</a> 后，对申请流程做了些许调整：</p>
+<ol>
+<li>证明使用学信网的证明而不是学校的证明。在学信网在线证明处使用Edge浏览器自带的翻译把简体中文翻译成英文。</li>
+<li>在下方这个地方标注自己Github的用户名。不要那么老实地写中文拼音，内容对不上会不通过。<br><img src="https://pica.zhimg.com/80/v2-cded59ec7dc6feb57a77a8cb772d0cc0_1440w.webp?source=1940ef5c" alt="UserName There"></li>
+<li>在提交完所有信息后，直接跳出一个界面和我说申请结果会在12天之内告诉我。这个时候返回<a target="_blank" rel="noopener" href="https://education.github.com/">GitHub Education</a>主页申请就已经是成功的了！</li>
+</ol>
+<h2 id="Takeaways"><a href="#Takeaways" class="headerlink" title="Takeaways"></a>Takeaways</h2><ol>
+<li>网页上方的“获取位置信息”和“获取摄像头”的权限一定要开</li>
+<li>认证时不要魔法上网</li>
+<li>证书图片交学信网的在线验证报告的 Edge 浏览器翻译截图再P上自己的 GitHub 用户名，类型选<code>others</code>。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>谢谢支持！ Thanks for your support!</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/un/2022/10/27/223346/" title="GitHub学生认证经验记录">http://hetan697.github.io/blogs/un/2022/10/27/223346/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/un/2022/10/17/184241/" rel="prev" title="git使用小结">
+                  <i class="fa fa-chevron-left"></i> git使用小结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/un/2022/11/11/170237/" rel="next" title="CVAT 软件调研">
+                  CVAT 软件调研 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
