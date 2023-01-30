@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow介绍">
+<meta property="og:url" content="http://hetan697.github.io/blogs/dl/2023/01/16/164119/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="前言">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-16T08:41:19.000Z">
+<meta property="article:modified_time" content="2023-01-30T01:24:57.703Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/dl/2023/01/16/164119/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/dl/2023/01/16/164119/","path":"blogs/dl/2023/01/16/164119/","title":"tensorflow介绍"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>tensorflow介绍 | Hetan的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9d3d45b6aa0aa3c74a095aba4384c50e"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-个人页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>个人页</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keras"><span class="nav-number">2.</span> <span class="nav-text">Keras</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">搭建模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%BC%8F-Sequential-API"><span class="nav-number">2.1.1.</span> <span class="nav-text">序列式(Sequential API)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F-Functional-API"><span class="nav-number">2.1.2.</span> <span class="nav-text">函数式(Functional API)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Model%E5%AD%90%E7%B1%BB%E5%8C%96%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.1.3.</span> <span class="nav-text">Model子类化创建自定义模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">2.2.</span> <span class="nav-text">模型训练</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">2.3.</span> <span class="nav-text">准备数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tf-keras-utils-image-dataset-from-directory"><span class="nav-number">2.3.1.</span> <span class="nav-text">tf.keras.utils.image_dataset_from_directory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8image-label%E5%AF%B9"><span class="nav-number">2.3.2.</span> <span class="nav-text">使用image-label对</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD-npy%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.3.</span> <span class="nav-text">加载.npy文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.4.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E4%B8%8E%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.5.</span> <span class="nav-text">模型保存与加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorFlow-2"><span class="nav-number">3.</span> <span class="nav-text">TensorFlow 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%A2%AF%E5%BA%A6%E7%A3%81%E5%B8%A6%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">使用梯度磁带自定义训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8tf-Module%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">使用tf.Module搭建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8-keras-%E6%9E%84%E5%BB%BA-pipline"><span class="nav-number">3.3.</span> <span class="nav-text">不使用 keras 构建 pipline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="nav-number">4.</span> <span class="nav-text">参考资源</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2023/01/16/164119/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="tensorflow介绍 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          tensorflow介绍
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-16 16:41:19" itemprop="dateCreated datePublished" datetime="2023-01-16T16:41:19+08:00">2023-01-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-30 09:24:57" itemprop="dateModified" datetime="2023-01-30T09:24:57+08:00">2023-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><span id="more"></span>
+<p>这篇文章既然放在技能库里，肯定就要讲 TensorFlow 的具体用法。但是这么大一个框架肯定不是这样一篇短短的博客就能介绍完的，所以这里只展示几个例子，通过代码熟悉框架以快速入门，如果真想学好建议在网络条件良好的情况下看<a target="_blank" rel="noopener" href="https://www.tensorflow.org/">官方文档</a>，也可以看<a target="_blank" rel="noopener" href="https://tensorflow.google.cn/">谷歌在中国服务器上给的文档</a>。因为 TensorFlow 1.x和2均支持keras，所以本文先介绍 keras，再对 TensorFlow 2 和 TensorFlow 1.x 的差异部分做特殊说明</p>
+<p>Keras 是一个基于 TensorFlow 等框架提供的底层运算而实现的高层框架，提供了大量方便快速训练，测试的高层接口，对于常见应用来说，使用Keras 开发效率更高。<br>Keras 可以理解为一套高层API 的设计规范，TensorFlow 实现了这套规范，称为tf.keras 模块，并且tf.keras 将作为TensorFlow 2 版本的唯一高层接口，避免出现接口重复冗余的问题</p>
+<p>TensorFlow 是Google 于2015 年发布的深度学习框架。得益于发布时间较早，以及Google 在深度学习领域的影响力，TensorFlow 一度成为最流行的深度学习框架。但是由于TensorFlow 接口设计频繁变动，功能设计重复冗余，符号式编程开发和调试非常困难等问题，TensorFlow 1.x 版本一度被业界诟病。<br>2019年，Google 推出TensorFlow 2 正式版本，以动态图为优先模式运行，从而能够避免TensorFlow 1.x 版本的诸多缺陷。但因为TensorFlow 2完全不兼容TensorFlow 1.x的代码，接口变动依旧频繁、功能设计仍有重复、加上为时已晚， PyTorch 逐渐在深度学习框架的份额上坐稳了第一的位置。</p>
+<h2 id="Keras"><a href="#Keras" class="headerlink" title="Keras"></a>Keras</h2><p>TensorFlow 与 Keras 是两个东西，但都是谷歌开发的。Keras 用的人多了以后 Google 把 Keras 集成在了 TensorFlow 里面，作为<code>tf.keras</code>模块。在使用 TensorFlow 2 的时候多半会用到<code>tf.keras.layers</code>构建神经网络层，因为如果真的全部从头开始搭费时费力，不如直接用造好的轮子。</p>
+<h3 id="搭建模型"><a href="#搭建模型" class="headerlink" title="搭建模型"></a>搭建模型</h3><p>使用 Keras 高阶 API 搭建模型有3种方法，分别是序列式、函数式和Model子类化。</p>
+<h4 id="序列式-Sequential-API"><a href="#序列式-Sequential-API" class="headerlink" title="序列式(Sequential API)"></a>序列式(Sequential API)</h4><p>序列式是<code>layer-by-layer</code>的方式，适用于简单的层堆栈，但难以构建多输入、多输出的模型，不够灵活。</p>
+<p>你可以通过将层列表传递给<code>tf.keras.Sequential</code>来创建 Sequential 模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line">model = tf.keras.Sequential([</span><br><span class="line">    layers.Dense(<span class="number">2</span>, activation=<span class="string">&quot;relu&quot;</span>),  <span class="comment"># 等效于`nn.Dense`</span></span><br><span class="line">    layers.Dense(<span class="number">3</span>, activation=<span class="string">&quot;relu&quot;</span>),</span><br><span class="line">    layers.Dense(<span class="number">4</span>)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过<code>add()</code>方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line">model = tf.keras.Sequential()</span><br><span class="line">model.add(layers.Dense(<span class="number">2</span>, activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">3</span>, activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line">model.add(layers.Dense(<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+
+<p>这两段代码作用相同，都创建了一个第一层有2个节点，第二层有3个节点，输出层有4个节点的神经网络。<br>上面的代码仅仅搭建了模型框架，并未指定输入的shape，所以没有参数，需要进行后续处理才可用于训练。</p>
+<h4 id="函数式-Functional-API"><a href="#函数式-Functional-API" class="headerlink" title="函数式(Functional API)"></a>函数式(Functional API)</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers</span><br><span class="line"></span><br><span class="line">encoder_input = keras.Input(shape=(<span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>), name=<span class="string">&quot;img&quot;</span>)</span><br><span class="line">x = layers.Conv2D(<span class="number">16</span>, <span class="number">3</span>, activation=<span class="string">&quot;relu&quot;</span>)(encoder_input)  <span class="comment"># 16个3x3的2D卷积核</span></span><br><span class="line">x = layers.Conv2D(<span class="number">32</span>, <span class="number">3</span>, activation=<span class="string">&quot;relu&quot;</span>)(x)  <span class="comment"># 32个3x3的2D卷积核</span></span><br><span class="line">x = layers.MaxPooling2D(<span class="number">3</span>)(x)</span><br><span class="line">x = layers.Conv2D(<span class="number">32</span>, <span class="number">3</span>, activation=<span class="string">&quot;relu&quot;</span>)(x)</span><br><span class="line">x = layers.Conv2D(<span class="number">16</span>, <span class="number">3</span>, activation=<span class="string">&quot;relu&quot;</span>)(x)</span><br><span class="line">encoder_output = layers.GlobalMaxPooling2D()(x)</span><br><span class="line"></span><br><span class="line">encoder = keras.Model(encoder_input, encoder_output, name=<span class="string">&quot;encoder&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面这个网络的结构是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Model: &quot;encoder&quot;</span><br><span class="line">_________________________________________________________________</span><br><span class="line"> Layer (type)                Output Shape              Param #   </span><br><span class="line">=================================================================</span><br><span class="line"> img (InputLayer)            [(None, 28, 28, 1)]       0         </span><br><span class="line">                                                                 </span><br><span class="line"> conv2d (Conv2D)             (None, 26, 26, 16)        160       </span><br><span class="line">                                                                 </span><br><span class="line"> conv2d_1 (Conv2D)           (None, 24, 24, 32)        4640      </span><br><span class="line">                                                                 </span><br><span class="line"> max_pooling2d (MaxPooling2D  (None, 8, 8, 32)         0         </span><br><span class="line"> )                                                               </span><br><span class="line">                                                                 </span><br><span class="line"> conv2d_2 (Conv2D)           (None, 6, 6, 32)          9248      </span><br><span class="line">                                                                 </span><br><span class="line"> conv2d_3 (Conv2D)           (None, 4, 4, 16)          4624      </span><br><span class="line">                                                                 </span><br><span class="line"> global_max_pooling2d (Globa  (None, 16)               0         </span><br><span class="line"> lMaxPooling2D)                                                  </span><br><span class="line">                                                                 </span><br><span class="line">=================================================================</span><br><span class="line">Total params: 18,672</span><br><span class="line">Trainable params: 18,672</span><br><span class="line">Non-trainable params: 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="Model子类化创建自定义模型"><a href="#Model子类化创建自定义模型" class="headerlink" title="Model子类化创建自定义模型"></a>Model子类化创建自定义模型</h4><p>使用这种方式可以非常自由地自定义模型。下面是一个自定义残差层的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Residual</span>(tf.keras.Model):  <span class="comment">#@save</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_channels, use_1x1conv=<span class="literal">False</span>, strides=<span class="number">1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.conv1 = tf.keras.layers.Conv2D(</span><br><span class="line">            num_channels, padding=<span class="string">&#x27;same&#x27;</span>, kernel_size=<span class="number">3</span>, strides=strides)</span><br><span class="line">        self.conv2 = tf.keras.layers.Conv2D(</span><br><span class="line">            num_channels, kernel_size=<span class="number">3</span>, padding=<span class="string">&#x27;same&#x27;</span>)</span><br><span class="line">        self.conv3 = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> use_1x1conv:</span><br><span class="line">            self.conv3 = tf.keras.layers.Conv2D(</span><br><span class="line">                num_channels, kernel_size=<span class="number">1</span>, strides=strides)</span><br><span class="line">        self.bn1 = tf.keras.layers.BatchNormalization()</span><br><span class="line">        self.bn2 = tf.keras.layers.BatchNormalization()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, X</span>):</span><br><span class="line">        Y = tf.keras.activations.relu(self.bn1(self.conv1(X)))</span><br><span class="line">        Y = self.bn2(self.conv2(Y))</span><br><span class="line">        <span class="keyword">if</span> self.conv3 <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            X = self.conv3(X)</span><br><span class="line">        Y += X</span><br><span class="line">        <span class="keyword">return</span> tf.keras.activations.relu(Y)</span><br></pre></td></tr></table></figure>
+
+<p>上面几种方式各有所长。灵活地混合使用各种方式可以很方便地实现我们的网络模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ResnetBlock</span>(tf.keras.layers.Layer):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;残差块&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_channels, num_residuals, first_block=<span class="literal">False</span>,</span></span><br><span class="line"><span class="params">                 **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>(ResnetBlock, self).__init__(**kwargs)</span><br><span class="line">        self.residual_layers = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_residuals):</span><br><span class="line">            <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">and</span> <span class="keyword">not</span> first_block:</span><br><span class="line">                self.residual_layers.append(</span><br><span class="line">                    Residual(num_channels, use_1x1conv=<span class="literal">True</span>, strides=<span class="number">2</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self.residual_layers.append(Residual(num_channels))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, X</span>):</span><br><span class="line">        <span class="keyword">for</span> layer <span class="keyword">in</span> self.residual_layers.layers:</span><br><span class="line">            X = layer(X)</span><br><span class="line">        <span class="keyword">return</span> X</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">net</span>():</span><br><span class="line">    <span class="comment"># 返回一个ResNet</span></span><br><span class="line">    <span class="keyword">return</span> tf.keras.Sequential([</span><br><span class="line">        tf.keras.layers.Conv2D(<span class="number">64</span>, kernel_size=<span class="number">7</span>, strides=<span class="number">2</span>, padding=<span class="string">&#x27;same&#x27;</span>),</span><br><span class="line">        tf.keras.layers.BatchNormalization(),</span><br><span class="line">        tf.keras.layers.Activation(<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">        tf.keras.layers.MaxPool2D(pool_size=<span class="number">3</span>, strides=<span class="number">2</span>, padding=<span class="string">&#x27;same&#x27;</span>),</span><br><span class="line">        </span><br><span class="line">        ResnetBlock(<span class="number">64</span>, <span class="number">2</span>, first_block=<span class="literal">True</span>),</span><br><span class="line">        ResnetBlock(<span class="number">128</span>, <span class="number">2</span>),</span><br><span class="line">        ResnetBlock(<span class="number">256</span>, <span class="number">2</span>),</span><br><span class="line">        ResnetBlock(<span class="number">512</span>, <span class="number">2</span>),</span><br><span class="line">        tf.keras.layers.GlobalAvgPool2D(),</span><br><span class="line">        tf.keras.layers.Dense(units=<span class="number">10</span>)])</span><br></pre></td></tr></table></figure>
+
+<h3 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h3><p>通过<code>Model.compile()</code>装配模型，<code>Model.fit()</code>训练模型，<code>Model.evaluate()</code>评估模型，<code>Model.predict()</code>使用模型。</p>
+<p><code>compile()</code> 方法指定损失、指标和优化器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">model.<span class="built_in">compile</span>(</span><br><span class="line">    optimizer=keras.optimizers.RMSprop(),  <span class="comment"># Optimizer</span></span><br><span class="line">    <span class="comment"># Loss function to minimize</span></span><br><span class="line">    loss=keras.losses.SparseCategoricalCrossentropy(),</span><br><span class="line">    <span class="comment"># List of metrics to monitor</span></span><br><span class="line">    metrics=[keras.metrics.SparseCategoricalAccuracy()],</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果不额外指定参数（如optimizer的learning rate），很多时候上面可以简写为：</span></span><br><span class="line"><span class="comment"># model.compile(</span></span><br><span class="line"><span class="comment">#     optimizer=&quot;rmsprop&quot;,</span></span><br><span class="line"><span class="comment">#     loss=&quot;sparse_categorical_crossentropy&quot;,</span></span><br><span class="line"><span class="comment">#     metrics=[&quot;sparse_categorical_accuracy&quot;],</span></span><br><span class="line"><span class="comment"># )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># x_train, y_train是训练集的data和label，x_val, y_val是验证集的data和label</span></span><br><span class="line">history = model.fit(x_train, y_train, </span><br><span class="line">            batch_size=<span class="number">64</span>, epochs=<span class="number">2</span>, validation_data=(x_val, y_val))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Fit model on training data</span><br><span class="line">Epoch 1/2</span><br><span class="line">782/782 [==============================] - 3s 3ms/step - loss: 0.3473 - sparse_categorical_accuracy: 0.9009 - val_loss: 0.1936 - val_sparse_categorical_accuracy: 0.9444</span><br><span class="line">Epoch 2/2</span><br><span class="line">782/782 [==============================] - 2s 2ms/step - loss: 0.1616 - sparse_categorical_accuracy: 0.9507 - val_loss: 0.1324 - val_sparse_categorical_accuracy: 0.9605</span><br></pre></td></tr></table></figure>
+
+<p>返回的<code>history</code>对象保存训练期间的损失值和指标值记录：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(history.history)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;loss&#x27;: [0.3473339378833771, 0.16158732771873474],</span><br><span class="line"> &#x27;sparse_categorical_accuracy&#x27;: [0.9008600115776062, 0.9506999850273132],</span><br><span class="line"> &#x27;val_loss&#x27;: [0.19355881214141846, 0.13244354724884033],</span><br><span class="line"> &#x27;val_sparse_categorical_accuracy&#x27;: [0.9444000124931335, 0.9605000019073486]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>学习率衰减的实现可以参照下面修改<code>optimizer</code>里的<code>learning_rate</code>参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">initial_learning_rate = <span class="number">0.1</span></span><br><span class="line">lr_schedule = keras.optimizers.schedules.ExponentialDecay(</span><br><span class="line">    initial_learning_rate, decay_steps=<span class="number">100000</span>, decay_rate=<span class="number">0.96</span>, staircase=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">optimizer = keras.optimizers.RMSprop(learning_rate=lr_schedule)</span><br></pre></td></tr></table></figure>
+
+<p>使用回调函数可以方便地实现模型检查点、早停和TensorBoard。只需要把<code>model.fit()</code>改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">model = get_compiled_model()</span><br><span class="line"></span><br><span class="line">callbacks = [  </span><br><span class="line">    <span class="comment"># Only save a model if `val_loss` has improved.</span></span><br><span class="line">    keras.callbacks.ModelCheckpoint(filepath=<span class="string">&quot;mymodel_&#123;epoch&#125;&quot;</span>, save_best_only=<span class="literal">True</span>,</span><br><span class="line">        monitor=<span class="string">&quot;val_loss&quot;</span>, verbose=<span class="number">1</span>),</span><br><span class="line"></span><br><span class="line">    keras.callbacks.EarlyStopping(</span><br><span class="line">        <span class="comment"># Stop training when `val_loss` is no longer improving</span></span><br><span class="line">        monitor=<span class="string">&quot;val_loss&quot;</span>,</span><br><span class="line">        <span class="comment"># &quot;no longer improving&quot; being defined as &quot;no better than 1e-2 less&quot;</span></span><br><span class="line">        min_delta=<span class="number">1e-2</span>,</span><br><span class="line">        <span class="comment"># &quot;no longer improving&quot; being further defined as &quot;for at least 2 epochs&quot;</span></span><br><span class="line">        patience=<span class="number">2</span>,</span><br><span class="line">        verbose=<span class="number">1</span>,</span><br><span class="line">    ),</span><br><span class="line"></span><br><span class="line">    keras.callbacks.TensorBoard(</span><br><span class="line">        log_dir=<span class="string">&quot;/full_path_to_your_logs&quot;</span>,</span><br><span class="line">        histogram_freq=<span class="number">0</span>,  <span class="comment"># How often to log histogram visualizations</span></span><br><span class="line">        embeddings_freq=<span class="number">0</span>,  <span class="comment"># How often to log embedding visualizations</span></span><br><span class="line">        update_freq=<span class="string">&quot;epoch&quot;</span>,  <span class="comment"># How often to write logs (default: once per epoch)</span></span><br><span class="line">    )</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># x_train, y_train是训练和验证集混在一起的data和label，</span></span><br><span class="line"><span class="comment"># validation_split=0.2 代表这些数据按0.8:0.2切分训练集和验证集</span></span><br><span class="line">model.fit(x_train, y_train, epochs=<span class="number">20</span>, batch_size=<span class="number">64</span>, </span><br><span class="line">    callbacks=callbacks, validation_split=<span class="number">0.2</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a>准备数据</h3><p>TensorFlow 中没有像 PyTorch里<code>torch.utils.data.DataLoader</code>这么一致的数据加载流程，虽然大多各写各的。虽然tensorflow有<code>tf.data.Dataset</code>、<code>tf.data.Dataset.from_tensor_slices</code>，keras有<code>tf.keras.utils.image_dataset_from_directory</code></p>
+<!-- ，但是常见的操作还是：
+
+1. 定义一个函数作为数据生成器
+2. 使用循环（for循环最常见）迭代该生成器从而分别生成内容上对应的data和label的两个list，这两个list就是上文中的`x_train`和`y_train`：
+3. 使用`tf.data.Dataset.from_tensor_slices`将`list`转为`tf.Tensor`： -->
+
+<p>当然，你也可以直接使用<code>torch.utils.data.DataLoader</code>进行数据的加载，只要最后的数据是Numpy array格式就没问题。<br>以花卉数据集为例演示如何加载数据。首先下载数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pathlib</span><br><span class="line">dataset_url = <span class="string">&quot;https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz&quot;</span></span><br><span class="line">data_dir = tf.keras.utils.get_file(origin=dataset_url,</span><br><span class="line">                                   fname=<span class="string">&#x27;flower_photos&#x27;</span>,</span><br><span class="line">                                   untar=<span class="literal">True</span>)</span><br><span class="line">data_dir = pathlib.Path(data_dir)</span><br></pre></td></tr></table></figure>
+
+<p>得到的文件夹结构如下：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">flowers_photos/</span><br><span class="line">  daisy/</span><br><span class="line">  dandelion/</span><br><span class="line">  roses/</span><br><span class="line">  sunflowers/</span><br><span class="line">  tulips/</span><br></pre></td></tr></table></figure>
+
+<h4 id="tf-keras-utils-image-dataset-from-directory"><a href="#tf-keras-utils-image-dataset-from-directory" class="headerlink" title="tf.keras.utils.image_dataset_from_directory"></a><code>tf.keras.utils.image_dataset_from_directory</code></h4><p>你可以使用<code>tf.keras.utils.image_dataset_from_directory</code>加载数据集，该方法适用于分类任务且一个类别一个文件夹</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">32</span></span><br><span class="line">img_height = <span class="number">180</span></span><br><span class="line">img_width = <span class="number">180</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 80% 的图像进行训练，20% 的图像进行验证</span></span><br><span class="line">train_ds = tf.keras.utils.image_dataset_from_directory(data_dir, validation_split=<span class="number">0.2</span>, </span><br><span class="line">    subset=<span class="string">&quot;training&quot;</span>, seed=<span class="number">123</span>, image_size=(img_height, img_width), batch_size=batch_size)</span><br><span class="line"></span><br><span class="line">val_ds = tf.keras.utils.image_dataset_from_directory(data_dir, validation_split=<span class="number">0.2</span>,</span><br><span class="line">    subset=<span class="string">&quot;validation&quot;</span>, seed=<span class="number">123</span>, image_size=(img_height, img_width), batch_size=batch_size)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集的 `class_names` 是类名称。</span></span><br><span class="line">class_names = train_ds.class_names</span><br><span class="line"><span class="built_in">print</span>(class_names)</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用image-label对"><a href="#使用image-label对" class="headerlink" title="使用image-label对"></a>使用image-label对</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">list_ds = tf.data.Dataset.list_files(<span class="built_in">str</span>(data_dir/<span class="string">&#x27;*/*&#x27;</span>), shuffle=<span class="literal">False</span>)</span><br><span class="line">list_ds = list_ds.shuffle(image_count, reshuffle_each_iteration=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">class_names = np.array(<span class="built_in">sorted</span>([item.name <span class="keyword">for</span> item <span class="keyword">in</span> data_dir.glob(<span class="string">&#x27;*&#x27;</span>) <span class="keyword">if</span> item.name != <span class="string">&quot;LICENSE.txt&quot;</span>]))</span><br><span class="line"><span class="built_in">print</span>(class_names)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将数据集拆分为训练集和测试集</span></span><br><span class="line">val_size = <span class="built_in">int</span>(image_count * <span class="number">0.2</span>)</span><br><span class="line">train_ds = list_ds.skip(val_size)</span><br><span class="line">val_ds = list_ds.take(val_size)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编写一个将文件路径转换为 (img, label) 对的短函数：</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_label</span>(<span class="params">file_path</span>):</span><br><span class="line">    parts = tf.strings.split(file_path, os.path.sep)</span><br><span class="line">    <span class="comment"># The second to last is the class-directory</span></span><br><span class="line">    one_hot = parts[-<span class="number">2</span>] == class_names</span><br><span class="line">    <span class="comment"># Integer encode the label</span></span><br><span class="line">    <span class="keyword">return</span> tf.argmax(one_hot)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode_img</span>(<span class="params">img</span>):</span><br><span class="line">    img = tf.io.decode_jpeg(img, channels=<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> tf.image.resize(img, [img_height, img_width])</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_path</span>(<span class="params">file_path</span>):</span><br><span class="line">    label = get_label(file_path)</span><br><span class="line">    <span class="comment"># Load the raw data from the file as a string</span></span><br><span class="line">    img = tf.io.read_file(file_path)</span><br><span class="line">    img = decode_img(img)</span><br><span class="line">    <span class="keyword">return</span> img, label</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_ds = train_ds.<span class="built_in">map</span>(process_path, num_parallel_calls=AUTOTUNE)</span><br><span class="line">val_ds = val_ds.<span class="built_in">map</span>(process_path, num_parallel_calls=AUTOTUNE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">model.fit(train_ds, validation_data=val_ds, epochs=<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="加载-npy文件"><a href="#加载-npy文件" class="headerlink" title="加载.npy文件"></a>加载<code>.npy</code>文件</h4><p>下面是一个从<code>.npz</code>文件加载数据的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">DATA_URL = <span class="string">&#x27;https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz&#x27;</span></span><br><span class="line">path = tf.keras.utils.get_file(<span class="string">&#x27;mnist.npz&#x27;</span>, DATA_URL)</span><br><span class="line"><span class="keyword">with</span> np.load(path) <span class="keyword">as</span> data:</span><br><span class="line">    train_examples = data[<span class="string">&#x27;x_train&#x27;</span>]</span><br><span class="line">    train_labels = data[<span class="string">&#x27;y_train&#x27;</span>]</span><br><span class="line">    test_examples = data[<span class="string">&#x27;x_test&#x27;</span>]</span><br><span class="line">    test_labels = data[<span class="string">&#x27;y_test&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转为tf.Tensor</span></span><br><span class="line">train_dataset = tf.data.Dataset.from_tensor_slices((train_examples, train_labels))</span><br><span class="line">test_dataset = tf.data.Dataset.from_tensor_slices((test_examples, test_labels))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打乱、批次化</span></span><br><span class="line">BATCH_SIZE = <span class="number">64</span></span><br><span class="line">SHUFFLE_BUFFER_SIZE = <span class="number">100</span></span><br><span class="line">train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)</span><br><span class="line">test_dataset = test_dataset.batch(BATCH_SIZE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练网络（略）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>数据预处理通过网络层实现。每种预处理方法都可视为网络中的一层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">num_classes = <span class="number">5</span></span><br><span class="line">normalization_layer = tf.keras.layers.Rescaling(<span class="number">1.</span>/<span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">model = tf.keras.Sequential([</span><br><span class="line">    <span class="comment"># 0-255的图片变为0-1的Tensor</span></span><br><span class="line">    tf.keras.layers.Rescaling(<span class="number">1.</span>/<span class="number">255</span>),</span><br><span class="line">    <span class="comment"># 随机旋转</span></span><br><span class="line">    tf.keras.layers.RandomRotation(<span class="number">0.5</span>),</span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">32</span>, <span class="number">3</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(),</span><br><span class="line">    tf.keras.layers.Flatten(),</span><br><span class="line">    tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    tf.keras.layers.Dense(num_classes)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">model.<span class="built_in">compile</span>(</span><br><span class="line">    optimizer=<span class="string">&#x27;adam&#x27;</span>,</span><br><span class="line">    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=<span class="literal">True</span>),</span><br><span class="line">    metrics=[<span class="string">&#x27;accuracy&#x27;</span>])</span><br><span class="line"></span><br><span class="line">model.fit(train_ds, validation_data=val_ds, epochs=<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="模型保存与加载"><a href="#模型保存与加载" class="headerlink" title="模型保存与加载"></a>模型保存与加载</h3><p>注意：这里说的都是keras而非 TensorFlow。通过 TensorFlow API保存的模型与通过 keras API保存的模型不互通<br>keras模型通过<code>model.save(&#39;path/to/location&#39;)</code>保存。</p>
+<p>加载模型代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras</span><br><span class="line">model = keras.models.load_model(<span class="string">&#x27;path/to/location&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="TensorFlow-2"><a href="#TensorFlow-2" class="headerlink" title="TensorFlow 2"></a>TensorFlow 2</h2><h3 id="使用梯度磁带自定义训练过程"><a href="#使用梯度磁带自定义训练过程" class="headerlink" title="使用梯度磁带自定义训练过程"></a>使用梯度磁带自定义训练过程</h3><p>下面是不使用Keras API 的 TensorFlow 2 训练过程。TensorFlow 2 引入梯度磁带实现自动求导。</p>
+<p>如果你不想使用<code>model.fit()</code>，而是想更为灵活的训练，可以使用下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">epochs = <span class="number">50</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">    <span class="keyword">for</span> step, (x_batch_train, y_batch_train) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_dataset):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 打开梯度磁带功能以实现自动求导，相当于`require_grad=True`</span></span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">            <span class="comment"># 前向传播</span></span><br><span class="line">            logits = model(x_batch_train, training=<span class="literal">True</span>)</span><br><span class="line">            loss_value = loss_fn(y_batch_train, logits)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 拿到梯度</span></span><br><span class="line">        grads = tape.gradient(loss_value, model.trainable_weights)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 反向传播</span></span><br><span class="line">        optimizer.apply_gradients(<span class="built_in">zip</span>(grads, model.trainable_weights))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 输出相关信息</span></span><br><span class="line">        <span class="keyword">if</span> step % <span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(</span><br><span class="line">                <span class="string">&quot;Training loss (for one batch) at step %d: %.4f&quot;</span></span><br><span class="line">                % (step, <span class="built_in">float</span>(loss_value))</span><br><span class="line">            )</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;Seen so far: %s samples&quot;</span> % ((step + <span class="number">1</span>) * batch_size))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 保存：tf.saved_model.save(model, path_to_dir)</span></span><br><span class="line">        <span class="comment"># 加载：model = tf.saved_model.load(path_to_dir)</span></span><br><span class="line">        tf.saved_model.save(model, <span class="string">&quot;checkpoint&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="使用tf-Module搭建模型"><a href="#使用tf-Module搭建模型" class="headerlink" title="使用tf.Module搭建模型"></a>使用<code>tf.Module</code>搭建模型</h3><p>从这一小节开始的内容基本上都用不上了</p>
+<p>在搭建模型的过程中，TensorFlow 2 中提供了最底层的<code>tf.Variable</code>和<code>tf.Module</code>，但是过于底层，官方不推荐使用，实际代码中使用到这部分的代码也是特别少。<br>除了使用Keras外，还可以使用<code>tf.Module</code>搭建模型。Keras正是在<code>tf.Module</code>的基础上实现的。下面是一个由模块组成的两层线性层模型的示例。</p>
+<blockquote>
+<p><strong>注：</strong><code>tf.Module</code>是<code>tf.keras.layers.Layer</code>和<code>tf.keras.Model</code>的基类，因此您在此处看到的一切内容也适用于 Keras。出于历史兼容性原因，Keras 层不会从模块收集变量，因此您的模型应仅使用模块或仅使用 Keras 层。不过，下面给出的用于检查变量的方法在这两种情况下相同。</p>
+</blockquote>
+<p>首先是一个密集（线性）层。为了不预先指定输入大小，将变量创建推迟到第一次使用特定输入形状调用模块时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FlexibleDenseModule</span>(tf.Module):</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, out_features, name=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="built_in">super</span>().__init__(name=name)</span><br><span class="line">    self.is_built = <span class="literal">False</span></span><br><span class="line">    self.out_features = out_features</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.is_built:</span><br><span class="line">      self.w = tf.Variable(</span><br><span class="line">        tf.random.normal([x.shape[-<span class="number">1</span>], self.out_features]), name=<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">      self.b = tf.Variable(tf.zeros([self.out_features]), name=<span class="string">&#x27;b&#x27;</span>)</span><br><span class="line">      self.is_built = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    y = tf.matmul(x, self.w) + self.b</span><br><span class="line">    <span class="keyword">return</span> tf.nn.relu(y)</span><br></pre></td></tr></table></figure>
+
+<p>随后是完整的模型，此模型将创建并应用两个层实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MySequentialModule</span>(tf.Module):</span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="built_in">super</span>().__init__(name=name)</span><br><span class="line"></span><br><span class="line">    self.dense_1 = FlexibleDenseModule(out_features=<span class="number">3</span>)</span><br><span class="line">    self.dense_2 = FlexibleDenseModule(out_features=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, x</span>):</span><br><span class="line">    x = self.dense_1(x)</span><br><span class="line">    <span class="keyword">return</span> self.dense_2(x)</span><br><span class="line"></span><br><span class="line">my_model = MySequentialModule(name=<span class="string">&quot;the_model&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Model results:&quot;</span>, my_model(tf.constant([[<span class="number">2.0</span>, <span class="number">2.0</span>, <span class="number">2.0</span>]])))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Model results: tf.Tensor([[0. 0.]], shape=(1, 2), dtype=float32)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line"><span class="comment">## Tensorflow 1.x</span></span><br><span class="line"></span><br><span class="line">介绍之前先来一波劝退。TensorFlow <span class="number">1.</span>x 的静态图机制能有效提高性能，但是使用起来非常麻烦，上手难度大。**如果不是有特别的需求真别学TF1**，看到`requirement.txt`里写`tensorflow&lt;<span class="number">1.15</span>`以后的第一反应应该是找有没有用 Pytorch 重写的版本。</span><br><span class="line"></span><br><span class="line"><span class="comment">### 理解静态计算图机制</span></span><br><span class="line"></span><br><span class="line">以计算`<span class="number">2</span>+<span class="number">4</span>`为例，首先创建计算图：</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建2个端子作为输入端子，指定类型和名字</span></span><br><span class="line">a_ph = tf.placeholder(tf.float32, name=<span class="string">&#x27;variable_a&#x27;</span>)</span><br><span class="line">b_ph = tf.placeholder(tf.float32, name=<span class="string">&#x27;variable_b&#x27;</span>)</span><br><span class="line"><span class="comment"># 创建输出端子的运算操作，并命名</span></span><br><span class="line">c_op = tf.add(a_ph, b_ph, name=<span class="string">&#x27;variable_c&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样，<code>c=a+b</code>的计算图就创建好了。下面开始使用刚才创建的图计算<code>2+4</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sess = tf.InteractiveSession()              <span class="comment"># 创建运行环境</span></span><br><span class="line">init = tf.global_variables_initializer()    <span class="comment"># 创建初始化操作</span></span><br><span class="line">sess.run(init)                              <span class="comment"># 运行初始化</span></span><br><span class="line"><span class="comment"># 给 a b 端子赋值并计算得到结果</span></span><br><span class="line">c_numpy = sess.run(c_op, feed_dict=&#123;a_ph: <span class="number">2.</span>, b_ph: <span class="number">4.</span>&#125;)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;a+b=&#x27;</span>,c_numpy)</span><br></pre></td></tr></table></figure>
+
+<p>TensorFlow 1.x将“定义”与“运行”相分离，一个TensorFlow图描述了计算的过程。为了进行计算，图必须在会话<code>session</code>里启动，会话将图的op分发到诸如CPU或者GPU的设备上，同时提供执行op的方法，这些方法执行后，将产生的tensor返回，在python语言中，返回的tensor是numpy array对象，在C或者C++语言中，返回的<code>tensor是tensorflow:Tensor</code>实例。</p>
+<h3 id="不使用-keras-构建-pipline"><a href="#不使用-keras-构建-pipline" class="headerlink" title="不使用 keras 构建 pipline"></a>不使用 keras 构建 pipline</h3><p>理解了静态计算图的运行机制以后，来看下面这个不使用 keras 构建 pipline 的例子。下面的代码在MNIST上训练了一个分类模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> random <span class="keyword">as</span> ran</span><br><span class="line"></span><br><span class="line"><span class="comment"># Import MNIST data</span></span><br><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">&quot;MNIST_data/&quot;</span>, one_hot=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Trainning Parameters</span></span><br><span class="line">learning_rate = <span class="number">0.001</span></span><br><span class="line">training_iters = <span class="number">500</span></span><br><span class="line">batch_size = <span class="number">128</span></span><br><span class="line">display_step = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Network Parameters</span></span><br><span class="line">n_input = <span class="number">784</span>  <span class="comment"># MNIST data input (img shape: 28*28)</span></span><br><span class="line">n_classes = <span class="number">10</span>  <span class="comment"># MNIST total classes (0-9 digits)</span></span><br><span class="line">dropout = <span class="number">0.85</span></span><br><span class="line"></span><br><span class="line">x = tf.placeholder(tf.float32, [<span class="literal">None</span>, n_input])  <span class="comment"># 输入端子</span></span><br><span class="line">y = tf.placeholder(tf.float32, [<span class="literal">None</span>, n_classes])  <span class="comment"># 输出端子</span></span><br><span class="line">keep_prob = tf.placeholder(tf.float32)  <span class="comment"># 拿来存 dropout_rate 的 placeholder</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">conv2d</span>(<span class="params">x, W, b, strides=<span class="number">1</span></span>):</span><br><span class="line">    x = tf.nn.conv2d(x, W, strides=[<span class="number">1</span>, strides, strides, <span class="number">1</span>], padding=<span class="string">&#x27;SAME&#x27;</span>)</span><br><span class="line">    x = tf.nn.bias_add(x, b)</span><br><span class="line">    <span class="keyword">return</span> tf.nn.relu(x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maxpool2d</span>(<span class="params">x, k=<span class="number">2</span></span>):</span><br><span class="line">    <span class="keyword">return</span> tf.nn.max_pool(x, ksize=[<span class="number">1</span>, k, k, <span class="number">1</span>], strides=[<span class="number">1</span>, k, k, <span class="number">1</span>], padding=<span class="string">&#x27;SAME&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">conv_net</span>(<span class="params">x, weights, biases, dropout</span>):</span><br><span class="line">    x = tf.reshape(x, shape=[-<span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>, <span class="number">1</span>])  <span class="comment"># reshape the input picture</span></span><br><span class="line"></span><br><span class="line">    conv1 = conv2d(x, weights[<span class="string">&#x27;wc1&#x27;</span>], biases[<span class="string">&#x27;bc1&#x27;</span>])</span><br><span class="line">    conv1 = maxpool2d(conv1, k=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    conv2 = conv2d(conv1, weights[<span class="string">&#x27;wc2&#x27;</span>], biases[<span class="string">&#x27;bc2&#x27;</span>])</span><br><span class="line">    conv2 = maxpool2d(conv2, k=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># flatten</span></span><br><span class="line">    fc1 = tf.reshape(conv2, [-<span class="number">1</span>, weights[<span class="string">&#x27;wd1&#x27;</span>].get_shape().as_list()[<span class="number">0</span>]])</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 全连接层。直接 WX+b</span></span><br><span class="line">    fc1 = tf.add(tf.matmul(fc1, weights[<span class="string">&#x27;wd1&#x27;</span>]), biases[<span class="string">&#x27;bd1&#x27;</span>])  <span class="comment"># Fully connected layer</span></span><br><span class="line">    fc1 = tf.nn.relu(fc1)</span><br><span class="line">    fc1 = tf.nn.dropout(fc1, dropout)  <span class="comment"># Dropout</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Output the class prediction</span></span><br><span class="line">    out = tf.add(tf.matmul(fc1, weights[<span class="string">&#x27;out&#x27;</span>]), biases[<span class="string">&#x27;out&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line">weights = &#123;</span><br><span class="line">    <span class="comment"># 5x5 conv, 1 input, and 32 outputs</span></span><br><span class="line">    <span class="string">&#x27;wc1&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">5</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">32</span>])),</span><br><span class="line">    <span class="comment"># 5x5 conv, 32 inputs, and 64 outputs</span></span><br><span class="line">    <span class="string">&#x27;wc2&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">5</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">64</span>])),</span><br><span class="line">    <span class="comment"># fully connected, 7*7*64 inputs, and 1024 outputs</span></span><br><span class="line">    <span class="string">&#x27;wd1&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">7</span>*<span class="number">7</span>*<span class="number">64</span>, <span class="number">1024</span>])),</span><br><span class="line">    <span class="comment"># 1024 inputs, 10 outputs for class digits</span></span><br><span class="line">    <span class="string">&#x27;out&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">1024</span>, n_classes]))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">biases = &#123;</span><br><span class="line">    <span class="string">&#x27;bc1&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">32</span>])),</span><br><span class="line">    <span class="string">&#x27;bc2&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">64</span>])),</span><br><span class="line">    <span class="string">&#x27;bd1&#x27;</span>: tf.Variable(tf.random_normal([<span class="number">1024</span>])),</span><br><span class="line">    <span class="string">&#x27;out&#x27;</span>: tf.Variable(tf.random_normal([n_classes]))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pred = conv_net(x, weights, biases, keep_prob)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义代价函数（损失函数）和优化器</span></span><br><span class="line">cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y))</span><br><span class="line"><span class="comment"># optimizer最小化cost，也就是最小化网络的输出</span></span><br><span class="line">optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义 accuracy</span></span><br><span class="line">correct_prediction = tf.equal(tf.argmax(pred, <span class="number">1</span>), tf.argmax(y, <span class="number">1</span>))</span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</span><br><span class="line"><span class="comment"># 创建初始化操作</span></span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">train_loss = []</span><br><span class="line">train_acc = []</span><br><span class="line">test_acc = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 前方高能</span></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:  <span class="comment"># 创建运行环境</span></span><br><span class="line">    sess.run(init)          <span class="comment"># 运行初始化</span></span><br><span class="line">    step = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> step &lt;= training_iters:</span><br><span class="line">        batch_x, batch_y = mnist.train.next_batch(batch_size)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 运行计算图。包括前向传播和反向传播</span></span><br><span class="line">        sess.run(optimizer, feed_dict=&#123;x: batch_x, y: batch_y, keep_prob: dropout&#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 适时打印 loss 和 acc</span></span><br><span class="line">        <span class="keyword">if</span> step % display_step == <span class="number">0</span>:</span><br><span class="line">            loss_train, acc_train = sess.run(</span><br><span class="line">                [cost, accuracy], </span><br><span class="line">                feed_dict=&#123;x: batch_x, y: batch_y, keep_prob: <span class="number">1.</span>&#125;</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">            <span class="comment"># print 不加括号是 Python 2 的语法😅</span></span><br><span class="line">            <span class="built_in">print</span> <span class="string">&quot;Iter &quot;</span> + <span class="built_in">str</span>(step) + <span class="string">&quot;, Minibatch Loss= &quot;</span> + \</span><br><span class="line">                  <span class="string">&quot;&#123;:.2f&#125;&quot;</span>.<span class="built_in">format</span>(loss_train) + <span class="string">&quot;, Training Accuracy= &quot;</span> + \</span><br><span class="line">                  <span class="string">&quot;&#123;:.2f&#125;&quot;</span>.<span class="built_in">format</span>(acc_train)</span><br><span class="line">    </span><br><span class="line">            <span class="comment"># Calculate accuracy for mnist test images. </span></span><br><span class="line">            <span class="comment"># Note that in this case no dropout</span></span><br><span class="line">            acc_test = sess.run(</span><br><span class="line">                accuracy, </span><br><span class="line">                feed_dict=&#123;x: mnist.test.images, y: mnist.test.labels, keep_prob: <span class="number">1.</span>&#125;</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span> <span class="string">&quot;Testing Accuracy:&quot;</span> + <span class="string">&quot;&#123;:.2f&#125;&quot;</span>.<span class="built_in">format</span>(acc_train)</span><br><span class="line"></span><br><span class="line">            train_loss.append(loss_train)</span><br><span class="line">            train_acc.append(acc_train)</span><br><span class="line">            test_acc.append(acc_test)</span><br><span class="line">            </span><br><span class="line">        step += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<!-- ### 评价
+
+我们需要把TF1带到它出现的那个时代看，就能发现它身上的进步之处。 -->
+
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://keras.io/">Keras 官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/">TensorFlow 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://tensorflow.google.cn/">TensorFlow 官方文档镜像</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tensorflow/docs/tree/master/site/en/r1">TensorFlow 1.x 官方文档</a><!-- - [如何理解深度学习框架tensorflow下Session.run的运行机制？- CSDN](https://chunqiushenye.blog.csdn.net/article/details/88628640) --></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/dl/2023/01/16/164119/" title="tensorflow介绍">http://hetan697.github.io/blogs/dl/2023/01/16/164119/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/un/2022/12/24/172525/" rel="prev" title="2022年总结">
+                  <i class="fa fa-chevron-left"></i> 2022年总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/un/2023/01/27/221240/" rel="next" title="又焦虑了">
+                  又焦虑了 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.3.0/mermaid.min.js","integrity":"sha256-QdTG1YTLLTwD3b95jLqFxpQX9uYuJMNAtVZgwKX4oYU="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
