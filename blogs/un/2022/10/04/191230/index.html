@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="Longhorn 是 Microsoft 研发的用于接替 Windows XP 的操作系统代号，也就是 Windows Vista 的内部测试版。其中，Build 4074 可能是整个测试过程中唯一完全拥有完整、可用的 Aero 特效的系统，国庆期间在寝室试了试装了装这款系统的虚拟机玩，当然，没装成功。中间的一些步骤用这篇博客记录下来。">
 <meta property="og:type" content="article">
@@ -221,7 +221,7 @@
 <p>Vista 的 login 真心好看，那个动画啥的都做得特别棒</p>
 <h3 id="极光壁纸"><a href="#极光壁纸" class="headerlink" title="极光壁纸"></a>极光壁纸</h3><h2 id="失败的安装经历"><a href="#失败的安装经历" class="headerlink" title="失败的安装经历"></a>失败的安装经历</h2><p>首先教程只有 <a target="_blank" rel="noopener" href="https://blog.csdn.net/mgsky1/article/details/75453521/">CSDN 上的这一篇</a>，全网估计都只有这一篇，剩下的都是在洗稿。</p>
 <p>那么我先在<a target="_blank" rel="noopener" href="https://winworldpc.com/product/windows-longhorn-vis/pre-reset">WinWorldPC 的 longhorn 页面</a>上下了一个 4074 的 x64 版本，毕竟总是看不起 x86版本的，有 64 就用 64 嘛。结果 VMWare 直接进了一个类似于 Windows XP 安装程序的界面说系统硬盘不支持 64 位，调了很久都没用。没办法，只好再下过一个 32 位的了</p>
-<p><img src="/blogs/un/2022/10/04/191230/x64-error2.png" alt="x64-error2"></p>
+<p><img data-src="/blogs/un/2022/10/04/191230/x64-error2.png" alt="x64-error2"></p>
 <h2 id="Longhorn-的缺点"><a href="#Longhorn-的缺点" class="headerlink" title="Longhorn 的缺点"></a>Longhorn 的缺点</h2><p>当然，这玩意我没玩多久就发现了很多缺点：</p>
 <ol>
 <li>装好以后，我看到那个文件资源管理器的<code>C:\Documents and Settings</code>文件夹血压就开始飙升</li>
@@ -336,6 +336,9 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   

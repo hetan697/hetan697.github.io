@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="停更提示：该文章尚未完成，项目因故搁置，择期重启，谢谢！ 本文使用 NoneBot2 搭建了一个 QQ 机器人，并为其加入 QA 功能。">
 <meta property="og:type" content="article">
@@ -237,59 +237,59 @@
 
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
 <li><p>下载<a target="_blank" rel="noopener" href="https://github.com/Mrs4s/go-cqhttp/releases">go-cqhttp</a></p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_163808_image.png" alt="go-cqhttp releases"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_163808_image.png" alt="go-cqhttp releases"></p>
 </li>
 <li><p>创建新 Python 环境</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create --name nb python=3.8</span><br></pre></td></tr></table></figure>
 
 <p>之后输入<code>y</code>确认创建新环境。执行完毕后如下：</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_161616_image.png" alt="conda create"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_161616_image.png" alt="conda create"></p>
 <p>之后切换至创建好的环境：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate nb</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装<code>nb脚手架</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install nb-cli</span><br></pre></td></tr></table></figure>
 
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_163857_image.png" alt="安装nb脚手架"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_163857_image.png" alt="安装nb脚手架"></p>
 </li>
 </ol>
 <h2 id="安装NoneBot机器人"><a href="#安装NoneBot机器人" class="headerlink" title="安装NoneBot机器人"></a>安装NoneBot机器人</h2><h3 id="配置-go-cqhttp-以登录-QQ"><a href="#配置-go-cqhttp-以登录-QQ" class="headerlink" title="配置 go-cqhttp 以登录 QQ"></a>配置 go-cqhttp 以登录 QQ</h3><p>直接打开下载好的<code>go-cqhttp_windows_amd64.exe</code>，和之前一样直接打开会有提示；若通过命令行则没有。</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_164125_image.png" alt="直接打开提示"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_164125_image.png" alt="直接打开提示"></p>
 <p>直接打开也挺好，点击几次<code>确定</code>（截图没截到）后会自动生成<code>go-cqhttp.bat</code>，通过命令行打开的话还没有，内容如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%Created by go-cqhttp. DO NOT EDIT ME!%</span><br><span class="line">start cmd /K <span class="string">&quot;go-cqhttp.exe&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>点击生成的<code>go-cqhttp.bat</code>后会打开<code>go-cqhttp.exe</code>，非常方便。第一次打开选择<code>反向WebSocket</code>（输入<code>3</code>）后回车。</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_164613_image.png" alt="首次打开go-cqhttp"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_164613_image.png" alt="首次打开go-cqhttp"></p>
 <p>关闭当前命令行窗口。修改<code>config.yml</code>中<code>account</code>内的<code>uin</code>和<code>password</code>（约第 4、5 行）；修改<code>servers.ws-reverse.universal</code>（约第 98 行）为<code>ws://127.0.0.1:8765/onebot/v11/ws</code>，端口号不得冲突。点击<code>go-cqhttp.bat</code>打开<code>go-cqhttp</code>，之后按提示登录。</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_165445_image.png" alt="登录成功"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_165445_image.png" alt="登录成功"></p>
 <p>出现上图即视为登录成功，黄字警告暂时不管，将该命令行窗口最小化。</p>
 <h3 id="新建-NoneBot2-项目"><a href="#新建-NoneBot2-项目" class="headerlink" title="新建 NoneBot2 项目"></a>新建 NoneBot2 项目</h3><p>在准备工作(2)(3)的基础上，使用<code>nb-cli</code>新建<code>NoneBot</code>项目。在准备工作(3)的命令行窗口中输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nb create</span><br></pre></td></tr></table></figure>
 
 <p>脚手架<code>nb-cli</code>中自带适配器<code>nonebot-adapter-onebot</code><br>之后让你填写项目名。此处以“chatbot”为例。之后会要求选择存储 Bot 的路径，此处我选择第一项，所以直接敲击<kbd><code>enter</code></kbd>键。若要选择第二项，使用<kbd><code>↑</code></kbd><kbd><code>↓</code></kbd>选中选项后敲击<kbd><code>enter</code></kbd>键。</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_165847_image.png" alt="nbc2"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_165847_image.png" alt="nbc2"></p>
 <p>之后选择添加<code>echo</code>方便后续调试。注意这里英文提示发生了改变：使用<kbd><code>↑</code></kbd><kbd><code>↓</code></kbd>移动，使用<kbd><code>space</code></kbd>选中选项，使用<kbd><code>enter</code></kbd>键确认选项。相比上一步，你需要额外使用<kbd><code>空格键</code></kbd>来选中选项；不过，这里也可以使用鼠标左键选中。</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_165919_image.png" alt="nbc3"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_165919_image.png" alt="nbc3"></p>
 <p>选平台（适配器<code>adapter</code>）没想到 V12 已经出了但我还是选择了 V11 怕文档不全社区不活跃不利于后续添加聊天功能。</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_170034_image.png" alt="nb5"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_170034_image.png" alt="nb5"></p>
 <p>之后会自动安装，等待安装结束即可：</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_170148_image.png" alt="nb6"></p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_170157_image.png" alt="nb7"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_170148_image.png" alt="nb6"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_170157_image.png" alt="nb7"></p>
 <h3 id="配置-NoneBot2-项目以启动-Bot"><a href="#配置-NoneBot2-项目以启动-Bot" class="headerlink" title="配置 NoneBot2 项目以启动 Bot"></a>配置 NoneBot2 项目以启动 Bot</h3><p>正如上一步所配置的，NoneBot2 在<code>chatbot</code>目录中。所以我们进入<code>chatbot</code>目录对 NoneBot2 项目进行进一步配置。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ./chatbot</span><br></pre></td></tr></table></figure>
 
-<p><img src="/blogs/daily/2022/07/22/172325/20220723_082516_image.png"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220723_082516_image.png"></p>
 <p>修改其中的<code>env.dev</code>中的<code>PORT</code>，使之与go-cqhttp<code>config.yml</code>中<code>servers.ws-reverse.universal</code>（约第 98 行）<code>ws://127.0.0.1:&#123;&#123;PORT&#125;&#125;/onebot/v11/ws</code>处的内容对应：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">HOST=127.0.0.1</span></span><br><span class="line"><span class="string">PORT=8654</span>            <span class="comment"># 修改这一项</span></span><br><span class="line"><span class="string">LOG_LEVEL=DEBUG</span></span><br><span class="line"><span class="string">FASTAPI_RELOAD=true</span></span><br></pre></td></tr></table></figure>
 
 <p>执行以下命令运行 nonebot2：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nb run</span><br></pre></td></tr></table></figure>
 
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_171426_image.png" alt="8"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_171426_image.png" alt="8"></p>
 <p>运行成功后<code>go-cqhttp.exe</code>的警告也会消失：</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_171439_image.png" alt="9"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_171439_image.png" alt="9"></p>
 <p>此时，你若向机器人输入<code>/echo 123</code>就能收到机器人的 echo：</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_171722_image.png" alt="QQ聊天测试"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_171722_image.png" alt="QQ聊天测试"></p>
 <p>则机器人成功搭建。</p>
 <h3 id="添加-QA-功能"><a href="#添加-QA-功能" class="headerlink" title="添加 QA 功能"></a>添加 QA 功能</h3><p><em><strong>停更提示：该文章尚未完成，项目因故搁置，择期重启，谢谢！</strong></em></p>
 <p>通过如下步骤添加 QA 功能：</p>
@@ -297,7 +297,7 @@
 
 <h2 id="避坑指南"><a href="#避坑指南" class="headerlink" title="避坑指南"></a>避坑指南</h2><ul>
 <li><p>新建 NoneBot2 项目时无法选中适配器</p>
-<p><img src="/blogs/daily/2022/07/22/172325/20220722_170034_image.png" alt="nb5"></p>
+<p><img data-src="/blogs/daily/2022/07/22/172325/20220722_170034_image.png" alt="nb5"></p>
 <p>请严格按照<a href="#%E6%96%B0%E5%BB%BA-NoneBot2-%E9%A1%B9%E7%9B%AE">提示</a>操作，<strong>不要忘记按空格键选中</strong>。</p>
 </li>
 <li><p>端口号被占用</p>
@@ -478,6 +478,9 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   

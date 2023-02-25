@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="本文原文见 Microsoft Learn 和 pytorch官网，有删改。">
 <meta property="og:type" content="article">
@@ -268,7 +268,7 @@ Extracting data\FashionMNIST\raw\t10k-labels-idx1-ubyte.gz to data\FashionMNIST\
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">labels_map = &#123;</span><br><span class="line">    <span class="number">0</span>: <span class="string">&quot;T-Shirt&quot;</span>,</span><br><span class="line">    <span class="number">1</span>: <span class="string">&quot;Trouser&quot;</span>,</span><br><span class="line">    <span class="number">2</span>: <span class="string">&quot;Pullover&quot;</span>,</span><br><span class="line">    <span class="number">3</span>: <span class="string">&quot;Dress&quot;</span>,</span><br><span class="line">    <span class="number">4</span>: <span class="string">&quot;Coat&quot;</span>,</span><br><span class="line">    <span class="number">5</span>: <span class="string">&quot;Sandal&quot;</span>,</span><br><span class="line">    <span class="number">6</span>: <span class="string">&quot;Shirt&quot;</span>,</span><br><span class="line">    <span class="number">7</span>: <span class="string">&quot;Sneaker&quot;</span>,</span><br><span class="line">    <span class="number">8</span>: <span class="string">&quot;Bag&quot;</span>,</span><br><span class="line">    <span class="number">9</span>: <span class="string">&quot;Ankle Boot&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line">figure = plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">cols, rows = <span class="number">3</span>, <span class="number">3</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, cols * rows + <span class="number">1</span>):</span><br><span class="line">    sample_idx = torch.randint(<span class="built_in">len</span>(training_data), size=(<span class="number">1</span>,)).item()</span><br><span class="line">    img, label = training_data[sample_idx]</span><br><span class="line">    figure.add_subplot(rows, cols, i)</span><br><span class="line">    plt.title(labels_map[label])</span><br><span class="line">    plt.axis(<span class="string">&quot;off&quot;</span>)</span><br><span class="line">    plt.imshow(img.squeeze(), cmap=<span class="string">&quot;gray&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="/blogs/dl/2022/09/09/151753/output_5_0.png" alt="png"></p>
+<p><img data-src="/blogs/dl/2022/09/09/151753/output_5_0.png" alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">len</span>(training_data)</span><br></pre></td></tr></table></figure>
 
 
@@ -285,7 +285,7 @@ Extracting data\FashionMNIST\raw\t10k-labels-idx1-ubyte.gz to data\FashionMNIST\
 <pre><code>Feature batch shape: torch.Size([64, 1, 28, 28])
 Labels batch shape: torch.Size([64])
 </code></pre>
-<p><img src="/blogs/dl/2022/09/09/151753/output_9_1.png" alt="png"></p>
+<p><img data-src="/blogs/dl/2022/09/09/151753/output_9_1.png" alt="png"></p>
 <pre><code>Label: 9
 </code></pre>
 <p>图像预处理</p>
@@ -885,6 +885,9 @@ Done!
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   

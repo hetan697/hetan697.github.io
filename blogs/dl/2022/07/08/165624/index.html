@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="这是目标检测学习所做的笔记，使用pytorch实现。东西很乱，而且截至目前还没有整理完，请见谅。 概要 目标检测相关技术演进 SSD算法 YOLO算法">
 <meta property="og:type" content="article">
@@ -257,17 +257,17 @@
 <p>下面，将边界框在一张图中画出。在这之前，先导入需要加上边框的图片：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br><span class="line"></span><br><span class="line">d2l.set_figsize()</span><br><span class="line">img = d2l.plt.imread(<span class="string">&#x27;../img/catdog.jpg&#x27;</span>)</span><br><span class="line">d2l.plt.imshow(img)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/blogs/dl/2022/07/08/165624/output_5_0.svg" alt="svg"></p>
+<p><img data-src="/blogs/dl/2022/07/08/165624/output_5_0.svg" alt="svg"></p>
 <p>定义一个辅助函数<code>bbox_to_rect</code>将边界框表示成<code>matplotlib</code>的边界框格式。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">bbox_to_rect</span>(<span class="params">bbox, color</span>):</span><br><span class="line">    <span class="comment"># 将边界框(左上x,左上y,右下x,右下y)格式转换成matplotlib格式：</span></span><br><span class="line">    <span class="comment"># ((左上x,左上y),宽,高)</span></span><br><span class="line">    <span class="keyword">return</span> d2l.plt.Rectangle(</span><br><span class="line">        xy=(bbox[<span class="number">0</span>], bbox[<span class="number">1</span>]), width=bbox[<span class="number">2</span>]-bbox[<span class="number">0</span>], height=bbox[<span class="number">3</span>]-bbox[<span class="number">1</span>],</span><br><span class="line">        fill=<span class="literal">False</span>, edgecolor=color, linewidth=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
 <p>在图像上添加边界框之后，我们可以看到两个物体的主要轮廓基本上在两个框内。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fig = d2l.plt.imshow(img)</span><br><span class="line">fig.axes.add_patch(bbox_to_rect(dog_bbox, <span class="string">&#x27;blue&#x27;</span>))</span><br><span class="line">fig.axes.add_patch(bbox_to_rect(cat_bbox, <span class="string">&#x27;red&#x27;</span>));</span><br></pre></td></tr></table></figure>
 
-<p><img src="/blogs/dl/2022/07/08/165624/output_15_0.svg" alt="svg"></p>
+<p><img data-src="/blogs/dl/2022/07/08/165624/output_15_0.svg" alt="svg"></p>
 <h2 id="IoU-Intersection-Over-Union-交并比"><a href="#IoU-Intersection-Over-Union-交并比" class="headerlink" title="IoU (Intersection Over Union, 交并比)"></a>IoU (Intersection Over Union, 交并比)</h2><p>交并比是指两个集合的交集除以两个集合的并集：</p>
 <p>$$J(A,B) &#x3D; \frac{|A∩B|}{|A∪B|}$$</p>
-<p><img src="https://zh.d2l.ai/_images/iou.svg" alt="../_images/iou.svg"></p>
+<p><img data-src="https://zh.d2l.ai/_images/iou.svg" alt="../_images/iou.svg"></p>
 <ul>
 <li>用于衡量锚框和真实边缘框之间的相似度，是两个框之间的交集与两个框的并集的比值</li>
 <li>取值范围[0,1]：0表示没有重叠，1表示完全重合（越接近1，两个框的相似度越高）</li>
@@ -291,13 +291,13 @@
 </ol>
 <p>当然，除了使用平方误差之外，还可以逻辑回归损失函数，类标签$c_1$ $c_2$ $c_3$也可以通过softmax输出。比较而言，平方误差已经能够取得比较好的效果。</p>
 <h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><p>可以使用上述方式对人脸部分特征点坐标进行定位检测（Landmark Detection），并标记出来：</p>
-<p><img src="https://img-blog.csdn.net/20180111160539785" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180111160539785" alt="这里写图片描述"></p>
 <p>也可以检测人体姿势动作：</p>
-<p><img src="https://img-blog.csdn.net/20180111162053588" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180111162053588" alt="这里写图片描述"></p>
 <h2 id="Sliding-Windows-滑动窗算法"><a href="#Sliding-Windows-滑动窗算法" class="headerlink" title="Sliding Windows (滑动窗算法)"></a>Sliding Windows (滑动窗算法)</h2><h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p>使用滑动窗算法实现<code>Object Detection</code>有以下几步：</p>
 <ol>
 <li>训练图片分类网络</li>
-<li>在测试图片上选择大小适宜的窗口、合适的步进长度，进行从左到右、从上到下的滑动。每个窗口区域都送入之前构建好的CNN模型进行识别判断，若判断有目标，则此窗口即为目标区域；若判断没有目标，则此窗口为非目标区域。<img src="https://img-blog.csdn.net/20180111165958113" alt="这里写图片描述"></li>
+<li>在测试图片上选择大小适宜的窗口、合适的步进长度，进行从左到右、从上到下的滑动。每个窗口区域都送入之前构建好的CNN模型进行识别判断，若判断有目标，则此窗口即为目标区域；若判断没有目标，则此窗口为非目标区域。<img data-src="https://img-blog.csdn.net/20180111165958113" alt="这里写图片描述"></li>
 </ol>
 <h3 id="算法优缺点"><a href="#算法优缺点" class="headerlink" title="算法优缺点"></a>算法优缺点</h3><ul>
 <li>优点：原理简单，不需要人为选定目标区域（检测出目标的滑动窗即为目标区域）。</li>
@@ -310,15 +310,15 @@
 <p>滑动窗算法虽然简单，但是性能不佳、不够灵活。</p>
 <h3 id="Convolutional-Implementation-of-Sliding-Windows"><a href="#Convolutional-Implementation-of-Sliding-Windows" class="headerlink" title="Convolutional Implementation of Sliding Windows"></a>Convolutional Implementation of Sliding Windows</h3><p>滑动窗算法可以使用卷积方式实现以提高运行速度、节约重复运算成本。</p>
 <p>首先将全连接层转变成为卷积层，如下图所示：</p>
-<p><img src="https://img-blog.csdn.net/20180111195724054" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180111195724054" alt="这里写图片描述"></p>
 <p>全连接层转变成卷积层的操作很简单，只需要使用与上层尺寸一致的 filter 进行卷积运算即可。最终得到的输出层维度是 1×1×4，代表 4 类输出值。</p>
 <p>单个窗口区域卷积网络结构建立完毕之后，对于待检测图片，即可使用该网络参数和结构进行运算。例如 16×16×3 的图片，步进长度为 2，CNN网络得到的输出层为 2×2×4。其中，2×2 表示共有 4 个窗口结果；28×28×3 的图片，输出层为 8×8×4，共 64 个窗口结果。</p>
-<p><img src="https://img-blog.csdn.net/20180111203920946" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180111203920946" alt="这里写图片描述"></p>
 <p>之前的滑动窗算法需要反复进行正向计算，例如 16×16×3 的图片需进行 4 次，28×28×3 的图片需进行 64 次。而利用卷积操作代替滑动窗算法，则不管原始图片有多大，只需要进行一次正向计算，大大节约了运算成本。窗口步进长度与选择的 Max Pool 大小有关。如果需要步进长度为 4，只需设置Max Pool 为 4×4 即可。</p>
 <h2 id="Bounding-Box-Predictions"><a href="#Bounding-Box-Predictions" class="headerlink" title="Bounding Box Predictions"></a>Bounding Box Predictions</h2><p>滑动窗口算法有时会出现滑动窗不能完全涵盖目标的问题，如下图蓝色窗口所示。YOLO（You Only Look Once）算法可以解决这类问题，生成更加准确的目标区域（如上图红色窗口）。</p>
-<p><img src="https://img-blog.csdn.net/20180111213136173" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180111213136173" alt="这里写图片描述"></p>
 <p>YOLO算法首先将原始图片分割成n×n网格，每个网格代表一块区域。为简化说明，下图中将图片分成3×3网格。</p>
-<p><img src="https://img-blog.csdn.net/20180111214333011" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180111214333011" alt="这里写图片描述"></p>
 <p>然后，利用上一节卷积形式实现滑动窗口算法的思想，对该原始图片构建CNN网络，得到的的输出层维度为 3×3×8。其中，3×3 对应 9 个网格，每个网格的输出包含 8 个元素：</p>
 <p>$$<br>output&#x3D;\begin{bmatrix}p_c &amp; b_x &amp; b_y &amp; b_h &amp; b_w &amp; c_1 &amp; c_2 &amp; c_3\end{bmatrix}^T<br>$$</p>
 <p>如果目标中心坐标($b_x$, $b_y$)不在当前网格内，则当前网格$p_c&#x3D;0$；相反，则当前网格$p_c&#x3D;1$（即只看中心坐标是否在当前网格内）。判断有目标的网格中，$b_x$, $b_y$, $b_h$, $b_w$限定了目标区域。值得注意的是，当前网格左上角坐标设定为(0, 0)，右下角坐标设定为(1, 1)，($b_x$, $b_y$)范围限定在[0,1]之间，但是$b_h$, $b_w$可以大于1。因为目标可能超出该网格，横跨多个区域，如上图所示。目标占几个网格没有关系，目标中心坐标必然在一个网格之内。划分的网格可以更密一些。网格越小，则多个目标的中心坐标被划分到一个网格内的概率就越小。</p>
@@ -339,7 +339,7 @@
 
 <h2 id="Anchor-Box-锚框"><a href="#Anchor-Box-锚框" class="headerlink" title="Anchor Box (锚框)"></a>Anchor Box (锚框)</h2><p>到目前为止，我们介绍的都是一个网格至多只能检测一个目标。那对于多个目标重叠的情况，例如一个人站在一辆车前面，该如何使用YOLO算法进行检测呢？方法是使用不同形状的Anchor Boxes。</p>
 <p>如下图所示，同一网格出现了两个目标：人和车。为了同时检测两个目标，我们可以设置两个Anchor Boxes，Anchor box 1 检测人，Anchor box 2 检测车。也就是说，每个网格多加了一层输出。原来的输出维度是 3×3×8，现在是 3×3×2×8（也可以写成 3×3×16 的形式）。这里的2表示有两个Anchor Boxes，用来在一个网格中同时检测多个目标。每个Anchor box都有一个Pc值，若两个Pc值均大于某阈值，则检测到了两个目标。</p>
-<p><img src="https://img-blog.csdn.net/20180112170815478" alt="这里写图片描述"></p>
+<p><img data-src="https://img-blog.csdn.net/20180112170815478" alt="这里写图片描述"></p>
 <p>对于有两个锚框的情况，输出的格式如下：<br>$$<br>output&#x3D;\begin{bmatrix}p_c &amp; b_x &amp; b_y &amp; b_h &amp; b_w &amp; c_1 &amp; c_2 &amp; c_3 &amp; p_c &amp; b_x &amp; b_y &amp; b_h &amp; b_w &amp; c_1 &amp; c_2 &amp; c_3\end{bmatrix}^T<br>$$</p>
 <p>在使用YOLO算法时，只需对每个 Anchor box 使用非最大值抑制即可。Anchor Boxes形状的选择可以通过人为选取，也可以使用其他机器学习算法，例如k聚类算法对待检测的所有目标进行形状分类，选择主要形状作为Anchor Boxes。</p>
 <h2 id="YOLO"><a href="#YOLO" class="headerlink" title="YOLO"></a>YOLO</h2><ol>
@@ -443,6 +443,9 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/medium-zoom/1.0.8/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
 <script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
