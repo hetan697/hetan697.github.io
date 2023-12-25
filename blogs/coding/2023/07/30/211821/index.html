@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="主要内容：set multiset pair https:&#x2F;&#x2F;blog.csdn.net&#x2F;q5120192609&#x2F;article&#x2F;details&#x2F;127587508">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++STL学习2">
+<meta property="og:url" content="http://hetan697.github.io/blogs/coding/2023/07/30/211821/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="主要内容：set multiset pair https:&#x2F;&#x2F;blog.csdn.net&#x2F;q5120192609&#x2F;article&#x2F;details&#x2F;127587508">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-30T13:18:21.000Z">
+<meta property="article:modified_time" content="2023-07-31T12:32:55.354Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/coding/2023/07/30/211821/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/coding/2023/07/30/211821/","path":"blogs/coding/2023/07/30/211821/","title":"C++STL学习2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C++STL学习2 | Hetan的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?9d3d45b6aa0aa3c74a095aba4384c50e"></script>
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-个人页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>个人页</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#set-amp-multiset"><span class="nav-number">1.</span> <span class="nav-text">set &amp; multiset</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E4%B8%8E%E8%B5%8B%E5%80%BC-amp-%E5%A4%A7%E5%B0%8F%E4%B8%8E%E4%BA%A4%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">构造与赋值&amp;大小与交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E4%B8%8E%E5%88%A0%E9%99%A4"><span class="nav-number">1.3.</span> <span class="nav-text">插入与删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E4%B8%8E%E7%BB%9F%E8%AE%A1"><span class="nav-number">1.4.</span> <span class="nav-text">查找与统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set%E5%92%8Cmultiset%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.5.</span> <span class="nav-text">set和multiset的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-number">1.6.</span> <span class="nav-text">改变内置数据类型的排序规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-number">1.7.</span> <span class="nav-text">改变自定义数据类型的排序规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pair"><span class="nav-number">2.</span> <span class="nav-text">pair</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map-amp-multimap"><span class="nav-number">3.</span> <span class="nav-text">map &amp; multimap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E4%B8%8E%E8%B5%8B%E5%80%BC"><span class="nav-number">3.1.</span> <span class="nav-text">构造与赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E4%B8%8E%E4%BA%A4%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">大小与交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E5%92%8C%E5%88%A0%E9%99%A4"><span class="nav-number">3.3.</span> <span class="nav-text">插入和删除</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">普普通通研究生</div>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/coding/2023/07/30/211821/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="普普通通研究生">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C++STL学习2 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++STL学习2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-30 21:18:21" itemprop="dateCreated datePublished" datetime="2023-07-30T21:18:21+08:00">2023-07-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-31 20:32:55" itemprop="dateModified" datetime="2023-07-31T20:32:55+08:00">2023-07-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/coding/" itemprop="url" rel="index"><span itemprop="name">转码</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>主要内容</strong>：<code>set</code> <code>multiset</code> <code>pair</code></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/q5120192609/article/details/127587508">https://blog.csdn.net/q5120192609/article/details/127587508</a></p>
+<span id="more"></span>
+
+<h2 id="set-amp-multiset"><a href="#set-amp-multiset" class="headerlink" title="set &amp; multiset"></a>set &amp; multiset</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>二叉树，所有元素都会在插入时自动被排序</p>
+<ul>
+<li>本质: set&#x2F;multiset属于关联式容器，底层结构是用二叉树实现</li>
+<li>set和multiset区别：<ul>
+<li>set不允许容器中有重复的元素</li>
+<li>multiset允许容器中有重复的元素</li>
+</ul>
+</li>
+</ul>
+<h3 id="构造与赋值-amp-大小与交换"><a href="#构造与赋值-amp-大小与交换" class="headerlink" title="构造与赋值&amp;大小与交换"></a>构造与赋值&amp;大小与交换</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;set&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printSet</span><span class="params">(set&lt;<span class="type">int</span> &amp;s&gt;)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (set&lt;<span class="type">int</span>&gt;::iterator it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; *it &lt;&lt; <span class="string">&quot;\t&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    set&lt;<span class="type">int</span>&gt; s1;  <span class="comment">// 构造</span></span><br><span class="line">    </span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">10</span>);  <span class="comment">// 只有 insert</span></span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">40</span>);</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">30</span>);</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">20</span>);</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历容器。自动排序且没有插入重复值</span></span><br><span class="line">    <span class="built_in">printSet</span>(s1);  <span class="comment">// 输出 10 20 30 40</span></span><br><span class="line"></span><br><span class="line">    <span class="function">set&lt;<span class="type">int</span>&gt; <span class="title">s2</span><span class="params">(s1)</span></span>;  <span class="comment">// 拷贝构造</span></span><br><span class="line">    set&lt;<span class="type">int</span>&gt; s3 = s2;  <span class="comment">// 赋值</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// empty() 判断大小</span></span><br><span class="line">    <span class="keyword">if</span> (s1.<span class="built_in">empty</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;s1为空&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;s1不为空&quot;</span> &lt;&lt; endl;</span><br><span class="line">        <span class="comment">// size() 获取大小</span></span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;s1的大小为&quot;</span> &lt;&lt; s1.<span class="built_in">size</span>() &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// swap()交换</span></span><br><span class="line">    s1.<span class="built_in">swap</span>(s2);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入与删除"><a href="#插入与删除" class="headerlink" title="插入与删除"></a>插入与删除</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    set&lt;<span class="type">int</span>&gt;s1;</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">40</span>);  <span class="comment">//没有push，只有insert方式</span></span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">20</span>); s1.<span class="built_in">insert</span>(<span class="number">30</span>); s1.<span class="built_in">insert</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">printSet</span>(s1);  <span class="comment">//10 20 30 40</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//删除</span></span><br><span class="line">    s1.<span class="built_in">erase</span>(s1.<span class="built_in">begin</span>()); <span class="comment">// 删除了10</span></span><br><span class="line">    <span class="built_in">printSet</span>(s1);  <span class="comment">//20 30 40</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//删除某个具体的值</span></span><br><span class="line">    s1.<span class="built_in">erase</span>(<span class="number">30</span>);  <span class="comment">//20 40</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空</span></span><br><span class="line">    s1.<span class="built_in">erase</span>(s1.<span class="built_in">begin</span>(), s1.<span class="built_in">end</span>());</span><br><span class="line">    <span class="built_in">printSet</span>(s1);  <span class="comment">// 空的</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//清空</span></span><br><span class="line">    s1.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="built_in">printSet</span>(s1);  <span class="comment">// 空的</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找与统计"><a href="#查找与统计" class="headerlink" title="查找与统计"></a>查找与统计</h3><ul>
+<li>查找 <code>find(key)</code>：找到则返回该元素的别带起，不存在则返回<code>set.end()</code></li>
+<li>统计 <code>count(key)</code>：<code>set</code>的返回要么是<code>0</code>要么是<code>1</code>，<code>multiset</code>不一定。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    set&lt;<span class="type">int</span>&gt;s1;</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">40</span>); s1.<span class="built_in">insert</span>(<span class="number">20</span>); s1.<span class="built_in">insert</span>(<span class="number">10</span>);</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">30</span>); s1.<span class="built_in">insert</span>(<span class="number">30</span>); s1.<span class="built_in">insert</span>(<span class="number">30</span>); </span><br><span class="line"></span><br><span class="line">    <span class="comment">//查找</span></span><br><span class="line">    set&lt;<span class="type">int</span>&gt;::iterator pos = s1.<span class="built_in">find</span>(<span class="number">30</span>);</span><br><span class="line">    <span class="keyword">if</span> (pos != s1.<span class="built_in">end</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;找到元素：&quot;</span> &lt;&lt; *pos &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;没有找到&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//统计</span></span><br><span class="line">    <span class="type">int</span> num = s1.<span class="built_in">count</span>(<span class="number">30</span>);  <span class="comment">//1</span></span><br><span class="line">    <span class="type">int</span> num300 = s1.<span class="built_in">count</span>(<span class="number">300</span>);  <span class="comment">//0</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;num = &quot;</span> &lt;&lt; num &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;num 300 = &quot;</span> &lt;&lt; num300 &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="set和multiset的区别"><a href="#set和multiset的区别" class="headerlink" title="set和multiset的区别"></a><code>set</code>和<code>multiset</code>的区别</h3><p><code>multiset</code>不会核查二叉树中是否含有该元素，而<code>set</code>会核查二叉树中是否含有该元素。</p>
+<p><code>set</code>会返回一个<code>pair&lt;iterator, bool&gt;</code>，可以通过判断<code>bool</code>来判断是否插入成功。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;set&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    set&lt;<span class="type">int</span>&gt; s1;</span><br><span class="line">    pair&lt;set&lt;<span class="type">int</span>&gt;::iterator, <span class="type">bool</span>&gt; ret = s1.<span class="built_in">insert</span>(<span class="number">10</span>);  <span class="comment">//pair 对组</span></span><br><span class="line">    <span class="keyword">if</span> (ret.second)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;第一次插入成功&quot;</span> &lt;&lt; endl;  <span class="comment">//这里</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;第一次插入失败&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ret = s1.<span class="built_in">insert</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">if</span> (ret.second)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;第二次插入成功&quot;</span> &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;第二次插入失败&quot;</span> &lt;&lt; endl;  <span class="comment">//这里</span></span><br><span class="line">    &#125;</span><br><span class="line">    multiset&lt;<span class="type">int</span>&gt; ms;</span><br><span class="line">    ms.<span class="built_in">insert</span>(<span class="number">10</span>);</span><br><span class="line">    ms.<span class="built_in">insert</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">for</span> (multiset&lt;<span class="type">int</span>&gt;::iterator it = ms.<span class="built_in">begin</span>(); it != ms.<span class="built_in">end</span>(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; (*it) &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="改变内置数据类型的排序规则"><a href="#改变内置数据类型的排序规则" class="headerlink" title="改变内置数据类型的排序规则"></a>改变内置数据类型的排序规则</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 仿函数本质上是个类，并且必须写在前面</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">myCompare</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">int</span> v1,<span class="type">int</span> v2)</span> <span class="type">const</span>  <span class="comment">// 后面记得加const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> v1 &gt; v2;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    set&lt;<span class="type">int</span>&gt; s1;</span><br><span class="line">    s1.<span class="built_in">insert</span>(<span class="number">10</span>); s1.<span class="built_in">insert</span>(<span class="number">30</span>); s1.<span class="built_in">insert</span>(<span class="number">20</span>); s1.<span class="built_in">insert</span>(<span class="number">50</span>); s1.<span class="built_in">insert</span>(<span class="number">40</span>);</span><br><span class="line">    <span class="comment">// set在插入数据以后就无法更改其排序了</span></span><br><span class="line">    <span class="built_in">printSet</span>(s1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 利用仿函数指定排序规则为从大到小</span></span><br><span class="line">    set&lt;<span class="type">int</span>, myCompare&gt; s2;</span><br><span class="line">    s2.<span class="built_in">insert</span>(<span class="number">10</span>); s2.<span class="built_in">insert</span>(<span class="number">30</span>); s2.<span class="built_in">insert</span>(<span class="number">20</span>); s2.<span class="built_in">insert</span>(<span class="number">50</span>); s2.<span class="built_in">insert</span>(<span class="number">40</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (set&lt;<span class="type">int</span>, myCompare&gt;::iterator it = s2.<span class="built_in">begin</span>(); it != s2.<span class="built_in">end</span>(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; (*it) &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="改变自定义数据类型的排序规则"><a href="#改变自定义数据类型的排序规则" class="headerlink" title="改变自定义数据类型的排序规则"></a>改变自定义数据类型的排序规则</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    string name;</span><br><span class="line">    <span class="type">int</span> age;</span><br><span class="line">    <span class="built_in">Person</span>(string n, <span class="type">int</span> a)</span><br><span class="line">    &#123;</span><br><span class="line">        name = n;</span><br><span class="line">        age = a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">comparePerson</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="type">const</span> Person &amp;p1, <span class="type">const</span> Person &amp;p2)</span> <span class="type">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> p1.age &gt; p2.age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// set&lt;Person&gt; s;  // 自定义的数据类型如果不指定排序规则就会报错，无法构造set</span></span><br><span class="line">    set&lt;Person, comparePerson&gt; s;</span><br><span class="line">    <span class="function">Person <span class="title">p1</span><span class="params">(<span class="string">&quot;刘备&quot;</span>, <span class="number">24</span>)</span></span>; s.<span class="built_in">insert</span>(p1); <span class="function">Person <span class="title">p2</span><span class="params">(<span class="string">&quot;关羽&quot;</span>, <span class="number">32</span>)</span></span>; s.<span class="built_in">insert</span>(p2);</span><br><span class="line">    <span class="function">Person <span class="title">p3</span><span class="params">(<span class="string">&quot;张飞&quot;</span>, <span class="number">35</span>)</span></span>; s.<span class="built_in">insert</span>(p3); <span class="function">Person <span class="title">p4</span><span class="params">(<span class="string">&quot;赵云&quot;</span>, <span class="number">37</span>)</span></span>; s.<span class="built_in">insert</span>(p4);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (set&lt;Person,comparePerson&gt;::iterator it = s.<span class="built_in">begin</span>(); it != s.<span class="built_in">end</span>(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;姓名：&quot;</span> &lt;&lt; it-&gt;name &lt;&lt; <span class="string">&quot; 年龄：&quot;</span> &lt;&lt; it-&gt;age &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="pair"><a href="#pair" class="headerlink" title="pair"></a>pair</h2><p>即成对出现的数据</p>
+<p>构造：</p>
+<ul>
+<li><code>pair&lt;type, type&gt; p(value1, value2);</code></li>
+<li><code>pair&lt;type, type&gt; p = make_pair(value1, value2);</code></li>
+</ul>
+<p>访问：<code>.first</code> <code>.second</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">pair&lt;string, <span class="type">int</span>&gt; <span class="title">p</span><span class="params">(<span class="string">&quot;Tom&quot;</span>,<span class="number">18</span>)</span></span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;姓名：&quot;</span> &lt;&lt; p.first &lt;&lt; <span class="string">&quot; 年龄：&quot;</span> &lt;&lt; p.second &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">pair&lt;string, <span class="type">int</span>&gt; p2 = <span class="built_in">make_pair</span>(<span class="string">&quot;Jerry&quot;</span>, <span class="number">20</span>);</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;姓名：&quot;</span> &lt;&lt; p2.first &lt;&lt; <span class="string">&quot; 年龄：&quot;</span> &lt;&lt; p2.second &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<h2 id="map-amp-multimap"><a href="#map-amp-multimap" class="headerlink" title="map &amp; multimap"></a>map &amp; multimap</h2><p>高效率、高性能的哈希表，对应Python中的字典。</p>
+<ul>
+<li>map中所有元素都是pair</li>
+<li>pair中第一个元素为key (键值)，起到索引作用，第二个元素为value (实值)</li>
+<li>所有元素都会根据元素的键值自动排序、</li>
+</ul>
+<p><strong>本质</strong>：map和multimap均属于关联式容器，底层结构是用二叉树实现</p>
+<p>map和multimap区别：</p>
+<ul>
+<li>map不允许容器中有重复key值元素</li>
+<li>multimap允许容器中有重复key值元素</li>
+<li>value均可以重复</li>
+</ul>
+<h3 id="构造与赋值"><a href="#构造与赋值" class="headerlink" title="构造与赋值"></a>构造与赋值</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;map&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printMap</span><span class="params">(map&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&amp; m)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (map&lt;<span class="type">int</span>, <span class="type">int</span>&gt;::iterator it = m.<span class="built_in">begin</span>(); it != m.<span class="built_in">end</span>(); it++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; <span class="string">&quot;key = &quot;</span> &lt;&lt; (*it).first &lt;&lt; <span class="string">&quot; value = &quot;</span> &lt;&lt; it-&gt;second &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; m;</span><br><span class="line">    m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">1</span>, <span class="number">10</span>));  <span class="comment">// pair&lt;int, int&gt;(1, 10)是一个匿名对象</span></span><br><span class="line">    m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">2</span>, <span class="number">20</span>));</span><br><span class="line">    m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">3</span>, <span class="number">30</span>));</span><br><span class="line">    m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">4</span>, <span class="number">40</span>));</span><br><span class="line">    <span class="built_in">printMap</span>(m);</span><br><span class="line"></span><br><span class="line">    <span class="function">map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; <span class="title">m2</span><span class="params">(m)</span></span>;  <span class="comment">//拷贝构造</span></span><br><span class="line"></span><br><span class="line">    map&lt;<span class="type">int</span>, <span class="type">int</span>&gt; m3;</span><br><span class="line">    m3 = m;  <span class="comment">// 赋值</span></span><br><span class="line">    <span class="built_in">printMap</span>(m3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="大小与交换"><a href="#大小与交换" class="headerlink" title="大小与交换"></a>大小与交换</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">map&lt;<span class="type">int</span>, <span class="type">int</span>&gt;m;</span><br><span class="line">m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">1</span>, <span class="number">10</span>)); m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">2</span>, <span class="number">20</span>));</span><br><span class="line">m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">3</span>, <span class="number">30</span>)); m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">4</span>, <span class="number">40</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (m.<span class="built_in">empty</span>())</span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;m为空&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;m不为空&quot;</span> &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;m的大小为：&quot;</span> &lt;&lt; m.<span class="built_in">size</span>() &lt;&lt; endl;  <span class="comment">// 4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//交换</span></span><br><span class="line">map&lt;<span class="type">int</span>, <span class="type">int</span>&gt;m2;</span><br><span class="line">m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">5</span>, <span class="number">100</span>)); m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">6</span>, <span class="number">200</span>));</span><br><span class="line">m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">7</span>, <span class="number">300</span>)); m.<span class="built_in">insert</span>(<span class="built_in">pair</span>&lt;<span class="type">int</span>, <span class="type">int</span>&gt;(<span class="number">8</span>, <span class="number">400</span>));</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;交换前：&quot;</span> &lt;&lt; endl;</span><br><span class="line"><span class="built_in">printMap</span>(m); <span class="built_in">printMap</span>(m2);</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;交换后：&quot;</span> &lt;&lt; endl;</span><br><span class="line">m.<span class="built_in">swap</span>(m2);</span><br><span class="line"><span class="built_in">printMap</span>(m); <span class="built_in">printMap</span>(m2);</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入和删除"><a href="#插入和删除" class="headerlink" title="插入和删除"></a>插入和删除</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/coding/2023/07/30/211821/" title="C++STL学习2">http://hetan697.github.io/blogs/coding/2023/07/30/211821/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/coding/2023/07/30/204835/" rel="prev" title="C++ STL学习1">
+                  <i class="fa fa-chevron-left"></i> C++ STL学习1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/un/2023/08/11/173252/" rel="next" title="旅途中的收获">
+                  旅途中的收获 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-face-kiss"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hetan</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.0/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
