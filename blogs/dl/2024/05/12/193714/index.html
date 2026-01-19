@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#0078d4"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#0078d4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/6.0.5/fancybox/fancybox.css" integrity="sha256-uTcjoMD6rPt4OyV3Rs02Slxl0BJGMNVKAm/1eYPt2go=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hetan697.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.23.2","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"vs","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat"},"fold":{"enable":false,"height":500},"language":false,"exclude_languages":["mermaid"]},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":true,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInDown"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="写完之后发现他好像不是很需要这个东西，所以就先发在自己的博客好了。不投稿首页或者候选区应该本来也就不会有多少流量，所以应该不会干嘛的，大不了后面被说不让放网上以后就删掉这篇，嘻嘻。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLaVA 微调教程">
+<meta property="og:url" content="http://hetan697.github.io/blogs/dl/2024/05/12/193714/index.html">
+<meta property="og:site_name" content="Hetan的博客">
+<meta property="og:description" content="写完之后发现他好像不是很需要这个东西，所以就先发在自己的博客好了。不投稿首页或者候选区应该本来也就不会有多少流量，所以应该不会干嘛的，大不了后面被说不让放网上以后就删掉这篇，嘻嘻。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/86307756">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/2997344/202405/2997344-20240512195824424-433934079.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/2997344/202405/2997344-20240512195956094-1790265239.png">
+<meta property="og:image" content="https://img2024.cnblogs.com/blog/2997344/202405/2997344-20240512200029875-1892768900.png">
+<meta property="article:published_time" content="2024-05-12T11:37:14.000Z">
+<meta property="article:modified_time" content="2025-07-25T05:03:12.172Z">
+<meta property="article:author" content="Hetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/86307756">
+
+
+<link rel="canonical" href="http://hetan697.github.io/blogs/dl/2024/05/12/193714/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://hetan697.github.io/blogs/dl/2024/05/12/193714/","path":"blogs/dl/2024/05/12/193714/","title":"LLaVA 微调教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LLaVA 微调教程 | Hetan的博客</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?9d3d45b6aa0aa3c74a095aba4384c50e"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/6.0.5/fancybox/fancybox.umd.js" integrity="sha256-UiSieVaV/DXce2LW7QH+o77w+AIoAvSCPBkezriZ2DQ=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/6.1.3/pangu.umd.js" integrity="sha256-erngBMP3zzoIM6eqQ8dmrReh2vqCRgWmORroIfVoDlE=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"neutral","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.7.0/mermaid.min.js","integrity":"sha256-4+IKDqhZ/sXjc8Wtl2/MsxI4e0s1KpEVdbEP7V/Lz8U="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+  <script src="/js/third-party/fancybox.js" defer></script>
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hetan的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blogs/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-个人页"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>个人页</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E8%AE%AD%E7%BB%83%E6%95%B0%E6%8D%AE"><span class="nav-number">2.</span> <span class="nav-text">准备训练数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="nav-number">3.</span> <span class="nav-text">模型微调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83%E6%BA%90%E7%A0%81%E9%80%89%E8%AF%BB"><span class="nav-number">3.1.</span> <span class="nav-text">模型微调源码选读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E7%B2%BE%E5%BA%A6%E9%85%8D%E7%BD%AE%E4%B8%8EBitsAndBytesConfig%E7%B1%BB"><span class="nav-number">3.1.1.</span> <span class="nav-text">训练精度配置与BitsAndBytesConfig类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9D%83%E9%87%8D%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.1.2.</span> <span class="nav-text">模型权重加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.1.3.</span> <span class="nav-text">梯度设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LoRA"><span class="nav-number">3.1.4.</span> <span class="nav-text">LoRA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="nav-number">3.1.5.</span> <span class="nav-text">模型训练</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6LoRA%E6%9D%83%E9%87%8D"><span class="nav-number">4.</span> <span class="nav-text">合并LoRA权重</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E6%9D%83%E9%87%8D%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="nav-number">4.1.</span> <span class="nav-text">合并权重源码解读</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="nav-number">5.</span> <span class="nav-text">模型测试</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Hetan</p>
+  <div class="site-description" itemprop="description">职场萌新</div>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hetan697" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hetan697" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://hetan697.github.io/blogs/dl/2024/05/12/193714/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Hetan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hetan的博客">
+      <meta itemprop="description" content="职场萌新">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LLaVA 微调教程 | Hetan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LLaVA 微调教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-12 19:37:14" itemprop="dateCreated datePublished" datetime="2024-05-12T19:37:14+08:00">2024-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-25 13:03:12" itemprop="dateModified" datetime="2025-07-25T13:03:12+08:00">2025-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/dl/" itemprop="url" rel="index"><span itemprop="name">dl</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>写完之后发现他好像不是很需要这个东西，所以就先发在自己的博客好了。不投稿首页或者候选区应该本来也就不会有多少流量，所以应该不会干嘛的，大不了后面被说不让放网上以后就删掉这篇，嘻嘻。</p>
+</blockquote>
+<span id="more"></span>
+
+<p>LLaVA 是最早出现的 Vision Language Model。本教程将教你微调 llava-v1.5-13b 。与本博客现有的<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiangcaoacao/p/18133207#%E5%A4%8D%E7%8E%B0%E5%A4%9A%E6%A8%A1%E6%80%81%E5%BE%AE%E8%B0%83">基于xtuner的微调教程</a>不同，这个教程将使用deepspeed以拜托对书生生态的依赖。</p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><blockquote>
+<p>配置环境的官方教程即项目<a target="_blank" rel="noopener" href="https://github.com/haotian-liu/LLaVA/blob/main/README.md">ReadMe</a></p>
+</blockquote>
+<p>首先我们下载LLaVA的源代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/haotian-liu/LLaVA.git</span><br><span class="line"><span class="built_in">cd</span> LLaVA</span><br><span class="line"><span class="built_in">pwd</span></span><br></pre></td></tr></table></figure>
+
+<p>然后配置Python环境。如果是在自己电脑上运行，请不要忘记创建conda虚拟环境</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># conda create -n llava python=3.10 -y</span></span><br><span class="line"><span class="comment"># conda activate llava</span></span><br><span class="line">pip install --upgrade pip  <span class="comment"># enable PEP 660 support</span></span><br><span class="line">pip install -e .</span><br><span class="line">pip install -e <span class="string">&quot;.[train]&quot;</span></span><br><span class="line">pip install flash-attn --no-build-isolation</span><br></pre></td></tr></table></figure>
+
+<p>最后是下载模型。你可以使用<code>huggingface-cli</code>直接下载模型。如果您所在的区域不能直接访问Hugging Face，则需要使用镜像网站下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果不能访问Hugging Face，可以执行下面这一行设置使用hf-mirror镜像站下载 HF_ENDPOINT=https://hf-mirror.com</span></span><br><span class="line"><span class="comment"># export HF_ENDPOINT=https://hf-mirror.com</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载 llava-v1.5-7b 模型权重</span></span><br><span class="line">huggingface-cli download <span class="string">&quot;liuhaotian/llava-v1.5-7b&quot;</span> --local-dir <span class="string">&quot;./checkpoints/llava-v1.5-7b&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载 clip-vit-large-patch14-336 模型权重</span></span><br><span class="line">huggingface-cli download <span class="string">&quot;openai/clip-vit-large-patch14-336&quot;</span> --local-dir <span class="string">&quot;./checkpoints/clip-vit-large-patch14-336&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="准备训练数据"><a href="#准备训练数据" class="headerlink" title="准备训练数据"></a>准备训练数据</h2><p>官方预训练（训练投影层）使用的数据集是 LAION-CC-SBU，视觉微调使用的数据集是<a target="_blank" rel="noopener" href="https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json">llava_v1_5_mix665k.json</a>和其他一些数据集，在<a target="_blank" rel="noopener" href="https://github.com/haotian-liu/LLaVA/blob/main/README.md#pretrain-feature-alignment">项目Readme</a>中写得特别清楚。但是我并不打算在这里进行介绍或者是重新训练个新模型。我们将简单构造一个只有一张图像构成的简易数据集。</p>
+<blockquote>
+<p>自定义训练数据集的格式要求在<a target="_blank" rel="noopener" href="https://github.com/haotian-liu/LLaVA/blob/main/docs/Finetune_Custom_Data.md">这里</a>。</p>
+</blockquote>
+<p>首先我们下载图片：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p ./playground/data/yuanshen</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载图片</span></span><br><span class="line">wget -O ./playground/data/yuanshen/1.jpg https://avatars.githubusercontent.com/u/86307756</span><br></pre></td></tr></table></figure>
+
+<p>然后准备图文对。这里只准备一个：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">dataset_content = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">[</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        &quot;id&quot;: &quot;yuanshen-628d-4724-b370-b84de974a19f&quot;,</span></span><br><span class="line"><span class="string">        &quot;image&quot;: &quot;yuanshen/1.jpg&quot;,</span></span><br><span class="line"><span class="string">        &quot;conversations&quot;: [</span></span><br><span class="line"><span class="string">            &#123;</span></span><br><span class="line"><span class="string">                &quot;from&quot;: &quot;human&quot;,</span></span><br><span class="line"><span class="string">                &quot;value&quot;: &quot;&lt;image&gt;\nWho is in the picture?&quot;</span></span><br><span class="line"><span class="string">            &#125;,</span></span><br><span class="line"><span class="string">            &#123;</span></span><br><span class="line"><span class="string">                &quot;from&quot;: &quot;gpt&quot;,</span></span><br><span class="line"><span class="string">                &quot;value&quot;: &quot;The person in the picture is Nathida, who is a character in the Original God and its derivative works produced by Mihoyo. Her real name is Buyel, the grass god in the \&quot;Earthly Seven rulers\&quot;, and is given the nickname of \&quot;Little Lucky Grass King\&quot; by the XuMi people, the youngest of the seven gods today. &quot;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        ]</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;./playground/data/yuanshen.json&quot;</span>, <span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(dataset_content)</span><br></pre></td></tr></table></figure>
+
+<p>数据集图像为：</p>
+<p><img data-src="https://avatars.githubusercontent.com/u/86307756" alt="原神纳西妲"></p>
+<h2 id="模型微调"><a href="#模型微调" class="headerlink" title="模型微调"></a>模型微调</h2><p>这一步我们使用 deepspeed zero2 进行模型 LoRA 微调。得到的微调模型会被保存在<code>./checkpoints/llava-v1.5-7b-lora</code>里。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">deepspeed llava/train/train_mem.py \</span><br><span class="line">    --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \</span><br><span class="line">    --deepspeed ./scripts/zero2.json \</span><br><span class="line">    --model_name_or_path ./checkpoints/llava-v1.5-7b \</span><br><span class="line">    --version v1 \</span><br><span class="line">    --data_path ./playground/data/yuanshen.json \</span><br><span class="line">    --image_folder ./playground/data \</span><br><span class="line">    --vision_tower ./checkpoints/clip-vit-large-patch14-336 \</span><br><span class="line">    --pretrain_mm_mlp_adapter ./checkpoints/llava-v1.5-7b/mm_projector.bin \</span><br><span class="line">    --mm_projector_type mlp2x_gelu \</span><br><span class="line">    --mm_vision_select_layer -2 \</span><br><span class="line">    --mm_use_im_start_end False \</span><br><span class="line">    --mm_use_im_patch_token False \</span><br><span class="line">    --image_aspect_ratio pad \</span><br><span class="line">    --group_by_modality_length True \</span><br><span class="line">    --bf16 True \</span><br><span class="line">    --output_dir ./checkpoints/llava-v1.5-7b-lora \</span><br><span class="line">    --num_train_epochs 10 \</span><br><span class="line">    --per_device_train_batch_size 1 \</span><br><span class="line">    --per_device_eval_batch_size 1 \</span><br><span class="line">    --gradient_accumulation_steps 1 \</span><br><span class="line">    --evaluation_strategy <span class="string">&quot;no&quot;</span> \</span><br><span class="line">    --save_strategy <span class="string">&quot;steps&quot;</span> \</span><br><span class="line">    --save_steps 10 \</span><br><span class="line">    --save_total_limit 1 \</span><br><span class="line">    --learning_rate 2e-4 \</span><br><span class="line">    --weight_decay 0. \</span><br><span class="line">    --warmup_ratio 0.03 \</span><br><span class="line">    --lr_scheduler_type <span class="string">&quot;cosine&quot;</span> \</span><br><span class="line">    --logging_steps 1 \</span><br><span class="line">    --tf32 True \</span><br><span class="line">    --model_max_length 2048 \</span><br><span class="line">    --gradient_checkpointing True \</span><br><span class="line">    --dataloader_num_workers 2 \</span><br><span class="line">    --lazy_preprocess True \</span><br><span class="line">    --report_to wandb</span><br></pre></td></tr></table></figure>
+
+<p>模型训练的脚本自带wandb，根据情况选就好。不想用wandb就选3</p>
+<p><img data-src="https://img2024.cnblogs.com/blog/2997344/202405/2997344-20240512195824424-433934079.png" alt="wandb"></p>
+<p>之后慢慢等待训练完成</p>
+<p><img data-src="https://img2024.cnblogs.com/blog/2997344/202405/2997344-20240512195956094-1790265239.png"><br><img data-src="https://img2024.cnblogs.com/blog/2997344/202405/2997344-20240512200029875-1892768900.png"></p>
+<p>如果在这一步遇到错误，请移步<a target="_blank" rel="noopener" href="https://github.com/haotian-liu/LLaVA/issues">Github issue</a>查看有没有人和你碰到过一样的问题。如果核查确认没有可以试着提新issue。</p>
+<h3 id="模型微调源码选读"><a href="#模型微调源码选读" class="headerlink" title="模型微调源码选读"></a>模型微调源码选读</h3><details>
+<summary>内容较长，点击展开查看</summary>
+
+<p>上面的命令使用deepspeed运行训练脚本<code>llava/train/train_mem.py</code>，而<code>train_mem.py</code>实际上只调用了<code>llava/train/train.py</code>里面的<code>train(attn_implementation=&quot;flash_attention_2&quot;)</code>。<code>train</code>函数做的事情如下：</p>
+<p>首先使用<code>transformers.HfArgumentParser</code>类解析命令行参数，该类的作用是将命令行参数解析为<code>dataclass</code>对象。<code>dataclass</code>是Python3.7中引入的一个新特性，通过<code>dataclass</code>可以方便地定义一个类，并且可以自动实现<code>__init__</code>、<code>__repr__</code>等方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">parser = transformers.HfArgumentParser(</span><br><span class="line">    (ModelArguments, DataArguments, TrainingArguments))</span><br></pre></td></tr></table></figure>
+
+<p>然后通过parser.parse_args_into_dataclasses()方法解析命令行参数，并将解析结果保存到model_args、data_args和training_args三个变量中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model_args, data_args, training_args = parser.parse_args_into_dataclasses()</span><br></pre></td></tr></table></figure>
+
+<h4 id="训练精度配置与BitsAndBytesConfig类"><a href="#训练精度配置与BitsAndBytesConfig类" class="headerlink" title="训练精度配置与BitsAndBytesConfig类"></a>训练精度配置与<code>BitsAndBytesConfig</code>类</h4><p>接着配置训练精度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">compute_dtype = (torch.float16 <span class="keyword">if</span> training_args.fp16 </span><br><span class="line">                    <span class="keyword">else</span> (torch.bfloat16 </span><br><span class="line">                            <span class="keyword">if</span> training_args.bf16 <span class="keyword">else</span> torch.float32))</span><br><span class="line"></span><br><span class="line">bnb_model_from_pretrained_args = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果使用4位或8位的量化，涉及到QLoRA，需要设置相应的参数</span></span><br><span class="line"><span class="keyword">if</span> training_args.bits <span class="keyword">in</span> [<span class="number">4</span>, <span class="number">8</span>]:</span><br><span class="line">    <span class="keyword">from</span> transformers <span class="keyword">import</span> BitsAndBytesConfig</span><br><span class="line">    bnb_model_from_pretrained_args.update(<span class="built_in">dict</span>(</span><br><span class="line">        device_map=&#123;<span class="string">&quot;&quot;</span>: training_args.device&#125;,</span><br><span class="line">        load_in_4bit=training_args.bits == <span class="number">4</span>,  <span class="comment"># 是否加载4位量化模型</span></span><br><span class="line">        load_in_8bit=training_args.bits == <span class="number">8</span>,  <span class="comment"># 是否加载8位量化模型</span></span><br><span class="line">        quantization_config=BitsAndBytesConfig(</span><br><span class="line">            load_in_4bit=training_args.bits == <span class="number">4</span>,</span><br><span class="line">            load_in_8bit=training_args.bits == <span class="number">8</span>,</span><br><span class="line">            llm_int8_skip_modules=[<span class="string">&quot;mm_projector&quot;</span>],  <span class="comment"># 模块`mm_projector`不进行量化</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 量化阈值设置。</span></span><br><span class="line">            <span class="comment"># 如果一个模型的权重或激活值在绝对值上小于 llm_int8_threshold，那么这些值将被量化为8位整形以减少内存使用。</span></span><br><span class="line">            <span class="comment"># 如果值的绝对值大于 llm_int8_threshold 则会继续一浮点数的形式存储，保留更多的精度。</span></span><br><span class="line">            llm_int8_threshold=<span class="number">6.0</span>,</span><br><span class="line"></span><br><span class="line">            <span class="comment"># llm_int8_has_fp16_weight用于设置LLM.int8()是否使用16位主权重。</span></span><br><span class="line">            <span class="comment"># 该参数控制权重是否在反向传播时进行转换。</span></span><br><span class="line">            llm_int8_has_fp16_weight=<span class="literal">False</span>,</span><br><span class="line"></span><br><span class="line">            <span class="comment"># bnb_4bit_compute_dtype设置量化模型的计算数据类型</span></span><br><span class="line">            bnb_4bit_compute_dtype=compute_dtype,</span><br><span class="line"></span><br><span class="line">            <span class="comment"># bnb_4bit_use_double_quant设置是否使用嵌套量化。</span></span><br><span class="line">            <span class="comment"># 这将会在第一轮量化之后启用第二轮量化，以便每个参数额外节省 0.4 比特。</span></span><br><span class="line">            bnb_4bit_use_double_quant=training_args.double_quant,</span><br><span class="line"></span><br><span class="line">            <span class="comment"># bnb_4bit_quant_type设置量化数据类型。可以是&#x27;fp4&#x27;或&#x27;nf4&#x27;。</span></span><br><span class="line">            bnb_4bit_quant_type=training_args.quant_type <span class="comment"># &#123;&#x27;fp4&#x27;, &#x27;nf4&#x27;&#125;</span></span><br><span class="line">        )</span><br><span class="line">    ))</span><br></pre></td></tr></table></figure>
+
+<p>关于<code>BitsAndBytesConfig</code>类，这里给出官方文档给大家翻阅。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">This is a wrapper class about all possible attributes and features that you can play with a model that has been</span><br><span class="line">loaded using `bitsandbytes`.</span><br><span class="line"></span><br><span class="line">This replaces `load_in_8bit` or `load_in_4bit`therefore both options are mutually exclusive.</span><br><span class="line"></span><br><span class="line">Currently only supports `LLM.int8()`, `FP4`, and `NF4` quantization. If more methods are added to `bitsandbytes`,</span><br><span class="line">then more arguments will be added to this class.</span><br><span class="line"></span><br><span class="line">Args:</span><br><span class="line">    load_in_8bit (`bool`, *optional*, defaults to `False`):</span><br><span class="line">        This flag is used to enable 8-bit quantization with LLM.int8().</span><br><span class="line">    load_in_4bit (`bool`, *optional*, defaults to `False`):</span><br><span class="line">        This flag is used to enable 4-bit quantization by replacing the Linear layers with FP4/NF4 layers from</span><br><span class="line">        `bitsandbytes`.</span><br><span class="line">    llm_int8_threshold (`float`, *optional*, defaults to 6.0):</span><br><span class="line">        This corresponds to the outlier threshold for outlier detection as described in `LLM.int8() : 8-bit Matrix</span><br><span class="line">        Multiplication for Transformers at Scale` paper: https://arxiv.org/abs/2208.07339 Any hidden states value</span><br><span class="line">        that is above this threshold will be considered an outlier and the operation on those values will be done</span><br><span class="line">        in fp16. Values are usually normally distributed, that is, most values are in the range [-3.5, 3.5], but</span><br><span class="line">        there are some exceptional systematic outliers that are very differently distributed for large models.</span><br><span class="line">        These outliers are often in the interval [-60, -6] or [6, 60]. Int8 quantization works well for values of</span><br><span class="line">        magnitude ~5, but beyond that, there is a significant performance penalty. A good default threshold is 6,</span><br><span class="line">        but a lower threshold might be needed for more unstable models (small models, fine-tuning).</span><br><span class="line">    llm_int8_skip_modules (`List[str]`, *optional*):</span><br><span class="line">        An explicit list of the modules that we do not want to convert in 8-bit. This is useful for models such as</span><br><span class="line">        Jukebox that has several heads in different places and not necessarily at the last position. For example</span><br><span class="line">        for `CausalLM` models, the last `lm_head` is kept in its original `dtype`.</span><br><span class="line">    llm_int8_enable_fp32_cpu_offload (`bool`, *optional*, defaults to `False`):</span><br><span class="line">        This flag is used for advanced use cases and users that are aware of this feature. If you want to split</span><br><span class="line">        your model in different parts and run some parts in int8 on GPU and some parts in fp32 on CPU, you can use</span><br><span class="line">        this flag. This is useful for offloading large models such as `google/flan-t5-xxl`. Note that the int8</span><br><span class="line">        operations will not be run on CPU.</span><br><span class="line">    llm_int8_has_fp16_weight (`bool`, *optional*, defaults to `False`):</span><br><span class="line">        This flag runs LLM.int8() with 16-bit main weights. This is useful for fine-tuning as the weights do not</span><br><span class="line">        have to be converted back and forth for the backward pass.</span><br><span class="line">    bnb_4bit_compute_dtype (`torch.dtype` or str, *optional*, defaults to `torch.float32`):</span><br><span class="line">        This sets the computational type which might be different than the input time. For example, inputs might be</span><br><span class="line">        fp32, but computation can be set to bf16 for speedups.</span><br><span class="line">    bnb_4bit_quant_type (`str`,  *optional*, defaults to `&quot;fp4&quot;`):</span><br><span class="line">        This sets the quantization data type in the bnb.nn.Linear4Bit layers. Options are FP4 and NF4 data types</span><br><span class="line">        which are specified by `fp4` or `nf4`.</span><br><span class="line">    bnb_4bit_use_double_quant (`bool`, *optional*, defaults to `False`):</span><br><span class="line">        This flag is used for nested quantization where the quantization constants from the first quantization are</span><br><span class="line">        quantized again.</span><br><span class="line">    kwargs (`Dict[str, Any]`, *optional*):</span><br><span class="line">        Additional parameters from which to initialize the configuration object.</span><br></pre></td></tr></table></figure>
+
+<p>在模型权重加载完成后，还会设置k比特训练：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> training_args.bits <span class="keyword">in</span> [<span class="number">4</span>, <span class="number">8</span>]:</span><br><span class="line">    <span class="keyword">from</span> peft <span class="keyword">import</span> prepare_model_for_kbit_training</span><br><span class="line">    model.config.torch_dtype=(torch.float32 <span class="keyword">if</span> training_args.fp16 <span class="keyword">else</span> (torch.bfloat16 <span class="keyword">if</span> training_args.bf16 <span class="keyword">else</span> torch.float32))</span><br><span class="line">    model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=training_args.gradient_checkpointing)</span><br></pre></td></tr></table></figure>
+
+<h4 id="模型权重加载"><a href="#模型权重加载" class="headerlink" title="模型权重加载"></a>模型权重加载</h4><p>之后是对模型权重的加载。既然是微调，那就是在已有模型基础上使用数据对模型进行小学习速度的训练。</p>
+<p>加载权重的逻辑很简单：</p>
+<ul>
+<li><code>model_args.vision_tower</code>不为空，<code>&#39;mpt&#39; not in model_args.model_name_or_path</code>：权重加载进<code>LlavaLlamaForCausalLM</code>类。这种情况即正常情况</li>
+<li><code>model_args.vision_tower</code>不为空，<code>&#39;mpt&#39; in model_args.model_name_or_path</code>：手动设置<code>attn_impl</code>并将权重加载进<code>LlavaMptForCausalLM</code>类</li>
+<li><code>model_args.vision_tower</code>为空，模型为llama模型，直接将权重加载进<code>LlamaForCausalLM</code>类</li>
+</ul>
+<p>具体代码不放了。</p>
+<h4 id="梯度设置"><a href="#梯度设置" class="headerlink" title="梯度设置"></a>梯度设置</h4><p>冻结该冻结的，保留需要的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> model_args.freeze_backbone:  <span class="comment"># 冻结</span></span><br><span class="line">    model.model.requires_grad_(<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> training_args.gradient_checkpointing:  <span class="comment"># 保留</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">hasattr</span>(model, <span class="string">&quot;enable_input_require_grads&quot;</span>):</span><br><span class="line">        model.enable_input_require_grads()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">make_inputs_require_grad</span>(<span class="params">module, <span class="built_in">input</span>, output</span>):</span><br><span class="line">            output.requires_grad_(<span class="literal">True</span>)</span><br><span class="line">        model.get_input_embeddings().register_forward_hook(make_inputs_require_grad)</span><br></pre></td></tr></table></figure>
+
+<h4 id="LoRA"><a href="#LoRA" class="headerlink" title="LoRA"></a>LoRA</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> training_args.lora_enable:  <span class="comment"># LoRA</span></span><br><span class="line">    <span class="keyword">from</span> peft <span class="keyword">import</span> LoraConfig, get_peft_model</span><br><span class="line">    lora_config = LoraConfig(</span><br><span class="line">        r=training_args.lora_r,</span><br><span class="line">        lora_alpha=training_args.lora_alpha,</span><br><span class="line">        target_modules=find_all_linear_names(model),</span><br><span class="line">        lora_dropout=training_args.lora_dropout,</span><br><span class="line">        bias=training_args.lora_bias,</span><br><span class="line">        task_type=<span class="string">&quot;CAUSAL_LM&quot;</span>,</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">if</span> training_args.bits == <span class="number">16</span>:</span><br><span class="line">        <span class="keyword">if</span> training_args.bf16:</span><br><span class="line">            model.to(torch.bfloat16)</span><br><span class="line">        <span class="keyword">if</span> training_args.fp16:</span><br><span class="line">            model.to(torch.float16)</span><br><span class="line">    rank0_print(<span class="string">&quot;Adding LoRA adapters...&quot;</span>)</span><br><span class="line">    model = get_peft_model(model, lora_config)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> training_args.bits <span class="keyword">in</span> [<span class="number">4</span>, <span class="number">8</span>]:</span><br><span class="line">    <span class="keyword">from</span> peft.tuners.lora <span class="keyword">import</span> LoraLayer</span><br><span class="line">    <span class="keyword">for</span> name, module <span class="keyword">in</span> model.named_modules():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(module, LoraLayer):</span><br><span class="line">            <span class="keyword">if</span> training_args.bf16:</span><br><span class="line">                module = module.to(torch.bfloat16)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;norm&#x27;</span> <span class="keyword">in</span> name:</span><br><span class="line">            module = module.to(torch.float32)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;lm_head&#x27;</span> <span class="keyword">in</span> name <span class="keyword">or</span> <span class="string">&#x27;embed_tokens&#x27;</span> <span class="keyword">in</span> name:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">hasattr</span>(module, <span class="string">&#x27;weight&#x27;</span>):</span><br><span class="line">                <span class="keyword">if</span> training_args.bf16 <span class="keyword">and</span> module.weight.dtype == torch.float32:</span><br><span class="line">                    module = module.to(torch.bfloat16)</span><br></pre></td></tr></table></figure>
+
+<p>之后进行模型其他配置</p>
+<h4 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h4><p>最后使用trainner训练模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">data_module = make_supervised_data_module(tokenizer=tokenizer,</span><br><span class="line">                                            data_args=data_args)</span><br><span class="line">trainer = LLaVATrainer(model=model,</span><br><span class="line">                tokenizer=tokenizer,</span><br><span class="line">                args=training_args,</span><br><span class="line">                **data_module)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">list</span>(pathlib.Path(training_args.output_dir).glob(<span class="string">&quot;checkpoint-*&quot;</span>)):</span><br><span class="line">    trainer.train(resume_from_checkpoint=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    trainer.train()</span><br><span class="line">trainer.save_state()</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h2 id="合并LoRA权重"><a href="#合并LoRA权重" class="headerlink" title="合并LoRA权重"></a>合并LoRA权重</h2><p>完成模型训练以后，我们要将LoRA权重与原始模型权重合并：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python scripts/merge_lora_weights.py --model-path <span class="string">&quot;./checkpoints/llava-v1.5-7b-lora&quot;</span> \</span><br><span class="line">       --model-base <span class="string">&quot;./checkpoints/llava-v1.5-7b&quot;</span> \</span><br><span class="line">       --save-model-path <span class="string">&quot;./checkpoints/llava-v1.5-7b-merged&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样，就能得到可以直接用于推理的模型了，这个模型现在存储在<code>./checkpoints/llava-v1.5-7b-merged</code>文件夹下。</p>
+<p>而所谓合并模型权重，就是先加载一遍base权重，再加载lora权重，最后再将整个模型的权重重新保存。</p>
+<h3 id="合并权重源码解读"><a href="#合并权重源码解读" class="headerlink" title="合并权重源码解读"></a>合并权重源码解读</h3><details>
+<summary>内容较长，点击展开查看</summary>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModelForCausalLM, AutoConfig, BitsAndBytesConfig</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> llava.model <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> llava.constants <span class="keyword">import</span> DEFAULT_IMAGE_PATCH_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_pretrained_model</span>(<span class="params">model_path, model_base, model_name, load_8bit=<span class="literal">False</span>, load_4bit=<span class="literal">False</span>, device_map=<span class="string">&quot;auto&quot;</span>, device=<span class="string">&quot;cuda&quot;</span>, use_flash_attn=<span class="literal">False</span>, **kwargs</span>):</span><br><span class="line">    kwargs = &#123;<span class="string">&quot;device_map&quot;</span>: device_map, **kwargs&#125;</span><br><span class="line">    <span class="comment"># 量化加载相关，不细看</span></span><br><span class="line">    <span class="keyword">if</span> device != <span class="string">&quot;cuda&quot;</span>:</span><br><span class="line">        kwargs[<span class="string">&#x27;device_map&#x27;</span>] = &#123;<span class="string">&quot;&quot;</span>: device&#125;</span><br><span class="line">    <span class="keyword">if</span> load_8bit:</span><br><span class="line">        kwargs[<span class="string">&#x27;load_in_8bit&#x27;</span>] = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">elif</span> load_4bit:</span><br><span class="line">        kwargs[<span class="string">&#x27;load_in_4bit&#x27;</span>] = <span class="literal">True</span></span><br><span class="line">        kwargs[<span class="string">&#x27;quantization_config&#x27;</span>] = BitsAndBytesConfig(</span><br><span class="line">            load_in_4bit=<span class="literal">True</span>,</span><br><span class="line">            bnb_4bit_compute_dtype=torch.float16,</span><br><span class="line">            bnb_4bit_use_double_quant=<span class="literal">True</span>,</span><br><span class="line">            bnb_4bit_quant_type=<span class="string">&#x27;nf4&#x27;</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        kwargs[<span class="string">&#x27;torch_dtype&#x27;</span>] = torch.float16</span><br><span class="line">    <span class="keyword">if</span> use_flash_attn:</span><br><span class="line">        kwargs[<span class="string">&#x27;attn_implementation&#x27;</span>] = <span class="string">&#x27;flash_attention_2&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;llava&#x27;</span> <span class="keyword">in</span> model_name.lower():</span><br><span class="line">        <span class="comment"># Load LLaVA model. 如果模型名称中包含&#x27;lora&#x27;且未提供`model_base`参数，则发出警告。</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;lora&#x27;</span> <span class="keyword">in</span> model_name.lower() <span class="keyword">and</span> model_base <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            warnings.warn(<span class="string">&#x27;There is `lora` in model name but no `model_base` is provided. If you are loading a LoRA model, please provide the `model_base` argument. Detailed instruction: https://github.com/haotian-liu/LLaVA#launch-a-model-worker-lora-weights-unmerged.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;lora&#x27;</span> <span class="keyword">in</span> model_name.lower() <span class="keyword">and</span> model_base <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">from</span> llava.model.language_model.llava_llama <span class="keyword">import</span> LlavaConfig</span><br><span class="line">            lora_cfg_pretrained = LlavaConfig.from_pretrained(model_path)  <span class="comment"># 导入LLaVA模型的配置文件`LlavaConfig`</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 首先还是和没有lora一样加载base模型预训练权重</span></span><br><span class="line">            tokenizer = AutoTokenizer.from_pretrained(model_base, use_fast=<span class="literal">False</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;Loading LLaVA from base model...&#x27;</span>)</span><br><span class="line">            model = LlavaLlamaForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=<span class="literal">True</span>, config=lora_cfg_pretrained, **kwargs)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 如果模型头部的输出特征数量与输入特征数量不匹配，则根据需要调整模型头部和嵌入层的权重</span></span><br><span class="line">            token_num, tokem_dim = model.lm_head.out_features, model.lm_head.in_features</span><br><span class="line">            <span class="keyword">if</span> model.lm_head.weight.shape[<span class="number">0</span>] != token_num:</span><br><span class="line">                model.lm_head.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))</span><br><span class="line">                model.model.embed_tokens.weight = torch.nn.Parameter(torch.empty(token_num, tokem_dim, device=model.device, dtype=model.dtype))</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;Loading additional LLaVA weights...&#x27;</span>)</span><br><span class="line">            <span class="comment"># 如果lora权重（即model_path）在本地就直接从本地加载至`non_lora_trainables`变量</span></span><br><span class="line">            <span class="comment"># 否则把路径当huggingface hub仓库名从远端下载至`non_lora_trainables`变量内。</span></span><br><span class="line">            <span class="keyword">if</span> os.path.exists(os.path.join(model_path, <span class="string">&#x27;non_lora_trainables.bin&#x27;</span>)):</span><br><span class="line">                non_lora_trainables = torch.load(os.path.join(model_path, <span class="string">&#x27;non_lora_trainables.bin&#x27;</span>), map_location=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># this is probably from HF Hub</span></span><br><span class="line">                <span class="keyword">from</span> huggingface_hub <span class="keyword">import</span> hf_hub_download</span><br><span class="line">                <span class="keyword">def</span> <span class="title function_">load_from_hf</span>(<span class="params">repo_id, filename, subfolder=<span class="literal">None</span></span>):</span><br><span class="line">                    cache_file = hf_hub_download(</span><br><span class="line">                        repo_id=repo_id,</span><br><span class="line">                        filename=filename,</span><br><span class="line">                        subfolder=subfolder)</span><br><span class="line">                    <span class="keyword">return</span> torch.load(cache_file, map_location=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line">                non_lora_trainables = load_from_hf(model_path, <span class="string">&#x27;non_lora_trainables.bin&#x27;</span>)</span><br><span class="line">            non_lora_trainables = &#123;(k[<span class="number">11</span>:] <span class="keyword">if</span> k.startswith(<span class="string">&#x27;base_model.&#x27;</span>) <span class="keyword">else</span> k): v <span class="keyword">for</span> k, v <span class="keyword">in</span> non_lora_trainables.items()&#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 调整非LoRA部分的模型参数字典的键名，并加载这些参数到模型中。</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">any</span>(k.startswith(<span class="string">&#x27;model.model.&#x27;</span>) <span class="keyword">for</span> k <span class="keyword">in</span> non_lora_trainables):</span><br><span class="line">                non_lora_trainables = &#123;(k[<span class="number">6</span>:] <span class="keyword">if</span> k.startswith(<span class="string">&#x27;model.&#x27;</span>) <span class="keyword">else</span> k): v <span class="keyword">for</span> k, v <span class="keyword">in</span> non_lora_trainables.items()&#125;</span><br><span class="line">            model.load_state_dict(non_lora_trainables, strict=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 下面的操作均使用peft库完成</span></span><br><span class="line">            <span class="keyword">from</span> peft <span class="keyword">import</span> PeftModel</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;Loading LoRA weights...&#x27;</span>)</span><br><span class="line">            model = PeftModel.from_pretrained(model, model_path)  <span class="comment"># 从model_path中加载LoRA权重</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;Merging LoRA weights...&#x27;</span>)</span><br><span class="line">            model = model.merge_and_unload()  <span class="comment"># 合并LoRA权重到模型中</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;Model is loaded...&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 以下为没有lora，只有model_base的情况，不细看</span></span><br><span class="line">        <span class="keyword">elif</span> model_base <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            ...</span><br><span class="line">    image_processor = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果模型是llava模型，则对分词器添加几个特殊标记，同时加载视觉塔</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;llava&#x27;</span> <span class="keyword">in</span> model_name.lower():</span><br><span class="line">        mm_use_im_start_end = <span class="built_in">getattr</span>(model.config, <span class="string">&quot;mm_use_im_start_end&quot;</span>, <span class="literal">False</span>)</span><br><span class="line">        mm_use_im_patch_token = <span class="built_in">getattr</span>(model.config, <span class="string">&quot;mm_use_im_patch_token&quot;</span>, <span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">if</span> mm_use_im_patch_token:</span><br><span class="line">            tokenizer.add_tokens([DEFAULT_IMAGE_PATCH_TOKEN], special_tokens=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">if</span> mm_use_im_start_end:</span><br><span class="line">            tokenizer.add_tokens([DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN], special_tokens=<span class="literal">True</span>)</span><br><span class="line">        model.resize_token_embeddings(<span class="built_in">len</span>(tokenizer))</span><br><span class="line"></span><br><span class="line">        vision_tower = model.get_vision_tower()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> vision_tower.is_loaded:</span><br><span class="line">            vision_tower.load_model(device_map=device_map)</span><br><span class="line">        <span class="keyword">if</span> device_map != <span class="string">&#x27;auto&#x27;</span>:</span><br><span class="line">            vision_tower.to(device=device_map, dtype=torch.float16)</span><br><span class="line">        image_processor = vision_tower.image_processor</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回的max_sequence_length为model.config.max_sequence_length，如果没有这个属性则无脑返回2048</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">hasattr</span>(model.config, <span class="string">&quot;max_sequence_length&quot;</span>):</span><br><span class="line">        context_len = model.config.max_sequence_length</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        context_len = <span class="number">2048</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tokenizer, model, image_processor, context_len</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge_lora</span>(<span class="params">args</span>):</span><br><span class="line">    model_name = get_model_name_from_path(args.model_path)</span><br><span class="line">    tokenizer, model, image_processor, context_len = load_pretrained_model(args.model_path, args.model_base, model_name, device_map=<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    model.save_pretrained(args.save_model_path)</span><br><span class="line">    tokenizer.save_pretrained(args.save_model_path)</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<h2 id="模型测试"><a href="#模型测试" class="headerlink" title="模型测试"></a>模型测试</h2><p>测试模型的性能，会发现微调起了作用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> llava.<span class="built_in">eval</span>.run_llava <span class="keyword">import</span> eval_model</span><br><span class="line"></span><br><span class="line">model_path = <span class="string">&quot;liuhaotian/llava-v1.5-7b&quot;</span></span><br><span class="line">prompt = <span class="string">&quot;Who is in the picture?&quot;</span></span><br><span class="line">image_file = <span class="string">&quot;https://avatars.githubusercontent.com/u/86307756&quot;</span></span><br><span class="line"></span><br><span class="line">args = <span class="built_in">type</span>(<span class="string">&#x27;Args&#x27;</span>, (), &#123;</span><br><span class="line">    <span class="string">&quot;model_path&quot;</span>: <span class="string">&quot;./checkpoints/llava-v1.5-7b&quot;</span>,</span><br><span class="line">    <span class="string">&quot;model_base&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;model_name&quot;</span>: <span class="string">&quot;liuhaotian/llava-v1.5-7b&quot;</span>,</span><br><span class="line">    <span class="string">&quot;query&quot;</span>: prompt,</span><br><span class="line">    <span class="string">&quot;conv_mode&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;image_file&quot;</span>: image_file,</span><br><span class="line">    <span class="string">&quot;sep&quot;</span>: <span class="string">&quot;,&quot;</span>,</span><br><span class="line">    <span class="string">&quot;temperature&quot;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&quot;top_p&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;num_beams&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">&quot;max_new_tokens&quot;</span>: <span class="number">512</span></span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始模型输出为：&quot;</span>)</span><br><span class="line">eval_model(args)</span><br><span class="line"></span><br><span class="line">args = <span class="built_in">type</span>(<span class="string">&#x27;Args&#x27;</span>, (), &#123;</span><br><span class="line">    <span class="string">&quot;model_path&quot;</span>: <span class="string">&quot;./checkpoints/llava-v1.5-7b-merged&quot;</span>,</span><br><span class="line">    <span class="string">&quot;model_base&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;model_name&quot;</span>: <span class="string">&quot;liuhaotian/llava-v1.5-7b&quot;</span>,</span><br><span class="line">    <span class="string">&quot;query&quot;</span>: prompt,</span><br><span class="line">    <span class="string">&quot;conv_mode&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;image_file&quot;</span>: image_file,</span><br><span class="line">    <span class="string">&quot;sep&quot;</span>: <span class="string">&quot;,&quot;</span>,</span><br><span class="line">    <span class="string">&quot;temperature&quot;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&quot;top_p&quot;</span>: <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;num_beams&quot;</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">&quot;max_new_tokens&quot;</span>: <span class="number">512</span></span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;微调后的模型输出为：&quot;</span>)</span><br><span class="line">eval_model(args)</span><br></pre></td></tr></table></figure>
+
+<p>模型经过微调后，对于我们的训练数据，能得到与标签一致的运行结果：</p>
+<p>经过微调的模型输出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The person in the picture is Nathida, who is a character in the Original God and its derivative works produced by Mihoyo. Her real name is Buyel, the grass god in the &quot;Earthly Seven rulers&quot;, and is given the nickname of &quot;Little Lucky Grass King&quot; by the XuMi people, the youngest of the seven gods today.</span><br></pre></td></tr></table></figure>
+
+<p>而如果不经过微调，模型只会告诉你照片上有个小女孩。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/donate_wechatpay.png" alt="Hetan 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/donate_alipay.png" alt="Hetan 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hetan
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://hetan697.github.io/blogs/dl/2024/05/12/193714/" title="LLaVA 微调教程">http://hetan697.github.io/blogs/dl/2024/05/12/193714/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blogs/un/2024/05/05/200610/" rel="prev" title="随便写写">
+                  <i class="fa fa-angle-left"></i> 随便写写
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blogs/un/2024/06/16/132248/" rel="next" title="去浦东">
+                  去浦东 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-face-kiss"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Hetan</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"hetan697/hetan697.github.io","issue_term":"title","theme":"boxy-light"}</script>
+<script src="/js/third-party/comments/utterances.js" defer></script>
+
+</body>
+</html>
